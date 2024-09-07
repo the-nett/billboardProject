@@ -1,0 +1,6 @@
+@billboard_HostAddress = http://localhost:5084
+
+GET {{billboard_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
