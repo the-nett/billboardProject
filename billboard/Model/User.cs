@@ -5,6 +5,6 @@ namespace billboard.Model
     public class User
     {
         [Key]
-        int Id { get; set; }
+        public int Id { get; set; }
     }
 }

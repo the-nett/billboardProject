@@ -9,6 +9,15 @@ namespace billboard.Context
         {
             
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+
+        }
         public DbSet<User> Users { get; set; }
     }
+
 }
