@@ -13,8 +13,20 @@ namespace billboard.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
-                .HasKey(u => u.Id);
+            //OnmodelCreating UserTypePermissions
+            var userTypePermisions = modelBuilder.Entity<UserTypePermissions>();
+
+            userTypePermisions.Property(x => x.Id_Usertype).IsRequired();
+            userTypePermisions.Property(x => x.Id_permission).IsRequired();
+
+            //OnmodelCreating Responsible
+            var responsible = modelBuilder.Entity<Responsible>();
+
+            responsible.HasKey(x => x.ResponsibleId);
+
+            responsible.HasOne(x => x.Person).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.Id_People).OnDelete(DeleteBehavior.NoAction);
+            responsible.HasOne(x => x.Company).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.CompanyId).OnDelete(DeleteBehavior.NoAction);
+
 
         }
         public DbSet<User> Users { get; set; }

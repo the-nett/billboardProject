@@ -7,7 +7,7 @@ namespace billboard.Model
         [Key]
         public int Id_Permission { get; set; }
 
-        public required string Permissions { get; set; }
+        public  string Permissions { get; set; }
 
     }
 }

@@ -6,16 +6,18 @@ namespace billboard.Model
     {
         [Key]
         public int User_Id { get; set; }
-        public required int PeopleId { get; set; }
+        public  int PeopleId { get; set; }
 
-        //[MaxLength(90)]
-        public required string PeoplePassword { get; set; }
+        public  string PeoplePassword { get; set; }
 
-        //[MaxLength(10)]
-        public required string PeopleSalt { get; set; }
+        public  string PeopleSalt { get; set; }
 
-        public required DateTime Date { get; set; }
+        public  DateTime Date { get; set; }
 
-        public required int IdUserType { get; set; }
+        public  int IdUserType { get; set; }
+
+        //Navigation
+        public  Person Person { get; set; }
+        public  UserType UserType { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace billboard.Model
     public class UserType
     {
         [Key]
-        public required int Id_Usertype { get; set; }
-        public required string Utype { get; set; }
+        public  int Id_Usertype { get; set; }
+        public  string Utype { get; set; }
     }
 }

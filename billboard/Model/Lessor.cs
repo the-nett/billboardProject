@@ -7,8 +7,12 @@ namespace billboard.Model
         [Key]
         public int LessorId { get; set; }
 
-        public required int UserId { get; set; }
+        public  int UserId { get; set; }
 
-        public required int UserTypeId { get; set; }
+        public  int UserTypeId { get; set; }
+
+        //Navigation
+        public  UserType UserType { get; set; }
+
     }
 }

@@ -7,8 +7,7 @@ namespace billboard.Model
         [Key]
         public int TenantId { get; set; }
 
-        public required int UserId { get; set; }
+        public  string PayMethod { get; set; }
 
-        public required int UserTypeId { get; set; }
     }
 }

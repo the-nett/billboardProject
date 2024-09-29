@@ -7,8 +7,8 @@ namespace billboard.Model
         [Key]
         public int CityId { get; set; }
 
-        public required string CityName { get; set; }
+        public  string CityName { get; set; }
 
-        public required int CatalogId { get; set; }
+        public  int CatalogId { get; set; }
     }
 }

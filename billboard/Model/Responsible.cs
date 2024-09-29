@@ -7,8 +7,12 @@ namespace billboard.Model
         [Key]
         public int ResponsibleId { get; set; }
 
-        public required int PeopleId { get; set; }
+        public int Id_People { get; set; } // Clave foránea para Person
 
-        public required int CompanyId { get; set; }
+        public  int CompanyId { get; set; } // Cambié a CompanyId
+
+        // Navegation
+        public Person Person { get; set; }
+        public Company Company { get; set; }
     }
 }

@@ -6,9 +6,6 @@ namespace billboard.Model
     {
         [Key]
         public int DocumentId { get; set; }
-
-        public required int CatalogId { get; set; }
-
-        public required string DocumentName { get; set; }
+        public  string DocumentName { get; set; }
     }
 }

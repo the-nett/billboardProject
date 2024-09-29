@@ -7,30 +7,35 @@ namespace billboard.Model
         [Key]
         public int BillboardId { get; set; }
 
-        public required int LessorId { get; set; }
+        public  int LessorId { get; set; }
 
-        public required string ImageUrl { get; set; }
+        public  string ImageUrl { get; set; }
 
-        public required double Fee { get; set; }
+        public  double Fee { get; set; }
 
-        public required int BillboardStateId { get; set; }
+        public  int BillboardStateId { get; set; }
 
-        public required string LatitudeAndLongitude { get; set; }
+        public  string LatitudeAndLongitude { get; set; }
 
-        public required int BillboardTypeId { get; set; }
+        public  int BillboardTypeId { get; set; }
 
-        public required bool State { get; set; }
+        public  bool State { get; set; }
 
-        public required string Measures { get; set; }
+        public  string Measures { get; set; }
 
-        public required double FloorDistance { get; set; }
+        public  double FloorDistance { get; set; }
 
-        public required bool Illumination { get; set; }
+        public  bool Illumination { get; set; }
 
-        public required DateTime InstallationDate { get; set; }
+        public  DateTime InstallationDate { get; set; }
 
-        public required int SimultaneousAds { get; set; }
+        public  int SimultaneousAds { get; set; }
 
-        public required string Observations { get; set; }
+        public  string Observations { get; set; }
+
+        //Navigation
+        public  BillboardState BillboardState { get; set; } 
+        public  BillboardType BillboardType { get; set; }
+
     }
 }

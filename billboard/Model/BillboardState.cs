@@ -6,6 +6,6 @@ namespace billboard.Model
     {
         [Key]
         public int Sate_Id { get; set; }
-        public required string State { get; set; }
+        public  string State { get; set; }
     }
 }

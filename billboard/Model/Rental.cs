@@ -7,22 +7,29 @@ namespace billboard.Model
         [Key]
         public int RentalId { get; set; }
 
-        public required int BillboardId { get; set; }
+        public  int BillboardId { get; set; }
 
-        public required int LessorId { get; set; }
+        public  int LessorId { get; set; }
 
-        public required int TenantId { get; set; }
+        public  int TenantId { get; set; }
 
-        public required DateTime RentalStartDate { get; set; }
+        public  DateTime RentalStartDate { get; set; }
 
-        public required DateTime RentalEndDate { get; set; }
+        public  DateTime RentalEndDate { get; set; }
 
-        public required int PayMethodsId { get; set; }
+        public  int PayMethodsId { get; set; }
 
-        public required string AdContent { get; set; }
+        public  string AdContent { get; set; }
 
-        public required string ContractClauses { get; set; }
+        public  string ContractClauses { get; set; }
 
-        public required string Observations { get; set; }
+        public  string Observations { get; set; }
+
+        //Navigation
+        public  Billboard Billboard { get; set; }
+        public  Lessor Lessor { get; set; }
+        public  Tenant Tenant { get; set; } 
+        public  PayMethods PayMethods { get; set; }
+
     }
 }
