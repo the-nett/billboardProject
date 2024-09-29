@@ -22,7 +22,7 @@ namespace billboard.Context
             //OnmodelCreating Responsible
             var responsible = modelBuilder.Entity<Responsible>();
 
-            responsible.HasKey(x => x.ResponsibleId);
+            responsible.HasKey(x => x.ResponsibleId); //LLave primaria
 
             responsible.HasOne(x => x.Person).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.Id_People).OnDelete(DeleteBehavior.NoAction);
             responsible.HasOne(x => x.Company).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.CompanyId).OnDelete(DeleteBehavior.NoAction);
