@@ -12,8 +12,8 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    [Migration("20240929030338_Prueba")]
-    partial class Prueba
+    [Migration("20241002192123_Ajuste en relacion Tennant y Lessor")]
+    partial class AjusteenrelacionTennantyLessor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,23 +27,26 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Billboard", b =>
                 {
-                    b.Property<int>("BillboardId")
+                    b.Property<int>("IdBillboard")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillboardId"));
-
-                    b.Property<int>("BillboardStateId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BillboardTypeId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBillboard"));
 
                     b.Property<double>("Fee")
                         .HasColumnType("float");
 
                     b.Property<double>("FloorDistance")
                         .HasColumnType("float");
+
+                    b.Property<int>("IdBillboardState")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdBillboardType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLessor")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Illumination")
                         .HasColumnType("bit");
@@ -59,9 +62,6 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LessorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Measures")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -76,28 +76,30 @@ namespace billboard.Migrations
                     b.Property<bool>("State")
                         .HasColumnType("bit");
 
-                    b.HasKey("BillboardId");
+                    b.HasKey("IdBillboard");
 
-                    b.HasIndex("BillboardStateId");
+                    b.HasIndex("IdBillboardState");
 
-                    b.HasIndex("BillboardTypeId");
+                    b.HasIndex("IdBillboardType");
+
+                    b.HasIndex("IdLessor");
 
                     b.ToTable("Billboards");
                 });
 
             modelBuilder.Entity("billboard.Model.BillboardState", b =>
                 {
-                    b.Property<int>("Sate_Id")
+                    b.Property<int>("IdSate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Sate_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSate"));
 
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Sate_Id");
+                    b.HasKey("IdSate");
 
                     b.ToTable("BillboardStates");
                 });
@@ -141,17 +143,11 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Company", b =>
                 {
-                    b.Property<int>("Company_Id")
+                    b.Property<int>("IdCompany")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Company_Id"));
-
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("City_Id")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCompany"));
 
                     b.Property<string>("Company_Direction")
                         .IsRequired()
@@ -172,13 +168,16 @@ namespace billboard.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IdCity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdIndustry")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdResponsible")
+                        .HasColumnType("int");
+
                     b.Property<int>("Id_User_Type")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IndustryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Industry_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("NIT")
@@ -197,19 +196,16 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Responsible_Id")
-                        .HasColumnType("int");
+                    b.HasKey("IdCompany");
 
-                    b.Property<int>("UserTypeId_Usertype")
-                        .HasColumnType("int");
+                    b.HasIndex("IdCity");
 
-                    b.HasKey("Company_Id");
+                    b.HasIndex("IdIndustry");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex("IdResponsible")
+                        .IsUnique();
 
-                    b.HasIndex("IndustryId");
-
-                    b.HasIndex("UserTypeId_Usertype");
+                    b.HasIndex("Id_User_Type");
 
                     b.ToTable("Companies");
                 });
@@ -250,38 +246,38 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Lessor", b =>
                 {
-                    b.Property<int>("LessorId")
+                    b.Property<int>("IdLessor")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LessorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLessor"));
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("IdUser")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserTypeId")
+                    b.Property<int>("IdUserType")
                         .HasColumnType("int");
 
-                    b.HasKey("LessorId");
+                    b.HasKey("IdLessor");
 
-                    b.HasIndex("UserTypeId");
+                    b.HasIndex("IdUserType");
 
                     b.ToTable("Lessors");
                 });
 
             modelBuilder.Entity("billboard.Model.PayMethods", b =>
                 {
-                    b.Property<int>("TenantId")
+                    b.Property<int>("IdPayMethod")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TenantId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPayMethod"));
 
                     b.Property<string>("PayMethod")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TenantId");
+                    b.HasKey("IdPayMethod");
 
                     b.ToTable("PayMethods");
                 });
@@ -305,11 +301,11 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Person", b =>
                 {
-                    b.Property<int>("PeopleId")
+                    b.Property<int>("IdPeople")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PeopleId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPeople"));
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -317,19 +313,19 @@ namespace billboard.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DocumentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DocumentNumb")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DocumentType")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdDocumentType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUserType")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -347,46 +343,46 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserTypeId")
-                        .HasColumnType("int");
+                    b.HasKey("IdPeople");
 
-                    b.HasKey("PeopleId");
+                    b.HasIndex("IdDocumentType");
 
-                    b.HasIndex("DocumentId");
-
-                    b.HasIndex("UserTypeId");
+                    b.HasIndex("IdUserType");
 
                     b.ToTable("People");
                 });
 
             modelBuilder.Entity("billboard.Model.Rental", b =>
                 {
-                    b.Property<int>("RentalId")
+                    b.Property<int>("IdRental")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RentalId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRental"));
 
                     b.Property<string>("AdContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BillboardId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ContractClauses")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LessorId")
+                    b.Property<int>("IdBillboard")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdLessor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPayMethods")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTenant")
                         .HasColumnType("int");
 
                     b.Property<string>("Observations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PayMethodsId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("RentalEndDate")
                         .HasColumnType("datetime2");
@@ -394,29 +390,25 @@ namespace billboard.Migrations
                     b.Property<DateTime>("RentalStartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TenantId")
-                        .HasColumnType("int");
+                    b.HasKey("IdRental");
 
-                    b.HasKey("RentalId");
+                    b.HasIndex("IdBillboard")
+                        .IsUnique();
 
-                    b.HasIndex("BillboardId");
+                    b.HasIndex("IdLessor");
 
-                    b.HasIndex("LessorId");
+                    b.HasIndex("IdPayMethods");
 
-                    b.HasIndex("PayMethodsId");
-
-                    b.HasIndex("TenantId");
-
-                    b.ToTable("Rental");
+                    b.ToTable("Rentals");
                 });
 
             modelBuilder.Entity("billboard.Model.Responsible", b =>
                 {
-                    b.Property<int>("ResponsibleId")
+                    b.Property<int>("IdResponsible")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResponsibleId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdResponsible"));
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -424,9 +416,9 @@ namespace billboard.Migrations
                     b.Property<int>("Id_People")
                         .HasColumnType("int");
 
-                    b.HasKey("ResponsibleId");
+                    b.HasKey("IdResponsible");
 
-                    b.HasIndex("CompanyId")
+                    b.HasIndex("Id_People")
                         .IsUnique();
 
                     b.ToTable("Responsibles");
@@ -434,32 +426,32 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Tenant", b =>
                 {
-                    b.Property<int>("TenantId")
+                    b.Property<int>("IdTenant")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TenantId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTenant"));
+
+                    b.Property<int>("IdUserType")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserTypeId")
-                        .HasColumnType("int");
+                    b.HasKey("IdTenant");
 
-                    b.HasKey("TenantId");
-
-                    b.HasIndex("UserTypeId");
+                    b.HasIndex("IdUserType");
 
                     b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("billboard.Model.User", b =>
                 {
-                    b.Property<int>("User_Id")
+                    b.Property<int>("IdUser")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("User_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUser"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -478,17 +470,12 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonPeopleId")
-                        .HasColumnType("int");
+                    b.HasKey("IdUser");
 
-                    b.Property<int>("UserTypeId_Usertype")
-                        .HasColumnType("int");
+                    b.HasIndex("IdUserType");
 
-                    b.HasKey("User_Id");
-
-                    b.HasIndex("PersonPeopleId");
-
-                    b.HasIndex("UserTypeId_Usertype");
+                    b.HasIndex("PeopleId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -512,10 +499,10 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.UserTypePermissions", b =>
                 {
-                    b.Property<int>("IdId_permission")
+                    b.Property<int>("Id_Usertype")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id_Usertype")
+                    b.Property<int>("Id_permission")
                         .HasColumnType("int");
 
                     b.Property<int>("PermissionId_Permission")
@@ -534,45 +521,61 @@ namespace billboard.Migrations
             modelBuilder.Entity("billboard.Model.Billboard", b =>
                 {
                     b.HasOne("billboard.Model.BillboardState", "BillboardState")
-                        .WithMany()
-                        .HasForeignKey("BillboardStateId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("BillboardState_Billboard")
+                        .HasForeignKey("IdBillboardState")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.BillboardType", "BillboardType")
-                        .WithMany()
-                        .HasForeignKey("BillboardTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("BillboardType_Billboard")
+                        .HasForeignKey("IdBillboardType")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("billboard.Model.Lessor", "Lessor")
+                        .WithMany("Lessor_Billboard")
+                        .HasForeignKey("IdLessor")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("BillboardState");
 
                     b.Navigation("BillboardType");
+
+                    b.Navigation("Lessor");
                 });
 
             modelBuilder.Entity("billboard.Model.Company", b =>
                 {
                     b.HasOne("billboard.Model.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("CitiesCompany")
+                        .HasForeignKey("IdCity")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.Industry", "Industry")
-                        .WithMany()
-                        .HasForeignKey("IndustryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Companies")
+                        .HasForeignKey("IdIndustry")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("billboard.Model.Responsible", "Responsible")
+                        .WithOne("Company")
+                        .HasForeignKey("billboard.Model.Company", "IdResponsible")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId_Usertype")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("UserTypeCompany")
+                        .HasForeignKey("Id_User_Type")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("City");
 
                     b.Navigation("Industry");
+
+                    b.Navigation("Responsible");
 
                     b.Navigation("UserType");
                 });
@@ -580,9 +583,9 @@ namespace billboard.Migrations
             modelBuilder.Entity("billboard.Model.Lessor", b =>
                 {
                     b.HasOne("billboard.Model.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("UserTypeLessor")
+                        .HasForeignKey("IdUserType")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("UserType");
@@ -591,15 +594,15 @@ namespace billboard.Migrations
             modelBuilder.Entity("billboard.Model.Person", b =>
                 {
                     b.HasOne("billboard.Model.Document", "Document")
-                        .WithMany()
-                        .HasForeignKey("DocumentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Documents")
+                        .HasForeignKey("IdDocumentType")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("People")
+                        .HasForeignKey("IdUserType")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Document");
@@ -610,27 +613,27 @@ namespace billboard.Migrations
             modelBuilder.Entity("billboard.Model.Rental", b =>
                 {
                     b.HasOne("billboard.Model.Billboard", "Billboard")
-                        .WithMany()
-                        .HasForeignKey("BillboardId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("Rental")
+                        .HasForeignKey("billboard.Model.Rental", "IdBillboard")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.Lessor", "Lessor")
-                        .WithMany()
-                        .HasForeignKey("LessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("billboard.Model.PayMethods", "PayMethods")
-                        .WithMany()
-                        .HasForeignKey("PayMethodsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Lessor_Rental")
+                        .HasForeignKey("IdLessor")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("billboard.Model.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("Tenant_Rental")
+                        .HasForeignKey("IdLessor")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("billboard.Model.PayMethods", "PayMethods")
+                        .WithMany("PayMethodsRental")
+                        .HasForeignKey("IdPayMethods")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Billboard");
@@ -644,19 +647,21 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Responsible", b =>
                 {
-                    b.HasOne("billboard.Model.Company", null)
+                    b.HasOne("billboard.Model.Person", "Person")
                         .WithOne("Responsible")
-                        .HasForeignKey("billboard.Model.Responsible", "CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("billboard.Model.Responsible", "Id_People")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("billboard.Model.Tenant", b =>
                 {
                     b.HasOne("billboard.Model.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("UserTypeTenant")
+                        .HasForeignKey("IdUserType")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("UserType");
@@ -664,16 +669,16 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.User", b =>
                 {
-                    b.HasOne("billboard.Model.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonPeopleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("billboard.Model.UserType", "UserType")
+                        .WithMany("Users")
+                        .HasForeignKey("IdUserType")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("billboard.Model.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId_Usertype")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("billboard.Model.Person", "Person")
+                        .WithOne("User")
+                        .HasForeignKey("billboard.Model.User", "PeopleId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Person");
@@ -700,10 +705,80 @@ namespace billboard.Migrations
                     b.Navigation("UserType");
                 });
 
-            modelBuilder.Entity("billboard.Model.Company", b =>
+            modelBuilder.Entity("billboard.Model.Billboard", b =>
+                {
+                    b.Navigation("Rental")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("billboard.Model.BillboardState", b =>
+                {
+                    b.Navigation("BillboardState_Billboard");
+                });
+
+            modelBuilder.Entity("billboard.Model.BillboardType", b =>
+                {
+                    b.Navigation("BillboardType_Billboard");
+                });
+
+            modelBuilder.Entity("billboard.Model.City", b =>
+                {
+                    b.Navigation("CitiesCompany");
+                });
+
+            modelBuilder.Entity("billboard.Model.Document", b =>
+                {
+                    b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("billboard.Model.Industry", b =>
+                {
+                    b.Navigation("Companies");
+                });
+
+            modelBuilder.Entity("billboard.Model.Lessor", b =>
+                {
+                    b.Navigation("Lessor_Billboard");
+
+                    b.Navigation("Lessor_Rental");
+                });
+
+            modelBuilder.Entity("billboard.Model.PayMethods", b =>
+                {
+                    b.Navigation("PayMethodsRental");
+                });
+
+            modelBuilder.Entity("billboard.Model.Person", b =>
                 {
                     b.Navigation("Responsible")
                         .IsRequired();
+
+                    b.Navigation("User")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("billboard.Model.Responsible", b =>
+                {
+                    b.Navigation("Company")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("billboard.Model.Tenant", b =>
+                {
+                    b.Navigation("Tenant_Rental");
+                });
+
+            modelBuilder.Entity("billboard.Model.UserType", b =>
+                {
+                    b.Navigation("People");
+
+                    b.Navigation("UserTypeCompany");
+
+                    b.Navigation("UserTypeLessor");
+
+                    b.Navigation("UserTypeTenant");
+
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

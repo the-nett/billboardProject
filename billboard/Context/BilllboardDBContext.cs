@@ -15,9 +15,13 @@ namespace billboard.Context
 
             // OnmodelCreating UserTypePermissions
             var userTypePermisions = modelBuilder.Entity<UserTypePermissions>();
+            
+            userTypePermisions.HasKey(Utp => new { Utp.Id_permission, Utp.Id_Usertype}); 
 
-            userTypePermisions.Property(x => x.Id_Usertype).IsRequired();
-            userTypePermisions.Property(x => x.Id_permission).IsRequired();
+            userTypePermisions.HasOne(Utp => Utp.Permission).WithMany(x => x.UserTypePermission).HasForeignKey(Utp => Utp.Id_permission);
+            userTypePermisions.HasOne(Utp => Utp.UserType).WithMany(x => x.UserTypes).HasForeignKey(Utp => Utp.Id_Usertype);
+
+            //userTypePermisions.HasNoKey();
 
             // OnmodelCreating Responsible
             var responsible = modelBuilder.Entity<Responsible>();
@@ -90,6 +94,7 @@ namespace billboard.Context
             // OnmodelCreating Tenant
             var tenant = modelBuilder.Entity<Tenant>();
             tenant.HasKey(x => x.IdTenant);
+            tenant.HasOne(x => x.UserType).WithMany(x => x.UserTypeTenant).HasForeignKey(x => x.IdUserType).OnDelete(DeleteBehavior.NoAction);
 
             // OnmodelCreating PayMethods
             var pay_methods = modelBuilder.Entity<PayMethods>();
@@ -106,6 +111,7 @@ namespace billboard.Context
             // OnmodelCreating Lessor
             var lessor = modelBuilder.Entity<Lessor>();
             lessor.HasKey(x => x.IdLessor);
+            lessor.HasOne(x => x.UserType).WithMany(x => x.UserTypeLessor).HasForeignKey(x => x.IdUserType).OnDelete(DeleteBehavior.NoAction);
 
         }
         public DbSet<User> Users { get; set; }

@@ -7,7 +7,9 @@ namespace billboard.Model
         [Key]
         public int Id_Permission { get; set; }
 
-        public  string Permissions { get; set; }
+        public  string Permission_ { get; set; }
+        //Navigation
+        public ICollection<UserTypePermissions> UserTypePermission { get; set; } = new List<UserTypePermissions>();
 
     }
 }

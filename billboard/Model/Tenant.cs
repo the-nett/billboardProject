@@ -9,9 +9,10 @@ namespace billboard.Model
 
         public  int UserId { get; set; }
 
-        public  int UserTypeId { get; set; }
+        public  int IdUserType { get; set; }
 
         //Navigation
         public ICollection<Rental> Tenant_Rental { get; } = new List<Rental>();
+        public UserType UserType { get; set; }
     }
 }

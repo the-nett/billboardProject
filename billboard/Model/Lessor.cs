@@ -14,6 +14,7 @@ namespace billboard.Model
         //Navigation
         public ICollection<Rental> Lessor_Rental { get; } = new List<Rental>();
         public ICollection<Billboard> Lessor_Billboard { get; } = new List<Billboard>();
+        public UserType UserType { get; set; }
 
     }
 }
