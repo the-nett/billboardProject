@@ -5,13 +5,13 @@ namespace billboard.Model
     public class Person
     {
         [Key]
-        public int PeopleId { get; set; }
+        public int IdPeople { get; set; }
 
         public string Name { get; set; }
 
         public string LastName { get; set; }
 
-        public int DocumentTypeId { get; set; }
+        public int IdDocumentType { get; set; }
 
         public string DocumentNumb { get; set; }
 
@@ -24,7 +24,7 @@ namespace billboard.Model
 
         public  string PhoneNumber { get; set; }
 
-        public  int UserTypeId { get; set; }
+        public  int IdUserType { get; set; }
 
         public  DateTime Date { get; set; }
 
@@ -32,6 +32,7 @@ namespace billboard.Model
         public  UserType UserType { get; set; }
         public  Document Document { get; set; }
         public Responsible Responsible { get; set; }
+        public User User { get; set; }
 
 
 

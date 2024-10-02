@@ -5,14 +5,15 @@ namespace billboard.Model
     public class Lessor
     {
         [Key]
-        public int LessorId { get; set; }
+        public int IdLessor { get; set; }
 
-        public  int UserId { get; set; }
+        public  int IdUser { get; set; }
 
-        public  int UserTypeId { get; set; }
+        public  int IdUserType { get; set; }
 
         //Navigation
-        public  UserType UserType { get; set; }
+        public ICollection<Rental> Lessor_Rental { get; } = new List<Rental>();
+        public ICollection<Billboard> Lessor_Billboard { get; } = new List<Billboard>();
 
     }
 }

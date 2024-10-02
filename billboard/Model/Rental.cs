@@ -5,19 +5,19 @@ namespace billboard.Model
     public class Rental
     {
         [Key]
-        public int RentalId { get; set; }
+        public int IdRental { get; set; }
 
-        public  int BillboardId { get; set; }
+        public  int IdBillboard { get; set; }
 
-        public  int LessorId { get; set; }
+        public  int IdLessor { get; set; }
 
-        public  int TenantId { get; set; }
+        public  int IdTenant { get; set; }
 
         public  DateTime RentalStartDate { get; set; }
 
         public  DateTime RentalEndDate { get; set; }
 
-        public  int PayMethodsId { get; set; }
+        public  int IdPayMethods { get; set; }
 
         public  string AdContent { get; set; }
 

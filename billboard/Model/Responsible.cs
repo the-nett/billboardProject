@@ -5,7 +5,7 @@ namespace billboard.Model
     public class Responsible
     {
         [Key]
-        public int ResponsibleId { get; set; }
+        public int IdResponsible { get; set; }
 
         public int Id_People { get; set; } // Clave foránea para Person
 

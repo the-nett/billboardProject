@@ -5,19 +5,19 @@ namespace billboard.Model
     public class Billboard
     {
         [Key]
-        public int BillboardId { get; set; }
+        public int IdBillboard { get; set; }
 
-        public  int LessorId { get; set; }
+        public  int IdLessor { get; set; }
 
         public  string ImageUrl { get; set; }
 
         public  double Fee { get; set; }
 
-        public  int BillboardStateId { get; set; }
+        public  int IdBillboardState { get; set; }
 
         public  string LatitudeAndLongitude { get; set; }
 
-        public  int BillboardTypeId { get; set; }
+        public  int IdBillboardType { get; set; }
 
         public  bool State { get; set; }
 
@@ -34,8 +34,10 @@ namespace billboard.Model
         public  string Observations { get; set; }
 
         //Navigation
-        public  BillboardState BillboardState { get; set; } 
-        public  BillboardType BillboardType { get; set; }
+        public Lessor Lessor { get; set; }
+        public BillboardState BillboardState { get; set; } 
+        public BillboardType BillboardType { get; set; }
+        public Rental Rental { get; set; }
 
     }
 }

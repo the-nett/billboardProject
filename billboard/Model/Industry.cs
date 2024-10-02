@@ -8,5 +8,8 @@ namespace billboard.Model
         public int IndustryId { get; set; }
 
         public  string IndustryName { get; set; }
+
+        //Navigation
+        public ICollection<Company> Companies { get; } = new List<Company>();
     }
 }

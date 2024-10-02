@@ -5,11 +5,11 @@ namespace billboard.Model
     public class Company
     {
         [Key]
-        public int Company_Id { get; set; }
+        public int IdCompany { get; set; }
 
         public  string Company_Name { get; set; }
 
-        public  int Industry_Id { get; set; }
+        public  int IdIndustry { get; set; }
 
         public  string NIT { get; set; }
 
@@ -17,13 +17,13 @@ namespace billboard.Model
       
         public  string Company_Direction { get; set; }
 
-        public  int City_Id { get; set; }
+        public  int IdCity { get; set; }
 
         public  string Phone_Number { get; set; }
 
         public  string Corporate_Email { get; set; }
 
-        public  int Responsible_Id { get; set; }
+        public  int IdResponsible { get; set; }
         public  string Password { get; set; }
 
         public  string Company_Salt { get; set; }
