@@ -25,7 +25,7 @@ namespace billboard.Repositories
             _context.SaveChanges();
         }
 
-        public Task<IEnumerable<User>> GetAllsubjectsAsync()
+        public async Task<IEnumerable<User>> GetAllsubjectsAsync()
         {
             throw new NotImplementedException();
         }
