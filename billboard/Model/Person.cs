@@ -7,19 +7,19 @@ namespace billboard.Model
         [Key]
         public int IdPeople { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
-        public int IdDocumentType { get; set; }
+        public required int IdDocumentType { get; set; }
 
-        public string DocumentNumb { get; set; }
+        public required string DocumentNumb { get; set; }
 
-        public string Occupation { get; set; }
+        public required string Occupation { get; set; }
 
         public  DateTime BirthDate { get; set; }
 
-        public  string Email { get; set; }
+        public required string Email { get; set; }
 
 
         public  string PhoneNumber { get; set; }

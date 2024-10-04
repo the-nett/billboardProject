@@ -6,7 +6,7 @@ namespace billboard.Model
     {
         [Key]
         public int DocumentId { get; set; }
-        public  string DocumentName { get; set; }
+        public  required string DocumentName { get; set; }
 
         //Navigation
         public ICollection<Person> Documents { get; } = new List<Person>();
