@@ -121,7 +121,7 @@ namespace billboard.Context
         public DbSet<Billboard> Billboards { get; set; }
         public DbSet<BillboardType> BillboardTypes { get; set; }
         public DbSet<BillboardState> BillboardStates { get; set; }
-        public DbSet<City> Citys { get; set; }
+        public DbSet<City> Cities { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Industry> Industries { get; set; }
         public DbSet<Responsible> Responsibles { get; set; }

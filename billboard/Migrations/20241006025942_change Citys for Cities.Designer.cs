@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using billboard.Context;
 
@@ -11,9 +12,11 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    partial class BilllboardDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241006025942_change Citys for Cities")]
+    partial class changeCitysforCities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,6 +128,9 @@ namespace billboard.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
+
+                    b.Property<int>("CatalogId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CityName")
                         .IsRequired()

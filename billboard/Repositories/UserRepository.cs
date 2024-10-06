@@ -1,12 +1,13 @@
 ﻿using billboard.Context;
 using billboard.Model;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
 namespace billboard.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllsubjectsAsync();
+        Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
@@ -25,17 +26,17 @@ namespace billboard.Repositories
             _context.SaveChanges();
         }
 
-        public Task<IEnumerable<User>> GetAllsubjectsAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users.ToListAsync();
         }
 
-        public Task<User> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Users.FindAsync(id);
         }
 
-        public Task SoftDeleteUserAsync(int id)
+        public async Task SoftDeleteUserAsync(int id)
         {
             throw new NotImplementedException();
         }
