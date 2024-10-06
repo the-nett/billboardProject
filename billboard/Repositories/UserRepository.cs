@@ -26,11 +26,11 @@ namespace billboard.Repositories
             _context.SaveChanges();
         }
 
-<<<<<<< HEAD
-        public async Task<IEnumerable<User>> GetAllsubjectsAsync()
-=======
+
+       
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
->>>>>>> Dev-Felipe
+
         {
             return await _context.Users.ToListAsync();
         }
