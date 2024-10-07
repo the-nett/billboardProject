@@ -24,10 +24,10 @@ namespace billboard.Repositories
 
         public async Task CreateCityAsync(City city)
         {
-            // Agregar el nuevo ciudad a la base de datos
+            // Add
             await _contextCity.Cities.AddAsync(city);
 
-            // Guardar los cambios
+            // save
             await _contextCity.SaveChangesAsync();
         }
 
@@ -41,9 +41,25 @@ namespace billboard.Repositories
             return await _contextCity.Cities.FindAsync(id);
         }
 
-        public Task UpdateCityAsync(City city)
+        public async Task UpdateCityAsync(City city)
         {
-            throw new NotImplementedException();
+            // Current document by Id
+            var existingcity = await GetCityByIdAsync(city.CityId);
+
+            if (existingcity != null)
+            {
+                //Update current city
+                existingcity.CityName = city.CityName;
+
+                // Marcar el documento como modificado para que Entity Framework lo rastree
+                //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
+                // Save city
+                await _contextCity.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Ciudad no encontrada");
+            }
         }
     }
 }

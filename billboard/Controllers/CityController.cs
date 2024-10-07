@@ -38,7 +38,19 @@ namespace billboard.Controllers
         {
             await cityService.CreateCityAsync(city);
         }
+        [HttpPut("{id}", Name = "Updatecity")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateCity(int id, [FromBody] City city)
+        {
+            if (id != city.CityId)
+                return BadRequest();
 
+            await cityService.UpdateCityAsync(city);
+
+            return NoContent();
+        }
 
     }
 }

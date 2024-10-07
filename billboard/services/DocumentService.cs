@@ -33,9 +33,9 @@ namespace billboard.services
             return _documentRepository.GetDocumentByIdAsync(id);
         }
 
-        public Task UpdateDocumentAsync(Document document)
+        public async Task UpdateDocumentAsync(Document document)
         {
-            throw new NotImplementedException();
+            await _documentRepository.UpdateDocumentAsync(document);   
         }
     }
 
