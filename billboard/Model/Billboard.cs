@@ -32,7 +32,8 @@ namespace billboard.Model
         public  int SimultaneousAds { get; set; }
 
         public  string Observations { get; set; }
-        
+
+        public bool StateDelete { get; set; }
 
         //Navigation
         public BillboardState BillboardState { get; set; } 

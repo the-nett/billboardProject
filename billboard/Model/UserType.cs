@@ -8,6 +8,9 @@ namespace billboard.Model
         [Key]
         public  int Id_Usertype { get; set; }
         public  string Utype { get; set; }
+
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<User> Users { get; } = new List<User>();
         public ICollection<Person> People { get; } = new List<Person>();

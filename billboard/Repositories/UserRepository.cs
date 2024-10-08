@@ -27,6 +27,7 @@ namespace billboard.Repositories
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
+
         {
             return await _context.Users.ToListAsync();
         }
