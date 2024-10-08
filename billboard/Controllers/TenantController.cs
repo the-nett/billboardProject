@@ -38,5 +38,17 @@ namespace billboard.Controllers
         {
             await tenantService.CreateTenantAsync(tenant);
         }
+        [HttpPut("{id}", Name = "UpdateTenant")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateTenant(int id, [FromBody] Tenant tenant)
+        {
+            if (id != tenant.IdTenant)
+                return BadRequest();
+
+            await tenantService.UpdateTenantAsync(tenant);
+            return NoContent();
+        }
     }
 }

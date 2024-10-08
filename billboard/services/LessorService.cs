@@ -35,9 +35,9 @@ namespace billboard.services
             return _lessorRepository.GetLessorByIdAsync(id);
         }
 
-        public Task UpdateLessorAsync(Lessor lessor)
+        public async Task UpdateLessorAsync(Lessor lessor)
         {
-            throw new NotImplementedException();
+            await _lessorRepository.UpdateLessorAsync(lessor);
         }
     }
 }

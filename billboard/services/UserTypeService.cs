@@ -35,9 +35,9 @@ namespace billboard.services
             return _usertypeRepository.GetUserTypeByIdAsync(id);
         }
 
-        public Task UpdateUserTypeAsync(UserType usertype)
+        public async Task UpdateUserTypeAsync(UserType userType)
         {
-            throw new NotImplementedException();
+            await _usertypeRepository.UpdateUserTypeAsync(userType);
         }
     }
 }

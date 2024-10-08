@@ -38,5 +38,17 @@ namespace billboard.Controllers
         {
             await lessorService.CreateLessorAsync(lessor);
         }
+        [HttpPut("{id}", Name = "UpdateLessor")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateLessor(int id, [FromBody] Lessor lessor)
+        {
+            if (id != lessor.IdLessor)
+                return BadRequest();
+
+            await lessorService.UpdateLessorAsync(lessor);
+            return NoContent();
+        }
     }
 }

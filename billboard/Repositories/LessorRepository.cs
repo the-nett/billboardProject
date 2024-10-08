@@ -41,9 +41,21 @@ namespace billboard.Repositories
             return await _contextLessor.Lessors.FindAsync(id);
         }
 
-        public Task UpdateLessorAsync(Lessor lessor)
+        public async Task UpdateLessorAsync(Lessor lessor)
         {
-            throw new NotImplementedException();
+            var existingLessor = await GetLessorByIdAsync(lessor.IdLessor);
+
+            if (existingLessor != null)
+            {
+                existingLessor.LessorName = lessor.LessorName;
+
+                await _contextLessor.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Arrendador no encontrado");
+            }
         }
+
     }
 }

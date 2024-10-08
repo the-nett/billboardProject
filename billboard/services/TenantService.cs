@@ -35,9 +35,9 @@ namespace billboard.services
             return _tenantRepository.GetTenantByIdAsync(id);
         }
 
-        public Task UpdateTenantAsync(Tenant tenant)
+        public async Task UpdateTenantAsync(Tenant tenant)
         {
-            throw new NotImplementedException();
+            await _tenantRepository.UpdateTenantAsync(tenant);
         }
     }
 }

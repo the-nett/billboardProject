@@ -16,5 +16,6 @@ namespace billboard.Model
         //Navigation
         public ICollection<Rental> Tenant_Rental { get; } = new List<Rental>();
         public UserType UserType { get; set; }
+        public object TenantName { get; internal set; }
     }
 }

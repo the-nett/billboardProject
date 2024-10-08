@@ -41,9 +41,20 @@ namespace billboard.Repositories
             return await _contextUserType.UserTypes.FindAsync(id);
         }
 
-        public Task UpdateUserTypeAsync(UserType usertype)
+        public async Task UpdateUserTypeAsync(UserType userType)
         {
-            throw new NotImplementedException();
+            var existingUserType = await GetUserTypeByIdAsync(userType.Id_Usertype);
+
+            if (existingUserType != null)
+            {
+                existingUserType.UserTypeName = userType.UserTypeName;
+
+                await _contextUserType.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Tipo de usuario no encontrado");
+            }
         }
     }
 }

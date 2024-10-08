@@ -41,9 +41,20 @@ namespace billboard.Repositories
             return await _contextTenant.Tenants.FindAsync(id);
         }
 
-        public Task UpdateTenantAsync(Tenant tenant)
+        public async Task UpdateTenantAsync(Tenant tenant)
         {
-            throw new NotImplementedException();
+            var existingTenant = await GetTenantByIdAsync(tenant.IdTenant);
+
+            if (existingTenant != null)
+            {
+                existingTenant.TenantName = tenant.TenantName;
+
+                await _contextTenant.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Arrendatario no encontrado");
+            }
         }
     }
 }

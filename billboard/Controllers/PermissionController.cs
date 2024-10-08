@@ -38,5 +38,17 @@ namespace billboard.Controllers
         {
             await permissionService.CreatePermissionAsync(permission);
         }
+        [HttpPut("{id}", Name = "UpdatePermission")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdatePermission(int id, [FromBody] Permission permission)
+        {
+            if (id != permission.Id_Permission)
+                return BadRequest();
+
+            await permissionService.UpdatePermissionAsync(permission);
+            return NoContent();
+        }
     }
 }

@@ -30,6 +30,17 @@ namespace billboard.Controllers
         {
             await personService.CreatePersonAsync(person);
         }
+        [HttpPut("{id}", Name = "UpdatePerson")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdatePerson(int id, [FromBody] Person person)
+        {
+            if (id != person.IdPeople)
+                return BadRequest();
+
+            await personService.UpdatePersonAsync(person);
+            return NoContent();
+        }
     }
-    
 }

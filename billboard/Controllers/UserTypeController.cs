@@ -38,7 +38,17 @@ namespace billboard.Controllers
         {
             await usertypeService.CreateUserTypeAsync(usertype);
         }
+        [HttpPut("{id}", Name = "UpdateUserType")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateUserType(int id, [FromBody] UserType userType)
+        {
+            if (id != userType.Id_Usertype)
+                return BadRequest();
 
-
+            await usertypeService.UpdateUserTypeAsync(userType);
+            return NoContent();
+        }
     }
 }

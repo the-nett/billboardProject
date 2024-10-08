@@ -35,9 +35,9 @@ namespace billboard.services
             return _paymethodRepository.GetPayMethodByIdAsync(id);
         }
 
-        public Task UpdatePayMethodAsync(PayMethods paymethods)
+        public async Task UpdatePayMethodAsync(PayMethods paymethods)
         {
-            throw new NotImplementedException();
+            await _paymethodRepository.UpdatePayMethodAsync(paymethods);
         }
     }
 }

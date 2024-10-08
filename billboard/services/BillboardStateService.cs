@@ -35,9 +35,10 @@ namespace billboard.services
             return _billboardStateRepository.GetBillboardStateByIdAsync(id);
         }
 
-        public Task UpdateBillboardStateAsync(BillboardState billboardState)
+        public async Task UpdateBillboardStateAsync(BillboardState billboardState)
         {
-            throw new NotImplementedException();
+            await _billboardStateRepository.UpdateBillboardStateAsync(billboardState);
         }
+
     }
 }

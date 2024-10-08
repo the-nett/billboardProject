@@ -39,5 +39,18 @@ namespace billboard.Controllers
         {
             await billboardStateService.CreateBillboardStateAsync(billboardState);
         }
+        [HttpPut("{id}", Name = "UpdateBillboardState")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateBillboardState(int id, [FromBody] BillboardState billboardState)
+        {
+            if (id != billboardState.IdSate)
+                return BadRequest();
+
+            await billboardStateService.UpdateBillboardStateAsync(billboardState);
+            return NoContent();
+        }
+
     }
 }

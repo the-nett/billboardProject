@@ -36,12 +36,28 @@ namespace billboard.Repositories
 
         public async Task<Person> GetPersonByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _contextPerson.People.FindAsync(id);
         }
 
         public async Task UpdatePersonAsync(Person person)
         {
-            throw new NotImplementedException();
+            // Current document by Id
+            var existingPerson = await GetPersonByIdAsync(person.IdPeople);
+
+            if (existingPerson != null)
+            {
+                // Update current person
+                existingPerson.PersonName = person.PersonName;
+
+                // Marcar el documento como modificado para que Entity Framework lo rastree
+                //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
+                // Save person
+                await _contextPerson.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Persona no encontrada");
+            }
         }
     }
 }

@@ -13,6 +13,6 @@ namespace billboard.Model
 
         //Navigation
         public ICollection<UserTypePermissions> UserTypePermission { get; set; } = new List<UserTypePermissions>();
-
+        public object PermissionName { get; internal set; }
     }
 }

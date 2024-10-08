@@ -41,9 +41,25 @@ namespace billboard.Repositories
             return await _contextPermission.Permissions.FindAsync(id);
         }
 
-        public Task UpdatePermissionAsync(Permission permission)
+        public async Task UpdatePermissionAsync(Permission permission)
         {
-            throw new NotImplementedException();
+            // Current document by Id
+            var existingPermission = await GetPermissionByIdAsync(permission.Id_Permission);
+
+            if (existingPermission != null)
+            {
+                // Update current permission
+                existingPermission.PermissionName = permission.PermissionName;
+
+                // Marcar el documento como modificado para que Entity Framework lo rastree
+                //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
+                // Save permission
+                await _contextPermission.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Permiso no encontrado");
+            }
         }
     }
 }

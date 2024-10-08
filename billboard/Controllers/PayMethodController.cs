@@ -38,7 +38,17 @@ namespace billboard.Controllers
         {
             await paymethodService.CreatePayMethodAsync(paymethods);
         }
+        [HttpPut("{id}", Name = "UpdatePayMethod")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdatePayMethod(int id, [FromBody] PayMethods paymethod)
+        {
+            if (id != paymethod.IdPayMethod)
+                return BadRequest();
 
-
+            await paymethodService.UpdatePayMethodAsync(paymethod);
+            return NoContent();
+        }
     }
 }

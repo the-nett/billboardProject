@@ -35,9 +35,9 @@ namespace billboard.services
             return _permissionRepository.GetPermissionByIdAsync(id);
         }
 
-        public Task UpdatePermissionAsync(Permission permission)
+        public async Task UpdatePermissionAsync(Permission permission)
         {
-            throw new NotImplementedException();
+            await _permissionRepository.UpdatePermissionAsync(permission);
         }
     }
 }

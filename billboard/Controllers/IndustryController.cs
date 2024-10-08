@@ -38,7 +38,17 @@ namespace billboard.Controllers
         {
             await industryService.CreateIndustryAsync(industry);
         }
+        [HttpPut("{id}", Name = "UpdateIndustry")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateIndustry(int id, [FromBody] Industry industry)
+        {
+            if (id != industry.IndustryId)
+                return BadRequest();
 
-
+            await industryService.UpdateIndustryAsync(industry);
+            return NoContent();
+        }
     }
 }

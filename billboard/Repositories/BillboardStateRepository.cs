@@ -41,9 +41,20 @@ namespace billboard.Repositories
             return await _contextBillboardState.BillboardStates.FindAsync(id);
         }
 
-        public Task UpdateBillboardStateAsync(BillboardState billboardState)
+        public async Task UpdateBillboardStateAsync(BillboardState billboardState)
         {
-            throw new NotImplementedException();
+            var existingBillboardState = await GetBillboardStateByIdAsync(billboardState.IdSate);
+
+            if (existingBillboardState != null)
+            {
+                existingBillboardState.BillboardStateName = billboardState.BillboardStateName;
+
+                await _contextBillboardState.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Estado no encontrado");
+            }
         }
     }
 }

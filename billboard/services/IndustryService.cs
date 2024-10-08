@@ -35,14 +35,9 @@ namespace billboard.services
             return _industryRepository.GetIndustryByIdAsync(id);
         }
 
-        public Task UpdateCityAsync(Industry industry)
+        public async Task UpdateIndustryAsync(Industry industry)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateIndustryAsync(Industry industry)
-        {
-            throw new NotImplementedException();
+            await _industryRepository.UpdateIndustryAsync(industry);
         }
     }
 }

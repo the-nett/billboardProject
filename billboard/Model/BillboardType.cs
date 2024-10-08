@@ -12,6 +12,6 @@ namespace billboard.Model
 
         // Navigation
         public ICollection<Billboard> BillboardType_Billboard { get; } = new List<Billboard>();
-
+        public object BillboardTypeName { get; internal set; }
     }
 }

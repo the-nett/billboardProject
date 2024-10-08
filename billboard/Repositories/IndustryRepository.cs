@@ -40,10 +40,22 @@ namespace billboard.Repositories
         {
             return await _contextIndustry.Industries.FindAsync(id);
         }
-        
-        public Task UpdateIndustryAsync(Industry industry)
+
+        public async Task UpdateIndustryAsync(Industry industry)
         {
-            throw new NotImplementedException();
+            var existingIndustry = await GetIndustryByIdAsync(industry.IndustryId);
+
+            if (existingIndustry != null)
+            {
+                existingIndustry.IndustryName = industry.IndustryName;
+
+                await _contextIndustry.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Industria no encontrada");
+            }
         }
+
     }
 }

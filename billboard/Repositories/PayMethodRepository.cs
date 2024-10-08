@@ -41,9 +41,26 @@ namespace billboard.Repositories
             return await _contextPayMethod.PayMethods.FindAsync(id);
         }
 
-        public Task UpdatePayMethodAsync(PayMethods paymethods)
+        public async Task UpdatePayMethodAsync(PayMethods paymethods)
         {
-            throw new NotImplementedException();
+            // Current document by Id
+            var existingPayMethod = await GetPayMethodByIdAsync(paymethods.IdPayMethod);
+
+            if (existingPayMethod != null)
+            {
+                // Update current pay method
+                existingPayMethod.PayMethodName = paymethods.PayMethodName;
+
+                // Marcar el documento como modificado para que Entity Framework lo rastree
+                //_contextDocument.Entry(existingPayMethod).State = EntityState.Modified;
+                // Save pay method
+                await _contextPayMethod.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Método de pago no encontrado");
+            }
         }
+
     }
 }

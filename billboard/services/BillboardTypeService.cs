@@ -35,9 +35,10 @@ namespace billboard.services
             return _billboardTypeRepository.GetBillboardTypeByIdAsync(id);
         }
 
-        public Task UpdateBillboardTypeAsync(BillboardType billboardType)
+        public async Task UpdateBillboardTypeAsync(BillboardType billboardType)
         {
-            throw new NotImplementedException();
+            await _billboardTypeRepository.UpdateBillboardTypeAsync(billboardType);
         }
+
     }
 }

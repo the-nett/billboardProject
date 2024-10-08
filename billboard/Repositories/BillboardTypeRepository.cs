@@ -41,9 +41,20 @@ namespace billboard.Repositories
             return await _contextBillboardType.BillboardTypes.FindAsync(id);
         }
 
-        public Task UpdateBillboardTypeAsync(BillboardType billboardType)
+        public async Task UpdateBillboardTypeAsync(BillboardType billboardType)
         {
-            throw new NotImplementedException();
+            var existingBillboardType = await GetBillboardTypeByIdAsync(billboardType.BillboardTypeId);
+
+            if (existingBillboardType != null)
+            {
+                existingBillboardType.BillboardTypeName = billboardType.BillboardTypeName;
+
+                await _contextBillboardType.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Tipo de valla no encontrado");
+            }
         }
     }
 }

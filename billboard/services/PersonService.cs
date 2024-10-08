@@ -33,9 +33,9 @@ namespace billboard.services
             throw new NotImplementedException();
         }
 
-        public Task UpdatePersonAsync(Person person)
+        public async Task UpdatePersonAsync(Person person)
         {
-            throw new NotImplementedException();
+            await _personRepository.UpdatePersonAsync(person);
         }
     }
 }

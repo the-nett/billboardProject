@@ -12,5 +12,6 @@ namespace billboard.Model
 
         //Navigation
         public ICollection<Billboard> BillboardState_Billboard { get; } = new List<Billboard>();
+        public object BillboardStateName { get; internal set; }
     }
 }
