@@ -10,7 +10,8 @@ namespace billboard.Model
 
         public  required string CityName { get; set; }
 
-        public  int CatalogId { get; set; }
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Company> CitiesCompany { get; } = new List<Company>();
     }

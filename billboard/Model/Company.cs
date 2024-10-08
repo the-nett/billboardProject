@@ -32,6 +32,8 @@ namespace billboard.Model
 
         public  DateTime Date { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public  Industry Industry { get; set; }
         public  City City { get; set; }

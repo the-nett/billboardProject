@@ -7,7 +7,10 @@ namespace billboard.Model
         [Key]
         public int Id_Permission { get; set; }
 
-        public  required string Permission_ { get; set; }
+        public string Permission_ { get; set; }
+
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<UserTypePermissions> UserTypePermission { get; set; } = new List<UserTypePermissions>();
 

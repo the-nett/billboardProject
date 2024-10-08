@@ -33,8 +33,5 @@ namespace billboard.Model
         public  Document Document { get; set; }
         public Responsible Responsible { get; set; }
         public User User { get; set; }
-
-
-
     }
 }

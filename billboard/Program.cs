@@ -8,8 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var conString = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<BilllboardDBContext>(options => options.UseSqlServer(conString));
 
-//Repositorio vallas
-builder.Services.AddScoped<IBillboardRepository, BillboardRepository>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

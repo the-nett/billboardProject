@@ -8,6 +8,8 @@ namespace billboard.Model
         public int IdSate { get; set; }
         public  required string State { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Billboard> BillboardState_Billboard { get; } = new List<Billboard>();
     }

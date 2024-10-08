@@ -73,6 +73,9 @@ namespace billboard.Migrations
                     b.Property<bool>("State")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdBillboard");
 
                     b.HasIndex("IdBillboardState");
@@ -96,6 +99,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdSate");
 
                     b.ToTable("BillboardStates");
@@ -113,6 +119,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("BillboardTypeId");
 
                     b.ToTable("BillboardTypes");
@@ -126,16 +135,16 @@ namespace billboard.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
 
-                    b.Property<int>("CatalogId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CityName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("CityId");
 
-                    b.ToTable("Citys");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("billboard.Model.Company", b =>
@@ -193,6 +202,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdCompany");
 
                     b.HasIndex("IdCity");
@@ -219,6 +231,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("DocumentId");
 
                     b.ToTable("Documents");
@@ -235,6 +250,9 @@ namespace billboard.Migrations
                     b.Property<string>("IndustryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("IndustryId");
 
@@ -255,6 +273,9 @@ namespace billboard.Migrations
                     b.Property<int>("IdUserType")
                         .HasColumnType("int");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdLessor");
 
                     b.HasIndex("IdUserType");
@@ -274,6 +295,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdPayMethod");
 
                     b.ToTable("PayMethods");
@@ -290,6 +314,9 @@ namespace billboard.Migrations
                     b.Property<string>("Permission_")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id_Permission");
 
@@ -340,6 +367,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdPeople");
 
                     b.HasIndex("IdDocumentType");
@@ -387,6 +417,9 @@ namespace billboard.Migrations
                     b.Property<DateTime>("RentalStartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdRental");
 
                     b.HasIndex("IdBillboard")
@@ -413,6 +446,9 @@ namespace billboard.Migrations
                     b.Property<int>("Id_People")
                         .HasColumnType("int");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdResponsible");
 
                     b.HasIndex("Id_People")
@@ -431,6 +467,9 @@ namespace billboard.Migrations
 
                     b.Property<int>("IdUserType")
                         .HasColumnType("int");
+
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -467,6 +506,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdUser");
 
                     b.HasIndex("IdUserType");
@@ -485,6 +527,9 @@ namespace billboard.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Usertype"));
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Utype")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -501,6 +546,9 @@ namespace billboard.Migrations
 
                     b.Property<int>("Id_Usertype")
                         .HasColumnType("int");
+
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id_permission", "Id_Usertype");
 

@@ -33,11 +33,13 @@ namespace billboard.Model
 
         public  required string Observations { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
-        public Lessor Lessor { get; set; }
         public BillboardState BillboardState { get; set; } 
         public BillboardType BillboardType { get; set; }
         public Rental Rental { get; set; }
+        public Lessor Lessor { get; set; }
 
     }
 }
