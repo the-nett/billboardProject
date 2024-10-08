@@ -48,9 +48,7 @@ namespace billboard.Controllers
                 return BadRequest();
 
             await cityService.UpdateCityAsync(city);
-
             return NoContent();
         }
-
     }
 }
