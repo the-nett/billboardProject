@@ -25,6 +25,8 @@ namespace billboard.Model
 
         public  string Observations { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public  Billboard Billboard { get; set; }
         public  Lessor Lessor { get; set; }

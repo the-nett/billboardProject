@@ -9,6 +9,8 @@ namespace billboard.Model
 
         public  string PayMethod { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Rental> PayMethodsRental { get; } = new List<Rental>();
     }

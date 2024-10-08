@@ -8,6 +8,8 @@ namespace billboard.Model
         public int DocumentId { get; set; }
         public  string DocumentName { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Person> Documents { get; } = new List<Person>();
     }

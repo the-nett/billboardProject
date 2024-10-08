@@ -9,6 +9,8 @@ namespace billboard.Model
 
         public  string IndustryName { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Company> Companies { get; } = new List<Company>();
     }
