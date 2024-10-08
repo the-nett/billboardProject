@@ -26,9 +26,6 @@ namespace billboard.Repositories
             _context.SaveChanges();
         }
 
-
-       
-
         public async Task<IEnumerable<User>> GetAllUsersAsync()
 
         {
