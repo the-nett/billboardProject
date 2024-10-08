@@ -10,6 +10,7 @@ namespace billboard.services
         Task<Document> GetDocumentByIdAsync(int id);
         Task CreateDocumentAsync(Document document);
         Task UpdateDocumentAsync(Document document);
+        Task DeleteDocumentAsync(int id);
     }
     public class DocumentService : IDocumentService
     {
@@ -36,6 +37,10 @@ namespace billboard.services
         public async Task UpdateDocumentAsync(Document document)
         {
             await _documentRepository.UpdateDocumentAsync(document);   
+        }
+        public async Task DeleteDocumentAsync(int id)
+        {
+            await _documentRepository.DeleteDocumentAsync(id);
         }
     }
 
