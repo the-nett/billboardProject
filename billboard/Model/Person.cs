@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using billboard.Migrations;
+using System.ComponentModel.DataAnnotations;
 
 namespace billboard.Model
 {
@@ -28,11 +29,12 @@ namespace billboard.Model
 
         public  DateTime Date { get; set; }
 
+        public bool StateDelete { get; set; }
+
         // Propiedad de navegación
         public  UserType UserType { get; set; }
         public  Document Document { get; set; }
         public Responsible Responsible { get; set; }
         public User User { get; set; }
-        public object PersonName { get; internal set; }
     }
 }

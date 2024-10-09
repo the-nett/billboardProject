@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,6 +10,7 @@ namespace billboard.services
         Task<Tenant> GetTenantByIdAsync(int id);
         Task CreateTenantAsync(Tenant tenant);
         Task UpdateTenantAsync(Tenant tenant);
+        Task DeleteTenantAsync(int id);
     }
 
     public class TenantService : ITenantService
@@ -38,6 +39,11 @@ namespace billboard.services
         public async Task UpdateTenantAsync(Tenant tenant)
         {
             await _tenantRepository.UpdateTenantAsync(tenant);
+        }
+
+        public async Task DeleteTenantAsync(int id)
+        {
+            await _tenantRepository.DeleteTenantAsync(id);
         }
     }
 }

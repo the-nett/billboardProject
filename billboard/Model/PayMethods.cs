@@ -13,6 +13,5 @@ namespace billboard.Model
 
         //Navigation
         public ICollection<Rental> PayMethodsRental { get; } = new List<Rental>();
-        public object PayMethodName { get; internal set; }
     }
 }

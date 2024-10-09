@@ -1,8 +1,7 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
 
 namespace billboard.Repositories
 {
@@ -12,6 +11,7 @@ namespace billboard.Repositories
         Task<Lessor> GetLessorByIdAsync(int id);
         Task CreateLessorAsync(Lessor lessor);
         Task UpdateLessorAsync(Lessor lessor);
+        Task DeleteLessorAsync(int id);
     }
 
     public class LessorRepository : ILessorRepository
@@ -43,12 +43,18 @@ namespace billboard.Repositories
 
         public async Task UpdateLessorAsync(Lessor lessor)
         {
+            // Current lessor by Id
             var existingLessor = await GetLessorByIdAsync(lessor.IdLessor);
 
             if (existingLessor != null)
             {
-                existingLessor.LessorName = lessor.LessorName;
+                // Update current lessor
+                existingLessor.IdLessor = lessor.IdLessor;
+                existingLessor.StateDelete = lessor.StateDelete;
 
+                // Marcar el lessor como modificado para que Entity Framework lo rastree
+                //_contextLessor.Entry(existingLessor).State = EntityState.Modified;
+                // Save lessor
                 await _contextLessor.SaveChangesAsync();
             }
             else
@@ -57,5 +63,22 @@ namespace billboard.Repositories
             }
         }
 
+        public async Task DeleteLessorAsync(int id)
+        {
+            // Current lessor by Id
+            var currentLessor = await _contextLessor.Lessors.FindAsync(id);
+
+            if (currentLessor != null)
+            {
+                // Update state delete
+                currentLessor.StateDelete = true;
+
+                await _contextLessor.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el arrendador");
+            }
+        }
     }
 }

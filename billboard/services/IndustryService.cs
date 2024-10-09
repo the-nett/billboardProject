@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,6 +10,7 @@ namespace billboard.services
         Task<Industry> GetIndustryByIdAsync(int id);
         Task CreateIndustryAsync(Industry industry);
         Task UpdateIndustryAsync(Industry industry);
+        Task DeleteIndustryAsync(int id);
     }
 
     public class IndustryService : IIndustryService
@@ -38,6 +39,11 @@ namespace billboard.services
         public async Task UpdateIndustryAsync(Industry industry)
         {
             await _industryRepository.UpdateIndustryAsync(industry);
+        }
+
+        public async Task DeleteIndustryAsync(int id)
+        {
+            await _industryRepository.DeleteIndustryAsync(id);
         }
     }
 }

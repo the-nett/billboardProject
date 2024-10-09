@@ -1,9 +1,11 @@
-﻿namespace billboard.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace billboard.Model
 {
     public class UserTypePermissions
     {
-        public  int Id_permission { get; set; }
-        public  int Id_Usertype { get; set; }
+        public int Id_permission { get; set; }
+        public int Id_Usertype { get; set; }
         public bool StateDelete { get; set; }
 
         //Navigation

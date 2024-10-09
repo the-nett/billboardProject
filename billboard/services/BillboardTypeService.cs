@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,11 +10,13 @@ namespace billboard.services
         Task<BillboardType> GetBillboardTypeByIdAsync(int id);
         Task CreateBillboardTypeAsync(BillboardType billboardType);
         Task UpdateBillboardTypeAsync(BillboardType billboardType);
+        Task DeleteBillboardTypeAsync(int id);
     }
 
     public class BillboardTypeService : IBillboardTypeService
     {
         private readonly IBillboardTypeRepository _billboardTypeRepository;
+
         public BillboardTypeService(IBillboardTypeRepository billboardTypeRepository)
         {
             _billboardTypeRepository = billboardTypeRepository;
@@ -40,5 +42,9 @@ namespace billboard.services
             await _billboardTypeRepository.UpdateBillboardTypeAsync(billboardType);
         }
 
+        public async Task DeleteBillboardTypeAsync(int id)
+        {
+            await _billboardTypeRepository.DeleteBillboardTypeAsync(id);
+        }
     }
 }

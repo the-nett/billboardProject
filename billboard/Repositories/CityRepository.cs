@@ -1,8 +1,9 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {
@@ -12,6 +13,7 @@ namespace billboard.Repositories
         Task<City> GetCityByIdAsync(int id);
         Task CreateCityAsync(City city);
         Task UpdateCityAsync(City city);
+        Task DeleteCityAsync(int id);
     }
 
     public class CityRepository : ICityRepository
@@ -24,10 +26,10 @@ namespace billboard.Repositories
 
         public async Task CreateCityAsync(City city)
         {
-            // Add
+            // Agregar la nueva ciudad a la base de datos
             await _contextCity.Cities.AddAsync(city);
 
-            // save
+            // Guardar los cambios
             await _contextCity.SaveChangesAsync();
         }
 
@@ -43,22 +45,39 @@ namespace billboard.Repositories
 
         public async Task UpdateCityAsync(City city)
         {
-            // Current document by Id
-            var existingcity = await GetCityByIdAsync(city.CityId);
+            // Ciudad actual por Id
+            var existingCity = await GetCityByIdAsync(city.CityId);
 
-            if (existingcity != null)
+            if (existingCity != null)
             {
-                //Update current city
-                existingcity.CityName = city.CityName;
+                // Actualizar ciudad actual
+                existingCity.CityName = city.CityName;
+                existingCity.StateDelete = city.StateDelete;
 
-                // Marcar el documento como modificado para que Entity Framework lo rastree
-                //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
-                // Save city
+                // Guardar ciudad
                 await _contextCity.SaveChangesAsync();
             }
             else
             {
                 throw new Exception("Ciudad no encontrada");
+            }
+        }
+
+        public async Task DeleteCityAsync(int id)
+        {
+            // Ciudad actual por Id
+            var currentCity = await _contextCity.Cities.FindAsync(id);
+
+            if (currentCity != null)
+            {
+                // Actualizar estado de eliminación
+                currentCity.StateDelete = true;
+
+                await _contextCity.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar la ciudad");
             }
         }
     }

@@ -9,6 +9,7 @@ namespace billboard.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService permissionService;
+
         public PermissionController(IPermissionService _permissionService)
         {
             permissionService = _permissionService;
@@ -19,6 +20,7 @@ namespace billboard.Controllers
         {
             return permissionService.GetAllPermissionsAsync();
         }
+
         [HttpGet("{id}", Name = "GetPermissionById")]
         public async Task<ActionResult<Permission>> GetPermissionByIdAsync(int id)
         {
@@ -38,6 +40,7 @@ namespace billboard.Controllers
         {
             await permissionService.CreatePermissionAsync(permission);
         }
+
         [HttpPut("{id}", Name = "UpdatePermission")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,6 +51,23 @@ namespace billboard.Controllers
                 return BadRequest();
 
             await permissionService.UpdatePermissionAsync(permission);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeletePermission")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePermission(int id)
+        {
+            // Current permission by Id
+            var existingPermission = await GetPermissionByIdAsync(id);
+            if (existingPermission == null)
+                return NotFound();
+
+            await permissionService.DeletePermissionAsync(id);
+
             return NoContent();
         }
     }

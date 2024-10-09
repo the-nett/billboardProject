@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,34 +10,40 @@ namespace billboard.services
         Task<UserType> GetUserTypeByIdAsync(int id);
         Task CreateUserTypeAsync(UserType usertype);
         Task UpdateUserTypeAsync(UserType usertype);
+        Task DeleteUserTypeAsync(int id);
     }
 
     public class UserTypeService : IUserTypeService
     {
-        private readonly IUserTypeRepository _usertypeRepository;
-        public UserTypeService(IUserTypeRepository usertypeRepository)
+        private readonly IUserTypeRepository _userTypeRepository;
+        public UserTypeService(IUserTypeRepository userTypeRepository)
         {
-            _usertypeRepository = usertypeRepository;
+            _userTypeRepository = userTypeRepository;
         }
 
         public async Task CreateUserTypeAsync(UserType usertype)
         {
-            await _usertypeRepository.CreateUserTypeAsync(usertype);
+            await _userTypeRepository.CreateUserTypeAsync(usertype);
         }
 
         public Task<IEnumerable<UserType>> GetAllUserTypesAsync()
         {
-            return _usertypeRepository.GetAllUserTypesAsync();
+            return _userTypeRepository.GetAllUserTypesAsync();
         }
 
         public Task<UserType> GetUserTypeByIdAsync(int id)
         {
-            return _usertypeRepository.GetUserTypeByIdAsync(id);
+            return _userTypeRepository.GetUserTypeByIdAsync(id);
         }
 
-        public async Task UpdateUserTypeAsync(UserType userType)
+        public async Task UpdateUserTypeAsync(UserType usertype)
         {
-            await _usertypeRepository.UpdateUserTypeAsync(userType);
+            await _userTypeRepository.UpdateUserTypeAsync(usertype);
+        }
+
+        public async Task DeleteUserTypeAsync(int id)
+        {
+            await _userTypeRepository.DeleteUserTypeAsync(id);
         }
     }
 }

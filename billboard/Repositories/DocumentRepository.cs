@@ -69,7 +69,7 @@ namespace billboard.Repositories
 
             if (currentDocument != null)
             {
-                //Update stade delete
+                //Update state delete
                 currentDocument.StateDelete = true;
 
                 await _contextDocument.SaveChangesAsync();
@@ -79,8 +79,5 @@ namespace billboard.Repositories
                 throw new Exception("No se pudo eliminar el documento");
             }
         }
-       
-
-
     }
 }
