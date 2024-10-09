@@ -28,6 +28,7 @@ builder.Services.AddScoped<IBillboardStateRepository, BillboardStateRepository>(
 builder.Services.AddScoped<IBillboardTypeRepository, BillboardTypeRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<ILessorRepository, LessorRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 // Add Services 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -42,7 +43,7 @@ builder.Services.AddScoped<IBillboardStateService, BillboardStateService>();
 builder.Services.AddScoped<IBillboardTypeService, BillboardTypeService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
-
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 var app = builder.Build();
 
 
