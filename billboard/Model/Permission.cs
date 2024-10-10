@@ -7,7 +7,7 @@ namespace billboard.Model
         [Key]
         public int Id_Permission { get; set; }
 
-        public  string Permission_ { get; set; }
+        public string Permission_ { get; set; }
 
         public bool StateDelete { get; set; }
 

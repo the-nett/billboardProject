@@ -2,8 +2,6 @@
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {
@@ -45,13 +43,16 @@ namespace billboard.Repositories
 
         public async Task UpdateUserAsync(User user)
         {
+            // Current user by Id
             var existingUser = await GetUserByIdAsync(user.IdUser);
 
             if (existingUser != null)
             {
+                // Update current user
                 existingUser.IdUser = user.IdUser;
                 existingUser.StateDelete = user.StateDelete;
 
+                // Guardar los cambios
                 await _contextUser.SaveChangesAsync();
             }
             else
@@ -67,7 +68,7 @@ namespace billboard.Repositories
 
             if (currentUser != null)
             {
-                //Update state delete
+                // Update state delete
                 currentUser.StateDelete = true;
 
                 await _contextUser.SaveChangesAsync();

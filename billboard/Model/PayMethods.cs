@@ -7,7 +7,7 @@ namespace billboard.Model
         [Key]
         public int IdPayMethod { get; set; }
 
-        public  string PayMethod { get; set; }
+        public  required string PayMethod { get; set; }
 
         public bool StateDelete { get; set; }
 

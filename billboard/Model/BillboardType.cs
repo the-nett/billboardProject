@@ -6,7 +6,7 @@ namespace billboard.Model
     {
         [Key]
         public int BillboardTypeId { get; set; }
-        public  string BillboardTypet { get; set; }
+        public  required string BillboardTypet { get; set; }
 
         public bool StateDelete { get; set; }
 

@@ -2,6 +2,8 @@
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {
@@ -24,7 +26,7 @@ namespace billboard.Repositories
 
         public async Task CreateCompanyAsync(Company company)
         {
-            // Agregar la nueva empresa a la base de datos
+            // Agregar la nueva compañía a la base de datos
             await _contextCompany.Companies.AddAsync(company);
 
             // Guardar los cambios
@@ -43,41 +45,39 @@ namespace billboard.Repositories
 
         public async Task UpdateCompanyAsync(Company company)
         {
-            // Current company by Id
+            // Obtener la compañía actual por Id
             var existingCompany = await GetCompanyByIdAsync(company.IdCompany);
 
             if (existingCompany != null)
             {
-                //Update current company
+                // Actualizar la compañía actual
                 existingCompany.Company_Name = company.Company_Name;
                 existingCompany.StateDelete = company.StateDelete;
 
-                // Marcar la empresa como modificada para que Entity Framework lo rastree
-                //_contextCompany.Entry(existingCompany).State = EntityState.Modified;
-                // Save company
+                // Guardar los cambios
                 await _contextCompany.SaveChangesAsync();
             }
             else
             {
-                throw new Exception("Empresa no encontrada");
+                throw new Exception("Compañía no encontrada");
             }
         }
 
         public async Task DeleteCompanyAsync(int id)
         {
-            // Current company by Id
+            // Obtener la compañía actual por Id
             var currentCompany = await _contextCompany.Companies.FindAsync(id);
 
             if (currentCompany != null)
             {
-                //Update state delete
+                // Actualizar estado de eliminación
                 currentCompany.StateDelete = true;
 
                 await _contextCompany.SaveChangesAsync();
             }
             else
             {
-                throw new Exception("No se pudo eliminar la empresa");
+                throw new Exception("No se pudo eliminar la compañía");
             }
         }
     }
