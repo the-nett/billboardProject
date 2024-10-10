@@ -1,5 +1,6 @@
 ﻿using billboard.Context;
 using billboard.Model;
+using billboard.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 
@@ -12,6 +13,8 @@ namespace billboard.Repositories
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
         Task SoftDeleteUserAsync(int id);
+        //Task<AnswerUserLoginDto> Login(User userLoginDto);
+        //Task<DataUserDto> Register(User userRegisterDto);
     }
     public class UserRepository : IUserRepository
     {
@@ -36,6 +39,22 @@ namespace billboard.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
+
+        //public Task<AnswerUserLoginDto> Login(User userLoginDto)
+        //{
+          //  throw new NotImplementedException();
+        //}
+
+        //public Task<DataUserDto> Register(RegisterNaturalPersonDto registerNaturalPersonDto)
+       // {
+            //var encryptedPassword = Obtainmd5(registerNaturalPersonDto.PeoplePassword);
+
+            //User user = new User()
+           // {
+                //Name = registerNaturalPersonDto.Name,
+
+         //   };
+       // }
 
         public async Task SoftDeleteUserAsync(int id)
         {
