@@ -11,6 +11,8 @@ namespace billboard.Model
 
         public  int IdUserType { get; set; }
 
+        public bool StateDelete { get; set; }
+
         //Navigation
         public ICollection<Rental> Tenant_Rental { get; } = new List<Rental>();
         public UserType UserType { get; set; }

@@ -9,19 +9,19 @@ namespace billboard.Model
 
         public  int IdLessor { get; set; }
 
-        public  string ImageUrl { get; set; }
+        public  required string ImageUrl { get; set; }
 
         public  double Fee { get; set; }
 
         public  int IdBillboardState { get; set; }
 
-        public  string LatitudeAndLongitude { get; set; }
+        public  required string LatitudeAndLongitude { get; set; }
 
         public  int IdBillboardType { get; set; }
 
         public  bool State { get; set; }
 
-        public  string Measures { get; set; }
+        public  required string Measures { get; set; }
 
         public  double FloorDistance { get; set; }
 
@@ -31,8 +31,9 @@ namespace billboard.Model
 
         public  int SimultaneousAds { get; set; }
 
-        public  string Observations { get; set; }
-        
+        public  required string Observations { get; set; }
+
+        public bool StateDelete { get; set; }
 
         //Navigation
         public BillboardState BillboardState { get; set; } 

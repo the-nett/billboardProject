@@ -7,7 +7,9 @@ namespace billboard.Model
         [Key]
         public int IndustryId { get; set; }
 
-        public  string IndustryName { get; set; }
+        public required string IndustryName { get; set; }
+
+        public bool StateDelete { get; set; }
 
         //Navigation
         public ICollection<Company> Companies { get; } = new List<Company>();

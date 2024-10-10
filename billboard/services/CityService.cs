@@ -1,6 +1,8 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
+using System.Xml.Linq;
 
 namespace billboard.services
 {
@@ -35,9 +37,9 @@ namespace billboard.services
             return _cityRepository.GetCityByIdAsync(id);
         }
 
-        public Task UpdateCityAsync(City city)
+        public async Task UpdateCityAsync(City city)
         {
-            throw new NotImplementedException();
+            await _cityRepository.UpdateCityAsync(city);
         }
     }
 }

@@ -39,7 +39,18 @@ namespace billboard.Controllers
             await documentService.CreateDocumentAsync(document);
         }
 
+        [HttpPut("{id}", Name = "UpdateDocument")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateSubject(int id, [FromBody] Document document)
+        {
+            if(id != document.DocumentId)
+                return BadRequest();
+      
+            await documentService.UpdateDocumentAsync(document);
 
-
+            return NoContent();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace billboard.Repositories
         Task<Document> GetDocumentByIdAsync(int id);
         Task CreateDocumentAsync(Document document);
         Task UpdateDocumentAsync(Document document);
+ 
     }
 
     public class DocumentRepository : IDocumentRepository
@@ -40,9 +41,28 @@ namespace billboard.Repositories
             return await _contextDocument.Documents.FindAsync(id);
         }
 
-        public Task UpdateDocumentAsync(Document document)
+        public async Task UpdateDocumentAsync(Document document)
         {
-            throw new NotImplementedException();
+            // Current document by Id
+            var existingDocument = await GetDocumentByIdAsync(document.DocumentId);
+
+            if (existingDocument != null)
+            {
+                //Update current document
+                existingDocument.DocumentName = document.DocumentName;
+                
+
+                // Marcar el documento como modificado para que Entity Framework lo rastree
+                //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
+                // Save document
+                await _contextDocument.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Documento no encontrado");
+            }
         }
+
+
     }
 }
