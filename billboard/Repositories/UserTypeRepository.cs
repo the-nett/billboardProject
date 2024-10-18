@@ -1,8 +1,7 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
 
 namespace billboard.Repositories
 {
@@ -12,6 +11,7 @@ namespace billboard.Repositories
         Task<UserType> GetUserTypeByIdAsync(int id);
         Task CreateUserTypeAsync(UserType usertype);
         Task UpdateUserTypeAsync(UserType usertype);
+        Task DeleteUserTypeAsync(int id);
     }
 
     public class UserTypeRepository : IUserTypeRepository
@@ -24,7 +24,7 @@ namespace billboard.Repositories
 
         public async Task CreateUserTypeAsync(UserType usertype)
         {
-            // Agregar el nuevo ciudad a la base de datos
+            // Agregar el nuevo UserType a la base de datos
             await _contextUserType.UserTypes.AddAsync(usertype);
 
             // Guardar los cambios
@@ -41,9 +41,44 @@ namespace billboard.Repositories
             return await _contextUserType.UserTypes.FindAsync(id);
         }
 
-        public Task UpdateUserTypeAsync(UserType usertype)
+        public async Task UpdateUserTypeAsync(UserType usertype)
         {
-            throw new NotImplementedException();
+            // Current UserType by Id
+            var existingUserType = await GetUserTypeByIdAsync(usertype.Id_Usertype);
+
+            if (existingUserType != null)
+            {
+                // Update current UserType
+                existingUserType.Utype = usertype.Utype;
+                existingUserType.StateDelete = usertype.StateDelete;
+
+                // Marcar el UserType como modificado para que Entity Framework lo rastree
+                //_contextUserType.Entry(existingUserType).State = EntityState.Modified;
+                // Save UserType
+                await _contextUserType.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Tipo de Usuario no encontrado");
+            }
+        }
+
+        public async Task DeleteUserTypeAsync(int id)
+        {
+            // Current UserType by Id
+            var currentUserType = await _contextUserType.UserTypes.FindAsync(id);
+
+            if (currentUserType != null)
+            {
+                // Update state delete
+                currentUserType.StateDelete = true;
+
+                await _contextUserType.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el Tipo de Usuario");
+            }
         }
     }
 }

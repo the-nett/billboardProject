@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,11 +10,13 @@ namespace billboard.services
         Task<Permission> GetPermissionByIdAsync(int id);
         Task CreatePermissionAsync(Permission permission);
         Task UpdatePermissionAsync(Permission permission);
+        Task DeletePermissionAsync(int id);
     }
 
     public class PermissionService : IPermissionService
     {
         private readonly IPermissionRepository _permissionRepository;
+
         public PermissionService(IPermissionRepository permissionRepository)
         {
             _permissionRepository = permissionRepository;
@@ -35,9 +37,14 @@ namespace billboard.services
             return _permissionRepository.GetPermissionByIdAsync(id);
         }
 
-        public Task UpdatePermissionAsync(Permission permission)
+        public async Task UpdatePermissionAsync(Permission permission)
         {
-            throw new NotImplementedException();
+            await _permissionRepository.UpdatePermissionAsync(permission);
+        }
+
+        public async Task DeletePermissionAsync(int id)
+        {
+            await _permissionRepository.DeletePermissionAsync(id);
         }
     }
 }

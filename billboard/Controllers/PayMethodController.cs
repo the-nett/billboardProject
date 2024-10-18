@@ -1,6 +1,8 @@
 ﻿using billboard.Model;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.Controllers
 {
@@ -8,25 +10,26 @@ namespace billboard.Controllers
     [ApiController]
     public class PayMethodController : ControllerBase
     {
-        private readonly IPayMethodService paymethodService;
-        public PayMethodController(IPayMethodService _paymethodService)
+        private readonly IPayMethodService payMethodService;
+        public PayMethodController(IPayMethodService _payMethodService)
         {
-            paymethodService = _paymethodService;
+            payMethodService = _payMethodService;
         }
 
         [HttpGet(Name = "GetAllPayMethods")]
-        public Task<IEnumerable<PayMethods>> GetAllPayMethodsAsync()
+        public Task<IEnumerable<Model.PayMethods>> GetAllPayMethodsAsync()
         {
-            return paymethodService.GetAllPayMethodsAsync();
+            return payMethodService.GetAllPayMethodsAsync();
         }
+
         [HttpGet("{id}", Name = "GetPayMethodById")]
-        public async Task<ActionResult<PayMethods>> GetPayMethodByIdAsync(int id)
+        public async Task<ActionResult<Model.PayMethods>> GetPayMethodByIdAsync(int id)
         {
-            var paymethod = await paymethodService.GetPayMethodByIdAsync(id);
-            if (paymethod == null)
+            var payMethod = await payMethodService.GetPayMethodByIdAsync(id);
+            if (payMethod == null)
                 return NotFound();
 
-            return Ok(paymethod);
+            return Ok(payMethod);
         }
 
         [HttpPost(Name = "CreatePayMethod")]
@@ -34,11 +37,38 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreatePayMethodAsync(PayMethods paymethods)
+        public async Task<IActionResult> CreatePayMethodAsync(Model.PayMethods paymethods)
         {
-            await paymethodService.CreatePayMethodAsync(paymethods);
+            await payMethodService.CreatePayMethodAsync(paymethods);
+            return CreatedAtRoute("GetPayMethodById", new { id = paymethods.IdPayMethod }, paymethods);
         }
 
+        [HttpPut("{id}", Name = "UpdatePayMethod")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdatePayMethod(int id, [FromBody] Model.PayMethods paymethods)
+        {
+            if (id != paymethods.IdPayMethod)
+                return BadRequest();
 
+            await payMethodService.UpdatePayMethodAsync(paymethods);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeletePayMethod")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePayMethod(int id)
+        {
+            // Método de pago actual por Id
+            var existingPayMethod = await payMethodService.GetPayMethodByIdAsync(id);
+            if (existingPayMethod == null)
+                return NotFound();
+
+            await payMethodService.DeletePayMethodAsync(id);
+            return NoContent();
+        }
     }
 }

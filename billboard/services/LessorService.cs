@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,6 +10,7 @@ namespace billboard.services
         Task<Lessor> GetLessorByIdAsync(int id);
         Task CreateLessorAsync(Lessor lessor);
         Task UpdateLessorAsync(Lessor lessor);
+        Task DeleteLessorAsync(int id);
     }
 
     public class LessorService : ILessorService
@@ -35,9 +36,15 @@ namespace billboard.services
             return _lessorRepository.GetLessorByIdAsync(id);
         }
 
-        public Task UpdateLessorAsync(Lessor lessor)
+        public async Task UpdateLessorAsync(Lessor lessor)
         {
-            throw new NotImplementedException();
+            await _lessorRepository.UpdateLessorAsync(lessor);
+        }
+
+        public async Task DeleteLessorAsync(int id)
+        {
+            await _lessorRepository.DeleteLessorAsync(id);
         }
     }
 }
+

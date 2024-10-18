@@ -6,7 +6,7 @@ namespace billboard.Model
     {
         [Key]
         public int IdSate { get; set; }
-        public  string State { get; set; }
+        public  required string State { get; set; }
 
         public bool StateDelete { get; set; }
 

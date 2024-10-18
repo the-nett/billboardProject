@@ -1,6 +1,7 @@
 ﻿using billboard.Model;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 namespace billboard.Controllers
 {
@@ -8,21 +9,22 @@ namespace billboard.Controllers
     [ApiController]
     public class UserTypeController : ControllerBase
     {
-        private readonly IUserTypeService usertypeService;
-        public UserTypeController(IUserTypeService _usertypeService)
+        private readonly IUserTypeService userTypeService;
+        public UserTypeController(IUserTypeService _userTypeService)
         {
-            usertypeService = _usertypeService;
+            userTypeService = _userTypeService;
         }
 
         [HttpGet(Name = "GetAllUserTypes")]
-        public Task<IEnumerable<UserType>> GetAllUserTypesAsync()
+        public Task<IEnumerable<Model.UserType>> GetAllUserTypesAsync()
         {
-            return usertypeService.GetAllUserTypesAsync();
+            return userTypeService.GetAllUserTypesAsync();
         }
+
         [HttpGet("{id}", Name = "GetUserTypeById")]
-        public async Task<ActionResult<UserType>> GetUserTypeByIdAsync(int id)
+        public async Task<ActionResult<Model.UserType>> GetUserTypeByIdAsync(int id)
         {
-            var usertype = await usertypeService.GetUserTypeByIdAsync(id);
+            var usertype = await userTypeService.GetUserTypeByIdAsync(id);
             if (usertype == null)
                 return NotFound();
 
@@ -34,11 +36,39 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateUserTypeAsync(UserType usertype)
+        public async Task CreateUserTypeAsync(Model.UserType usertype)
         {
-            await usertypeService.CreateUserTypeAsync(usertype);
+            await userTypeService.CreateUserTypeAsync(usertype);
         }
 
+        [HttpPut("{id}", Name = "UpdateUserType")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateUserType(int id, [FromBody] Model.UserType usertype)
+        {
+            if (id != usertype.Id_Usertype)
+                return BadRequest();
 
+            await userTypeService.UpdateUserTypeAsync(usertype);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeleteUserType")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteUserType(int id)
+        {
+            // Current UserType by Id
+            var existingUserType = await GetUserTypeByIdAsync(id);
+            if (existingUserType == null)
+                return NotFound();
+
+            await userTypeService.DeleteUserTypeAsync(id);
+
+            return NoContent();
+        }
     }
 }

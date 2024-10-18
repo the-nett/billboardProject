@@ -1,8 +1,8 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.services
 {
@@ -12,6 +12,7 @@ namespace billboard.services
         Task<City> GetCityByIdAsync(int id);
         Task CreateCityAsync(City city);
         Task UpdateCityAsync(City city);
+        Task DeleteCityAsync(int id);
     }
 
     public class CityService : ICityService
@@ -40,6 +41,11 @@ namespace billboard.services
         public async Task UpdateCityAsync(City city)
         {
             await _cityRepository.UpdateCityAsync(city);
+        }
+
+        public async Task DeleteCityAsync(int id)
+        {
+            await _cityRepository.DeleteCityAsync(id);
         }
     }
 }

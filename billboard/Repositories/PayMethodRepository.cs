@@ -1,8 +1,9 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {
@@ -12,6 +13,7 @@ namespace billboard.Repositories
         Task<PayMethods> GetPayMethodByIdAsync(int id);
         Task CreatePayMethodAsync(PayMethods paymethods);
         Task UpdatePayMethodAsync(PayMethods paymethods);
+        Task DeletePayMethodAsync(int id);
     }
 
     public class PayMethodRepository : IPayMethodRepository
@@ -41,9 +43,44 @@ namespace billboard.Repositories
             return await _contextPayMethod.PayMethods.FindAsync(id);
         }
 
-        public Task UpdatePayMethodAsync(PayMethods paymethods)
+        public async Task UpdatePayMethodAsync(PayMethods paymethods)
         {
-            throw new NotImplementedException();
+            // Método de pago actual por Id
+            var existingPayMethod = await GetPayMethodByIdAsync(paymethods.IdPayMethod);
+
+            if (existingPayMethod != null)
+            {
+                // Actualizar el método de pago actual
+                existingPayMethod.PayMethod = paymethods.PayMethod;
+                existingPayMethod.StateDelete = paymethods.StateDelete;
+
+                // Marcar el método de pago como modificado para que Entity Framework lo rastree
+                //_contextPayMethod.Entry(existingPayMethod).State = EntityState.Modified;
+                // Guardar el método de pago
+                await _contextPayMethod.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Método de pago no encontrado");
+            }
+        }
+
+        public async Task DeletePayMethodAsync(int id)
+        {
+            // Método de pago actual por Id
+            var currentPayMethod = await _contextPayMethod.PayMethods.FindAsync(id);
+
+            if (currentPayMethod != null)
+            {
+                // Actualizar estado de eliminación
+                currentPayMethod.StateDelete = true;
+
+                await _contextPayMethod.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el método de pago");
+            }
         }
     }
 }

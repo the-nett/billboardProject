@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
-using billboard.Model.Dtos;
 using billboard.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,22 +9,24 @@ namespace billboard.Services
     // Definimos una interfaz para el servicio de la compañía
     public interface ICompanyService
     {
-        Task<IEnumerable<Company>> GetAllCompaniesAsync(); // Obtener todas las compañías
-        Task<Company> GetCompanyByIdAsync(int id); // Obtener una compañía por ID
-        Task<AnswerCompanyLoginDto> LoginCompanyAsync(LoginCompanyDto loginCompanyDto); // Iniciar sesión
-        Task<Company> RegisterCompanyAsync(RegisterCompanyDto registerCompanyDto); // Registrar nueva compañía
-        Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, string city, string phoneNumber, string corporateEmail, int responsible, string password, int userType);
+        Task<IEnumerable<Company>> GetAllCompaniesAsync();
+        Task<Company> GetCompanyByIdAsync(int id);
+        Task CreateCompanyAsync(Company company);
+        Task UpdateCompanyAsync(Company company);
+        Task DeleteCompanyAsync(int id);
     }
 
-    // Implementamos la clase del servicio
     public class CompanyService : ICompanyService
     {
         private readonly ICompanyRepository _companyRepository;
-
-        // Constructor para inyectar el repositorio de compañías
         public CompanyService(ICompanyRepository companyRepository)
         {
             _companyRepository = companyRepository;
+        }
+
+        public async Task CreateCompanyAsync(Company company)
+        {
+            await _companyRepository.CreateCompanyAsync(company);
         }
 
         public Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, int city, string phoneNumber, string corporateEmail, int responsible, string password, int userType)
@@ -50,44 +52,23 @@ namespace billboard.Services
         // Método para obtener todas las compañías
         public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
         {
-            return await _companyRepository.GetAllCompaniesAsync();
+            return _companyRepository.GetAllCompaniesAsync();
         }
 
         // Método para obtener una compañía por su ID
         public async Task<Company> GetCompanyByIdAsync(int id)
         {
-            return await _companyRepository.GetCompanyByIdAsync(id);
+            return _companyRepository.GetCompanyByIdAsync(id);
         }
 
-        // Método para iniciar sesión de la compañía
-        public async Task<AnswerCompanyLoginDto> LoginCompanyAsync(LoginCompanyDto loginCompanyDto)
+        public async Task UpdateCompanyAsync(Company company)
         {
-            // Aquí puedes agregar cualquier lógica adicional de negocio o validación
-            if (string.IsNullOrEmpty(loginCompanyDto.Corporate_Email) || string.IsNullOrEmpty(loginCompanyDto.Password))
-            {
-                // Retornar null o algún mensaje de error si no se ingresaron los datos correctos
-                return new AnswerCompanyLoginDto
-                {
-                    Token = "",
-                    Company = null
-                };
-            }
-
-            // Llamar al método de login del repositorio
-            return await _companyRepository.Login(loginCompanyDto);
+            await _companyRepository.UpdateCompanyAsync(company);
         }
 
-        // Método para registrar una nueva compañía
-        public async Task<Company> RegisterCompanyAsync(RegisterCompanyDto registerCompanyDto)
+        public async Task DeleteCompanyAsync(int id)
         {
-            // Lógica adicional antes de registrar, como validar si los campos son correctos
-            if (string.IsNullOrEmpty(registerCompanyDto.Company_Name) || string.IsNullOrEmpty(registerCompanyDto.Password))
-            {
-                return null;
-            }
-
-            // Registrar la compañía usando el repositorio
-            return await _companyRepository.Register(registerCompanyDto);
+            await _companyRepository.DeleteCompanyAsync(id);
         }
     }
 }

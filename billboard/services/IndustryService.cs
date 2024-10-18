@@ -1,6 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
@@ -10,6 +10,7 @@ namespace billboard.services
         Task<Industry> GetIndustryByIdAsync(int id);
         Task CreateIndustryAsync(Industry industry);
         Task UpdateIndustryAsync(Industry industry);
+        Task DeleteIndustryAsync(int id);
     }
 
     public class IndustryService : IIndustryService
@@ -35,14 +36,14 @@ namespace billboard.services
             return _industryRepository.GetIndustryByIdAsync(id);
         }
 
-        public Task UpdateCityAsync(Industry industry)
+        public async Task UpdateIndustryAsync(Industry industry)
         {
-            throw new NotImplementedException();
+            await _industryRepository.UpdateIndustryAsync(industry);
         }
 
-        public Task UpdateIndustryAsync(Industry industry)
+        public async Task DeleteIndustryAsync(int id)
         {
-            throw new NotImplementedException();
+            await _industryRepository.DeleteIndustryAsync(id);
         }
     }
 }

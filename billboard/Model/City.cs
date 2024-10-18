@@ -8,7 +8,7 @@ namespace billboard.Model
         [Key]
         public int CityId { get; set; }
 
-        public  string CityName { get; set; }
+        public  required string CityName { get; set; }
 
         public bool StateDelete { get; set; }
 

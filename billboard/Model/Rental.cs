@@ -19,11 +19,11 @@ namespace billboard.Model
 
         public  int IdPayMethods { get; set; }
 
-        public  string AdContent { get; set; }
+        public  required string AdContent { get; set; }
 
-        public  string ContractClauses { get; set; }
+        public  required string ContractClauses { get; set; }
 
-        public  string Observations { get; set; }
+        public  required string Observations { get; set; }
 
         public bool StateDelete { get; set; }
 

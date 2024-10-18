@@ -1,8 +1,7 @@
 ﻿using billboard.Context;
 using billboard.Model;
-using billboard.Model.Dtos;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
+using System;
 
 namespace billboard.Repositories
 {
@@ -12,59 +11,72 @@ namespace billboard.Repositories
         Task<User> GetUserByIdAsync(int id);
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(User user);
-        Task SoftDeleteUserAsync(int id);
-        //Task<AnswerUserLoginDto> Login(User userLoginDto);
-        //Task<DataUserDto> Register(User userRegisterDto);
+        Task DeleteUserAsync(int id);
     }
+
     public class UserRepository : IUserRepository
     {
-        private readonly BilllboardDBContext _context;
-        public UserRepository(BilllboardDBContext context)
+        private readonly BilllboardDBContext _contextUser;
+        public UserRepository(BilllboardDBContext contextUser)
         {
-            _context = context;
+            _contextUser = contextUser;
         }
+
         public async Task CreateUserAsync(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            // Agregar el nuevo usuario a la base de datos
+            await _contextUser.Users.AddAsync(user);
+
+            // Guardar los cambios
+            await _contextUser.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
-
         {
-            return await _context.Users.ToListAsync();
+            return await _contextUser.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
-        }
-
-        //public Task<AnswerUserLoginDto> Login(User userLoginDto)
-        //{
-          //  throw new NotImplementedException();
-        //}
-
-        //public Task<DataUserDto> Register(RegisterNaturalPersonDto registerNaturalPersonDto)
-       // {
-            //var encryptedPassword = Obtainmd5(registerNaturalPersonDto.PeoplePassword);
-
-            //User user = new User()
-           // {
-                //Name = registerNaturalPersonDto.Name,
-
-         //   };
-       // }
-
-        public async Task SoftDeleteUserAsync(int id)
-        {
-            throw new NotImplementedException();
+            return await _contextUser.Users.FindAsync(id);
         }
 
         public async Task UpdateUserAsync(User user)
         {
-            _context.Users.Update(user);
-            _context.SaveChangesAsync();
+            // Current user by Id
+            var existingUser = await GetUserByIdAsync(user.IdUser);
+
+            if (existingUser != null)
+            {
+                // Update current user
+                existingUser.IdUser = user.IdUser;
+                existingUser.StateDelete = user.StateDelete;
+
+                // Guardar los cambios
+                await _contextUser.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            // Current user by Id
+            var currentUser = await _contextUser.Users.FindAsync(id);
+
+            if (currentUser != null)
+            {
+                // Update state delete
+                currentUser.StateDelete = true;
+
+                await _contextUser.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el usuario");
+            }
         }
     }
 }
