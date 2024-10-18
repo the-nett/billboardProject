@@ -7,7 +7,7 @@ namespace billboard.Model.Dtos
         [EmailAddress, Required(ErrorMessage = "El correo es obligatorio")]
         public string Corporate_Email { get; set; }
 
-        [EmailAddress, Required(ErrorMessage = "La contraseña es obligatoria")]
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Password { get; set; }
 
     }

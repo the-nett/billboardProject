@@ -2,7 +2,7 @@
 {
     public class AnswerCompanyLoginDto
     {
-        public DataCompanyDto Company { get; set; }
+        public Company Company { get; set; }
         public string Token { get; set; }
     }
 }
