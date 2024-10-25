@@ -24,51 +24,29 @@ namespace billboard.Services
             _companyRepository = companyRepository;
         }
 
-        public async Task CreateCompanyAsync(Company company)
+        public Task CreateCompanyAsync(Company company)
         {
-            await _companyRepository.CreateCompanyAsync(company);
+            throw new NotImplementedException();
         }
 
-        public Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, int city, string phoneNumber, string corporateEmail, int responsible, string password, int userType)
-        {       
-            // Lógica para crear el objeto de compañía
-            var company = new Company
-            {   
-                Company_Name = companyName,
-                IdIndustry = industry,
-                NIT = nit,
-                Owner_Name = ownerName,
-                Company_Direction = companyDirection,
-                IdCity = city,
-                Phone_Number = phoneNumber,
-                Corporate_Email = corporateEmail,
-                IdResponsible = responsible,
-                Password = password,
-                Id_User_Type = userType
-            };  
-            return _companyRepository.CreateCompany(company);
-        }       
-
-        // Método para obtener todas las compañías
-        public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        public Task DeleteCompanyAsync(int id)
         {
-            return _companyRepository.GetAllCompaniesAsync();
+            throw new NotImplementedException();
         }
 
-        // Método para obtener una compañía por su ID
-        public async Task<Company> GetCompanyByIdAsync(int id)
+        public Task<IEnumerable<Company>> GetAllCompaniesAsync()
         {
-            return _companyRepository.GetCompanyByIdAsync(id);
+            throw new NotImplementedException();
         }
 
-        public async Task UpdateCompanyAsync(Company company)
+        public Task<Company> GetCompanyByIdAsync(int id)
         {
-            await _companyRepository.UpdateCompanyAsync(company);
+            throw new NotImplementedException();
         }
 
-        public async Task DeleteCompanyAsync(int id)
+        public Task UpdateCompanyAsync(Company company)
         {
-            await _companyRepository.DeleteCompanyAsync(id);
+            throw new NotImplementedException();
         }
     }
 }

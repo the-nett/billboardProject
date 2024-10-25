@@ -28,11 +28,9 @@ namespace billboard.Repositories
         }
 
         public async Task CreateCompanyAsync(Company company)
-        {
-            // Agregar la nueva compañía a la base de datos
+        {   
+            company.Date = DateTime.Now;
             await _contextCompany.Companies.AddAsync(company);
-
-            // Guardar los cambios
             await _contextCompany.SaveChangesAsync();
         }
 

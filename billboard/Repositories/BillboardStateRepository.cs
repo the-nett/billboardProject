@@ -47,7 +47,7 @@ namespace billboard.Repositories
         public async Task UpdateBillboardStateAsync(BillboardState billboardState)
         {
             // Current billboardState by Id
-            var existingBillboardState = await GetBillboardStateByIdAsync(billboardState.IdSate);
+            var existingBillboardState = await GetBillboardStateByIdAsync(billboardState.IdState);
 
             if (existingBillboardState != null)
             {

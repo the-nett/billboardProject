@@ -77,7 +77,7 @@ namespace billboard.Context
 
             // OnmodelCreating BillboardState
             var billboard_state = modelBuilder.Entity<BillboardState>();
-            billboard_state.HasKey(x => x.IdSate);
+            billboard_state.HasKey(x => x.IdState);
 
             // OnmodelCreating City
             var city = modelBuilder.Entity<City>();

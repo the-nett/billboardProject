@@ -1,4 +1,6 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.Lessor;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
@@ -10,25 +12,35 @@ namespace billboard.Controllers
     public class LessorController : ControllerBase
     {
         private readonly ILessorService lessorService;
-        public LessorController(ILessorService _lessorService)
+        private readonly IMapper mapper;
+        public LessorController(ILessorService _lessorService, IMapper _mapper)
         {
             lessorService = _lessorService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllLessors")]
-        public Task<IEnumerable<Model.Lessor>> GetAllLessorsAsync()
+        public async Task<IActionResult> GetAllLessorsAsync()
         {
-            return lessorService.GetAllLessorsAsync();
+            var listLessors = await lessorService.GetAllLessorsAsync();
+            var listaLessorDto = new List<LessorDto>();
+
+            foreach (var lessor in listLessors)
+            {
+                listaLessorDto.Add(mapper.Map<LessorDto>(lessor));
+            }
+
+            return Ok(listaLessorDto);
         }
 
         [HttpGet("{id}", Name = "GetLessorById")]
-        public async Task<ActionResult<Model.Lessor>> GetLessorByIdAsync(int id)
+        public async Task<IActionResult> GetLessorByIdAsync(int id)
         {
             var lessor = await lessorService.GetLessorByIdAsync(id);
             if (lessor == null)
                 return NotFound();
-
-            return Ok(lessor);
+            var lessordto = mapper.Map<LessorDto>(lessor);
+            return Ok(lessordto);
         }
 
         [HttpPost(Name = "CreateLessor")]
@@ -36,21 +48,29 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateLessorAsync(Model.Lessor lessor)
+        public async Task<IActionResult> CreateLessorAsync ([FromBody] CreateLessorDto createLessorDto)
         {
-            await lessorService.CreateLessorAsync(lessor);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var lessor = mapper.Map<Lessor>(createLessorDto);
+            var createLessor = await lessorService.CreateLessorAsync(lessor);
+            return Ok();
         }
 
         [HttpPut("{id}", Name = "UpdateLessor")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateLessor(int id, [FromBody] Model.Lessor lessor)
+        public async Task<IActionResult> UpdateLessor(int id, [FromBody] LessorDto lessorDto)
         {
-            if (id != lessor.IdLessor)
+            if (id != lessorDto.IdLessor)
                 return BadRequest();
 
-            await lessorService.UpdateLessorAsync(lessor);
+            var lessor = mapper.Map<Lessor>(lessorDto);
+
+            var updatetLessor = await lessorService.UpdateLessorAsync(lessor);
 
             return NoContent();
         }

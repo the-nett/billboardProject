@@ -6,10 +6,10 @@ namespace billboard.services
 {
     public interface ITenantService
     {
-        Task<IEnumerable<Tenant>> GetAllTenantsAsync();
+        Task<ICollection<Tenant>> GetAllTenantsAsync();
         Task<Tenant> GetTenantByIdAsync(int id);
-        Task CreateTenantAsync(Tenant tenant);
-        Task UpdateTenantAsync(Tenant tenant);
+        Task<Tenant> CreateTenantAsync(Tenant tenant);
+        Task<Tenant> UpdateTenantAsync(Tenant tenant);
         Task DeleteTenantAsync(int id);
     }
 
@@ -21,12 +21,12 @@ namespace billboard.services
             _tenantRepository = tenantRepository;
         }
 
-        public async Task CreateTenantAsync(Tenant tenant)
+        public async Task<Tenant> CreateTenantAsync(Tenant tenant)
         {
-            await _tenantRepository.CreateTenantAsync(tenant);
+            return await _tenantRepository.CreateTenantAsync(tenant);
         }
 
-        public Task<IEnumerable<Tenant>> GetAllTenantsAsync()
+        public Task<ICollection<Tenant>> GetAllTenantsAsync()
         {
             return _tenantRepository.GetAllTenantsAsync();
         }
@@ -36,9 +36,9 @@ namespace billboard.services
             return _tenantRepository.GetTenantByIdAsync(id);
         }
 
-        public async Task UpdateTenantAsync(Tenant tenant)
+        public async Task<Tenant> UpdateTenantAsync(Tenant tenant)
         {
-            await _tenantRepository.UpdateTenantAsync(tenant);
+           return await _tenantRepository.UpdateTenantAsync(tenant);
         }
 
         public async Task DeleteTenantAsync(int id)

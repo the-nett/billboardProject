@@ -79,9 +79,5 @@ namespace billboard.Repositories
                 throw new Exception("No se pudo eliminar el documento");
             }
         }
-<<<<<<< HEAD
-       
-=======
->>>>>>> 3adc28304b138596fe1ee6ce3b764e09955ea196
     }
 }

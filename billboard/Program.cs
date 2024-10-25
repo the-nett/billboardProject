@@ -1,3 +1,4 @@
+using billboard.BillboardMappers;
 using billboard.Context;
 using billboard.Repositories;
 using billboard.services;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddScoped<IIndustryRepository, IndustryRepository>();
 builder.Services.AddScoped<IPayMethodRepository, PayMethodRepository>();
 builder.Services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+builder.Services.AddScoped<IUserTypePermissionsRepository, UserTypePermissionsRepository>();
 builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
 builder.Services.AddScoped<IBillboardRepository, BillboardRepository>();
 builder.Services.AddScoped<IBillboardStateRepository, BillboardStateRepository>();
@@ -44,6 +46,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IIndustryService, IndustryService>();
 builder.Services.AddScoped<IPayMethodService, PayMethodService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
+builder.Services.AddScoped<IUserTypePermissionsService, UserTypePermissionsService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IBillboardService, BillboardService>();
 builder.Services.AddScoped<IBillboardStateService, BillboardStateService>();
@@ -53,6 +56,8 @@ builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<IResponsibleService, ResponsibleService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 
+// Add Mapper
+builder.Services.AddAutoMapper(typeof(BillboardMaper));  
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

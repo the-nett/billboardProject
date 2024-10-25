@@ -1,7 +1,11 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.User;
+using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security;
 using System.Threading.Tasks;
 
 namespace billboard.Controllers
@@ -11,26 +15,37 @@ namespace billboard.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public UserController(IUserService _userService)
+        public UserController(IUserService _userService, IMapper _mapper)
         {
             userService = _userService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllUsers")]
-        public Task<IEnumerable<Model.User>> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
-            return userService.GetAllUsersAsync();
+            var listUsers = await userService.GetAllUsersAsync();
+            var listaUsersDto = new List<UserDto>();
+
+            foreach (var user in listUsers)
+            {
+                listaUsersDto.Add(mapper.Map<UserDto>(user));
+            }
+
+            return Ok(listaUsersDto);
         }
 
         [HttpGet("{id}", Name = "GetUserById")]
-        public async Task<ActionResult<Model.User>> GetUserByIdAsync(int id)
+        public async Task<IActionResult> GetUserByIdAsync(int id)
         {
             var user = await userService.GetUserByIdAsync(id);
             if (user == null)
                 return NotFound();
 
-            return Ok(user);
+            var userdto = mapper.Map<UserDto>(user);
+            return Ok(userdto);
         }
 
         [HttpPost(Name = "CreateUser")]
@@ -38,23 +53,34 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateUserAsync(Model.User user)
+        public async Task<IActionResult> CreateUserAsync ([FromBody] CreateUserDto createUserDto)
         {
-            await userService.CreateUserAsync(user);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = mapper.Map<User>(createUserDto);
+
+            var createUser = await userService.CreateUserAsync(user);
+            return Ok();
+
         }
 
         [HttpPut("{id}", Name = "UpdateUser")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] Model.User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
         {
-            if (id != user.IdUser)
+            if (id != updateUserDto.IdUser)
                 return BadRequest();
 
-            await userService.UpdateUserAsync(user);
+            var user = mapper.Map<User>(updateUserDto);
 
-            return NoContent();
+            var updatePermission = await userService.UpdateUserAsync(user);
+
+            return Ok();
         }
 
         [HttpDelete("{id}", Name = "DeleteUser")]

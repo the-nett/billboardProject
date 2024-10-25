@@ -8,10 +8,10 @@ namespace billboard.services
 {
     public interface IPersonService
     {
-        Task<IEnumerable<Person>> GetAllPeopleAsync();
+        Task<ICollection<Person>> GetAllPeopleAsync();
         Task<Person> GetPersonByIdAsync(int id);
-        Task CreatePersonAsync(Person person);
-        Task UpdatePersonAsync(Person person);
+        Task<Person> CreatePersonAsync(Person person);
+        Task<Person> UpdatePersonAsync(Person person);
         Task DeletePersonAsync(int id);
     }
 
@@ -23,12 +23,12 @@ namespace billboard.services
             _personRepository = personRepository;
         }
 
-        public async Task CreatePersonAsync(Person person)
+        public async Task<Person> CreatePersonAsync(Person person)
         {
-            await _personRepository.CreatePersonAsync(person);
+            return await _personRepository.CreatePersonAsync(person);
         }
 
-        public Task<IEnumerable<Person>> GetAllPeopleAsync()
+        public Task<ICollection<Person>> GetAllPeopleAsync()
         {
             return _personRepository.GetAllPeopleAsync();
         }
@@ -38,11 +38,10 @@ namespace billboard.services
             return _personRepository.GetPersonByIdAsync(id);
         }
 
-        public async Task UpdatePersonAsync(Person person)
+        public async Task<Person> UpdatePersonAsync(Person person)
         {
-            await _personRepository.UpdatePersonAsync(person);
+            return await _personRepository.UpdatePersonAsync(person);
         }
-
         public async Task DeletePersonAsync(int id)
         {
             await _personRepository.DeletePersonAsync(id);

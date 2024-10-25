@@ -6,10 +6,10 @@ namespace billboard.services
 {
     public interface IUserTypeService
     {
-        Task<IEnumerable<UserType>> GetAllUserTypesAsync();
+        Task<ICollection<UserType>> GetAllUserTypesAsync();
         Task<UserType> GetUserTypeByIdAsync(int id);
-        Task CreateUserTypeAsync(UserType usertype);
-        Task UpdateUserTypeAsync(UserType usertype);
+        Task<UserType> CreateUserTypeAsync(UserType usertype);
+        Task<UserType> UpdateUserTypeAsync(UserType usertype);
         Task DeleteUserTypeAsync(int id);
     }
 
@@ -21,14 +21,14 @@ namespace billboard.services
             _userTypeRepository = userTypeRepository;
         }
 
-        public async Task CreateUserTypeAsync(UserType usertype)
+        public async Task<UserType> CreateUserTypeAsync(UserType usertype)
         {
-            await _userTypeRepository.CreateUserTypeAsync(usertype);
+            return await _userTypeRepository.CreateUserTypeAsync(usertype);
         }
 
-        public Task<IEnumerable<UserType>> GetAllUserTypesAsync()
+        public async Task<ICollection<UserType>> GetAllUserTypesAsync()
         {
-            return _userTypeRepository.GetAllUserTypesAsync();
+            return await _userTypeRepository.GetAllUserTypesAsync();
         }
 
         public Task<UserType> GetUserTypeByIdAsync(int id)
@@ -36,9 +36,9 @@ namespace billboard.services
             return _userTypeRepository.GetUserTypeByIdAsync(id);
         }
 
-        public async Task UpdateUserTypeAsync(UserType usertype)
+        public async Task<UserType> UpdateUserTypeAsync(UserType usertype)
         {
-            await _userTypeRepository.UpdateUserTypeAsync(usertype);
+           return await _userTypeRepository.UpdateUserTypeAsync(usertype);
         }
 
         public async Task DeleteUserTypeAsync(int id)

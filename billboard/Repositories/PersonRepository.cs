@@ -9,72 +9,84 @@ namespace billboard.Repositories
 {
     public interface IPersonRepository
     {
-        Task<IEnumerable<Person>> GetAllPeopleAsync();
+        Task<ICollection<Person>> GetAllPeopleAsync();
         Task<Person> GetPersonByIdAsync(int id);
-        Task CreatePersonAsync(Person person);
-        Task UpdatePersonAsync(Person person);
+        Task<Person> CreatePersonAsync(Person person);
+        Task<Person> UpdatePersonAsync(Person person);
         Task DeletePersonAsync(int id);
     }
 
     public class PersonRepository : IPersonRepository
     {
         private readonly BilllboardDBContext _contextPerson;
+
         public PersonRepository(BilllboardDBContext contextPerson)
         {
             _contextPerson = contextPerson;
         }
 
-        public async Task CreatePersonAsync(Person person)
+        public async Task<ICollection<Person>> GetAllPeopleAsync()
         {
-            // Agregar la nueva persona a la base de datos
-            await _contextPerson.People.AddAsync(person);
-
-            // Guardar los cambios
-            await _contextPerson.SaveChangesAsync();
-        }
-
-        public async Task<IEnumerable<Person>> GetAllPeopleAsync()
-        {
+            // Retorna todas las personas de la base de datos
             return await _contextPerson.People.ToListAsync();
         }
 
         public async Task<Person> GetPersonByIdAsync(int id)
         {
+            // Busca una persona por su ID
             return await _contextPerson.People.FindAsync(id);
         }
 
-        public async Task UpdatePersonAsync(Person person)
+        public async Task<Person> CreatePersonAsync(Person person)
         {
-            // Current person by Id
+            person.IdUserType = 3;
+            person.Date = DateTime.Now;
+            // Añade una nueva persona a la base de datos
+            await _contextPerson.People.AddAsync(person);
+            await _contextPerson.SaveChangesAsync();
+            return person;
+        }
+
+        public async Task<Person> UpdatePersonAsync(Person person)
+        {
+            // Busca la persona existente por su ID
             var existingPerson = await GetPersonByIdAsync(person.IdPeople);
 
             if (existingPerson != null)
             {
-                //Update current person
-                existingPerson.IdPeople = person.IdPeople;
+                // Actualiza las propiedades necesarias
+                existingPerson.Name = person.Name;
+                existingPerson.LastName = person.LastName;
+                existingPerson.IdDocumentType = person.IdDocumentType;
+                existingPerson.DocumentNumb = person.DocumentNumb;
+                existingPerson.Occupation = person.Occupation;
+                existingPerson.BirthDate = person.BirthDate;
+                existingPerson.Email = person.Email;
+                existingPerson.PhoneNumber = person.PhoneNumber;
+                existingPerson.IdUserType = person.IdUserType;
+                existingPerson.Date = DateTime.Now;
                 existingPerson.StateDelete = person.StateDelete;
 
-                // Marcar la persona como modificada para que Entity Framework lo rastree
-                //_contextPerson.Entry(existingPerson).State = EntityState.Modified;
-                // Save person
+                // Guarda los cambios
                 await _contextPerson.SaveChangesAsync();
             }
             else
             {
                 throw new Exception("Persona no encontrada");
             }
+
+            return person;
         }
 
         public async Task DeletePersonAsync(int id)
         {
-            // Current person by Id
+            // Busca la persona por su ID
             var currentPerson = await _contextPerson.People.FindAsync(id);
 
             if (currentPerson != null)
             {
-                //Update state delete
+                // Marca la persona como eliminada (StateDelete en lugar de eliminación física)
                 currentPerson.StateDelete = true;
-
                 await _contextPerson.SaveChangesAsync();
             }
             else
@@ -83,4 +95,5 @@ namespace billboard.Repositories
             }
         }
     }
+
 }

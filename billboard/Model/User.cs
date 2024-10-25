@@ -10,7 +10,7 @@ namespace billboard.Model
 
         public  required string PeoplePassword { get; set; }
 
-        public  required string PeopleSalt { get; set; }
+        public  string PeopleSalt { get; set; }
 
         public  DateTime Date { get; set; }
 
