@@ -28,6 +28,8 @@ namespace billboard.Model
 
         public  DateTime Date { get; set; }
 
+        public bool StateDelete { get; set; }
+
         // Propiedad de navegación
         public  UserType UserType { get; set; }
         public  Document Document { get; set; }

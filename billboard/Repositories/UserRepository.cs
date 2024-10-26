@@ -1,51 +1,104 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.X509Certificates;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<ICollection<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
-        Task SoftDeleteUserAsync(int id);
+        Task<User> CreateUserAsync(User user);
+        Task<User> UpdateUserAsync(User user);
+        Task DeleteUserAsync(int id);
     }
+
     public class UserRepository : IUserRepository
     {
-        private readonly BilllboardDBContext _context;
-        public UserRepository(BilllboardDBContext context)
+        private readonly BilllboardDBContext _contextUser;
+
+        public UserRepository(BilllboardDBContext contextUser)
         {
-            _context = context;
-        }
-        public async Task CreateUserAsync(User user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            _contextUser = contextUser;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
-
+        public async Task<User> CreateUserAsync(User user)
         {
-            return await _context.Users.ToListAsync();
+            user.IdUserType = 1;
+            user.Date = DateTime.Now;
+            user.PeopleSalt = GenerateRandomSalt(10); // Generar una cadena aleatoria de 10 caracteres
+
+            // Agregar el nuevo usuario a la base de datos
+            await _contextUser.Users.AddAsync(user);
+
+            // Guardar los cambios
+            await _contextUser.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<ICollection<User>> GetAllUsersAsync()
+        {
+            return await _contextUser.Users.ToListAsync();
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _contextUser.Users.FindAsync(id);
         }
 
-        public async Task SoftDeleteUserAsync(int id)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            // Busca el usuario existente por su ID
+            var existingUser = await GetUserByIdAsync(user.IdUser);
+
+            if (existingUser != null)
+            {
+                // Actualiza las propiedades necesarias
+                existingUser.PeoplePassword = user.PeoplePassword;
+                existingUser.IdUserType = user.IdUserType;
+                existingUser.Date = DateTime.Now;
+                existingUser.StateDelete = user.StateDelete;
+
+                // Guarda los cambios
+                await _contextUser.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Usuario no encontrado");
+            }
+
+            return user;
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task DeleteUserAsync(int id)
         {
-            _context.Users.Update(user);
-            _context.SaveChangesAsync();
+            // Buscar usuario por su ID
+            var currentUser = await _contextUser.Users.FindAsync(id);
+
+            if (currentUser != null)
+            {
+                // Marcar el estado de eliminación
+                currentUser.StateDelete = true;
+
+                await _contextUser.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el usuario");
+            }
+        }
+
+        // Método para generar una cadena aleatoria de salt
+        private static string GenerateRandomSalt(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                                        .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

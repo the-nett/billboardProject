@@ -1,31 +1,37 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace billboard.services
+namespace billboard.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<ICollection<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task<User> CreateUserAsync(User user);
+        Task<User> UpdateUserAsync(User user);
+        Task DeleteUserAsync(int id);
     }
 
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        public Task CreateUserAsync(User user)
+
+        public async Task<User> CreateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            return await _userRepository.CreateUserAsync(user);
         }
 
-        public Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<ICollection<User>> GetAllUsersAsync()
         {
-            return _userRepository.GetAllUsersAsync();
+            return await _userRepository.GetAllUsersAsync();
         }
 
         public Task<User> GetUserByIdAsync(int id)
@@ -33,9 +39,14 @@ namespace billboard.services
             return _userRepository.GetUserByIdAsync(id);
         }
 
-        public Task UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            return await _userRepository.UpdateUserAsync(user);
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            await _userRepository.DeleteUserAsync(id);
         }
     }
 

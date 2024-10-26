@@ -1,17 +1,17 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System;
 
 namespace billboard.Repositories
 {
     public interface ILessorRepository
     {
-        Task<IEnumerable<Lessor>> GetAllLessorsAsync();
-        Task<Lessor> GetLessorByIdAsync(int id);
-        Task CreateLessorAsync(Lessor lessor);
-        Task UpdateLessorAsync(Lessor lessor);
+        Task<ICollection<Lessor>> GetAllLessorsAsync();
+        Task<Lessor> GetLessorByIdAsync (int id);
+        Task<Lessor> CreateLessorAsync (Lessor lessor);
+        Task<Lessor> UpdateLessorAsync (Lessor lessor);
+        Task DeleteLessorAsync(int id);
     }
 
     public class LessorRepository : ILessorRepository
@@ -22,16 +22,17 @@ namespace billboard.Repositories
             _contextLessor = contextLessor;
         }
 
-        public async Task CreateLessorAsync(Lessor lessor)
+        public async Task<Lessor> CreateLessorAsync (Lessor lessor)
         {
             // Agregar el nuevo lessor a la base de datos
             await _contextLessor.Lessors.AddAsync(lessor);
 
             // Guardar los cambios
             await _contextLessor.SaveChangesAsync();
+            return  lessor;
         }
 
-        public async Task<IEnumerable<Lessor>> GetAllLessorsAsync()
+        public async Task<ICollection<Lessor>> GetAllLessorsAsync()
         {
             return await _contextLessor.Lessors.ToListAsync();
         }
@@ -41,9 +42,45 @@ namespace billboard.Repositories
             return await _contextLessor.Lessors.FindAsync(id);
         }
 
-        public Task UpdateLessorAsync(Lessor lessor)
+        public async Task<Lessor> UpdateLessorAsync (Lessor lessor)
         {
-            throw new NotImplementedException();
+            // Current lessor by Id
+            var existingLessor = await GetLessorByIdAsync(lessor.IdLessor);
+
+            if (existingLessor != null)
+            {
+                // Update current lessor
+                existingLessor.IdUserType = lessor.IdUserType;
+                existingLessor.StateDelete = lessor.StateDelete;
+
+                // Marcar el lessor como modificado para que Entity Framework lo rastree
+                //_contextLessor.Entry(existingLessor).State = EntityState.Modified;
+                // Save lessor
+                await _contextLessor.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("Arrendador no encontrado");
+            }
+            return lessor;
+        }
+
+        public async Task DeleteLessorAsync(int id)
+        {
+            // Current lessor by Id
+            var currentLessor = await _contextLessor.Lessors.FindAsync(id);
+
+            if (currentLessor != null)
+            {
+                // Update state delete
+                currentLessor.StateDelete = true;
+
+                await _contextLessor.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el arrendador");
+            }
         }
     }
 }

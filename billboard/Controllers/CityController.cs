@@ -1,6 +1,8 @@
 ﻿using billboard.Model;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace billboard.Controllers
 {
@@ -19,6 +21,7 @@ namespace billboard.Controllers
         {
             return cityService.GetAllCitiesAsync();
         }
+
         [HttpGet("{id}", Name = "GetCityById")]
         public async Task<ActionResult<City>> GetCityByIdAsync(int id)
         {
@@ -38,7 +41,8 @@ namespace billboard.Controllers
         {
             await cityService.CreateCityAsync(city);
         }
-        [HttpPut("{id}", Name = "Updatecity")]
+
+        [HttpPut("{id}", Name = "UpdateCity")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -48,6 +52,23 @@ namespace billboard.Controllers
                 return BadRequest();
 
             await cityService.UpdateCityAsync(city);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}", Name = "DeleteCity")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteCity(int id)
+        {
+            // Current city by Id
+            var existingCity = await GetCityByIdAsync(id);
+            if (existingCity == null)
+                return NotFound();
+
+            await cityService.DeleteCityAsync(id);
+
             return NoContent();
         }
     }

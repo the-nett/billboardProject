@@ -11,7 +11,7 @@ namespace billboard.Repositories
         Task<Document> GetDocumentByIdAsync(int id);
         Task CreateDocumentAsync(Document document);
         Task UpdateDocumentAsync(Document document);
- 
+        Task DeleteDocumentAsync(int id);
     }
 
     public class DocumentRepository : IDocumentRepository
@@ -50,7 +50,7 @@ namespace billboard.Repositories
             {
                 //Update current document
                 existingDocument.DocumentName = document.DocumentName;
-                
+                existingDocument.StateDelete = document.StateDelete;
 
                 // Marcar el documento como modificado para que Entity Framework lo rastree
                 //_contextDocument.Entry(existingDocument).State = EntityState.Modified;
@@ -62,7 +62,22 @@ namespace billboard.Repositories
                 throw new Exception("Documento no encontrado");
             }
         }
+        public async Task DeleteDocumentAsync(int id)
+        {
+            // Current document by Id
+            var currentDocument = await _contextDocument.Documents.FindAsync(id);
 
+            if (currentDocument != null)
+            {
+                //Update state delete
+                currentDocument.StateDelete = true;
 
+                await _contextDocument.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el documento");
+            }
+        }
     }
 }

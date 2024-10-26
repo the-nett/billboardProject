@@ -1,43 +1,49 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
 
 namespace billboard.services
 {
     public interface IUserTypeService
     {
-        Task<IEnumerable<UserType>> GetAllUserTypesAsync();
+        Task<ICollection<UserType>> GetAllUserTypesAsync();
         Task<UserType> GetUserTypeByIdAsync(int id);
-        Task CreateUserTypeAsync(UserType usertype);
-        Task UpdateUserTypeAsync(UserType usertype);
+        Task<UserType> CreateUserTypeAsync(UserType usertype);
+        Task<UserType> UpdateUserTypeAsync(UserType usertype);
+        Task DeleteUserTypeAsync(int id);
     }
 
     public class UserTypeService : IUserTypeService
     {
-        private readonly IUserTypeRepository _usertypeRepository;
-        public UserTypeService(IUserTypeRepository usertypeRepository)
+        private readonly IUserTypeRepository _userTypeRepository;
+        public UserTypeService(IUserTypeRepository userTypeRepository)
         {
-            _usertypeRepository = usertypeRepository;
+            _userTypeRepository = userTypeRepository;
         }
 
-        public async Task CreateUserTypeAsync(UserType usertype)
+        public async Task<UserType> CreateUserTypeAsync(UserType usertype)
         {
-            await _usertypeRepository.CreateUserTypeAsync(usertype);
+            return await _userTypeRepository.CreateUserTypeAsync(usertype);
         }
 
-        public Task<IEnumerable<UserType>> GetAllUserTypesAsync()
+        public async Task<ICollection<UserType>> GetAllUserTypesAsync()
         {
-            return _usertypeRepository.GetAllUserTypesAsync();
+            return await _userTypeRepository.GetAllUserTypesAsync();
         }
 
         public Task<UserType> GetUserTypeByIdAsync(int id)
         {
-            return _usertypeRepository.GetUserTypeByIdAsync(id);
+            return _userTypeRepository.GetUserTypeByIdAsync(id);
         }
 
-        public Task UpdateUserTypeAsync(UserType usertype)
+        public async Task<UserType> UpdateUserTypeAsync(UserType usertype)
         {
-            throw new NotImplementedException();
+           return await _userTypeRepository.UpdateUserTypeAsync(usertype);
+        }
+
+        public async Task DeleteUserTypeAsync(int id)
+        {
+            await _userTypeRepository.DeleteUserTypeAsync(id);
         }
     }
 }

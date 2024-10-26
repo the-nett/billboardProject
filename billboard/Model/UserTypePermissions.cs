@@ -1,4 +1,6 @@
-﻿namespace billboard.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace billboard.Model
 {
     public class UserTypePermissions
     {

@@ -1,8 +1,10 @@
 ﻿using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace billboard.services
+namespace billboard.Services
 {
     public interface IBillboardStateService
     {
@@ -10,11 +12,13 @@ namespace billboard.services
         Task<BillboardState> GetBillboardStateByIdAsync(int id);
         Task CreateBillboardStateAsync(BillboardState billboardState);
         Task UpdateBillboardStateAsync(BillboardState billboardState);
+        Task DeleteBillboardStateAsync(int id);
     }
 
     public class BillboardStateService : IBillboardStateService
     {
         private readonly IBillboardStateRepository _billboardStateRepository;
+
         public BillboardStateService(IBillboardStateRepository billboardStateRepository)
         {
             _billboardStateRepository = billboardStateRepository;
@@ -35,9 +39,14 @@ namespace billboard.services
             return _billboardStateRepository.GetBillboardStateByIdAsync(id);
         }
 
-        public Task UpdateBillboardStateAsync(BillboardState billboardState)
+        public async Task UpdateBillboardStateAsync(BillboardState billboardState)
         {
-            throw new NotImplementedException();
+            await _billboardStateRepository.UpdateBillboardStateAsync(billboardState);
+        }
+
+        public async Task DeleteBillboardStateAsync(int id)
+        {
+            await _billboardStateRepository.DeleteBillboardStateAsync(id);
         }
     }
 }

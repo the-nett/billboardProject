@@ -1,15 +1,20 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
 using billboard.Repositories;
-using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections;
+using System.Security;
 
 namespace billboard.services
 {
     public interface IPermissionService
     {
-        Task<IEnumerable<Permission>> GetAllPermissionsAsync();
+        Task<ICollection<Permission>> GetAllPermissionsAsync();
         Task<Permission> GetPermissionByIdAsync(int id);
-        Task CreatePermissionAsync(Permission permission);
-        Task UpdatePermissionAsync(Permission permission);
+        Task<Permission> CreatePermissionAsync(Permission permission);
+        Task<Permission> UpdatePermissionAsync(Permission permission);
+        Task DeletePermissionAsync(int id);
     }
 
     public class PermissionService : IPermissionService
@@ -20,14 +25,9 @@ namespace billboard.services
             _permissionRepository = permissionRepository;
         }
 
-        public async Task CreatePermissionAsync(Permission permission)
+        public async Task<Permission> CreatePermissionAsync(Permission permission)
         {
-            await _permissionRepository.CreatePermissionAsync(permission);
-        }
-
-        public Task<IEnumerable<Permission>> GetAllPermissionsAsync()
-        {
-            return _permissionRepository.GetAllPermissionsAsync();
+            return await _permissionRepository.CreatePermissionAsync(permission);
         }
 
         public Task<Permission> GetPermissionByIdAsync(int id)
@@ -35,9 +35,19 @@ namespace billboard.services
             return _permissionRepository.GetPermissionByIdAsync(id);
         }
 
-        public Task UpdatePermissionAsync(Permission permission)
+        public async Task<Permission> UpdatePermissionAsync(Permission permission)
         {
-            throw new NotImplementedException();
+            return await _permissionRepository.UpdatePermissionAsync(permission);
+        }
+
+        public async Task DeletePermissionAsync(int id)
+        {
+            await _permissionRepository.DeletePermissionAsync(id);
+        }
+
+        public async Task<ICollection<Permission>> GetAllPermissionsAsync()
+        {
+            return await _permissionRepository.GetAllPermissionsAsync();
         }
     }
 }
