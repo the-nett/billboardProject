@@ -84,7 +84,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdLessor");
 
-                    b.ToTable("Billboards");
+                    b.ToTable("Billboards", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.BillboardState", b =>
@@ -104,7 +104,7 @@ namespace billboard.Migrations
 
                     b.HasKey("IdSate");
 
-                    b.ToTable("BillboardStates");
+                    b.ToTable("BillboardStates", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.BillboardType", b =>
@@ -124,7 +124,7 @@ namespace billboard.Migrations
 
                     b.HasKey("BillboardTypeId");
 
-                    b.ToTable("BillboardTypes");
+                    b.ToTable("BillboardTypes", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.City", b =>
@@ -144,7 +144,7 @@ namespace billboard.Migrations
 
                     b.HasKey("CityId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Company", b =>
@@ -216,7 +216,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("Id_User_Type");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Document", b =>
@@ -236,7 +236,7 @@ namespace billboard.Migrations
 
                     b.HasKey("DocumentId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Industry", b =>
@@ -256,7 +256,7 @@ namespace billboard.Migrations
 
                     b.HasKey("IndustryId");
 
-                    b.ToTable("Industries");
+                    b.ToTable("Industries", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Lessor", b =>
@@ -280,7 +280,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("Lessors");
+                    b.ToTable("Lessors", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.PayMethods", b =>
@@ -300,7 +300,7 @@ namespace billboard.Migrations
 
                     b.HasKey("IdPayMethod");
 
-                    b.ToTable("PayMethods");
+                    b.ToTable("PayMethods", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Permission", b =>
@@ -320,7 +320,7 @@ namespace billboard.Migrations
 
                     b.HasKey("Id_Permission");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Person", b =>
@@ -373,7 +373,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Rental", b =>
@@ -426,7 +426,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdPayMethods");
 
-                    b.ToTable("Rentals");
+                    b.ToTable("Rentals", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Responsible", b =>
@@ -451,7 +451,7 @@ namespace billboard.Migrations
                     b.HasIndex("Id_People")
                         .IsUnique();
 
-                    b.ToTable("Responsibles");
+                    b.ToTable("Responsibles", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Tenant", b =>
@@ -475,7 +475,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.User", b =>
@@ -513,7 +513,7 @@ namespace billboard.Migrations
                     b.HasIndex("PeopleId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.UserType", b =>
@@ -533,7 +533,7 @@ namespace billboard.Migrations
 
                     b.HasKey("Id_Usertype");
 
-                    b.ToTable("UserTypes");
+                    b.ToTable("UserTypes", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.UserTypePermissions", b =>
@@ -551,7 +551,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("Id_Usertype");
 
-                    b.ToTable("UserTypePermissions");
+                    b.ToTable("UserTypePermissions", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Billboard", b =>
