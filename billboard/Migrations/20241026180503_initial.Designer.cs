@@ -12,15 +12,15 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    [Migration("20241008054242_AddAuditLogTableCompany")]
-    partial class AddAuditLogTableCompany
+    [Migration("20241026180503_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1")
+                .HasAnnotation("ProductVersion", "9.0.0-rc.2.24474.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -92,11 +92,11 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.BillboardState", b =>
                 {
-                    b.Property<int>("IdSate")
+                    b.Property<int>("IdState")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSate"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdState"));
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -105,7 +105,7 @@ namespace billboard.Migrations
                     b.Property<bool>("StateDelete")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdSate");
+                    b.HasKey("IdState");
 
                     b.ToTable("BillboardStates");
                 });
@@ -369,6 +369,9 @@ namespace billboard.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdPeople");
 
