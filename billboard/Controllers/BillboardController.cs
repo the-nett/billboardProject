@@ -1,7 +1,12 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.Billboard;
+using billboard.Model.Dtos.Company;
 using billboard.services;
+using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace billboard.Controllers
 {
@@ -10,25 +15,34 @@ namespace billboard.Controllers
     public class BillboardController : ControllerBase
     {
         private readonly IBillboardService billboardService;
-        public BillboardController(IBillboardService _billboardService)
+        private readonly IMapper mapper;
+        public BillboardController(IBillboardService _billboardService, IMapper _mapper)
         {
             billboardService = _billboardService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllBillboards")]
-        public Task<IEnumerable<Model.Billboard>> GetAllBillboardsAsync()
+        public async Task<IActionResult> GetAllBillboardsAsync()
         {
-            return billboardService.GetAllBillboardsAsync();
+            var listBillboards = await billboardService.GetAllBillboardsAsync();
+            var listBillboardDto = new List<ShowBillboardDto>();
+            foreach (var billboard in listBillboards)
+            {
+                listBillboardDto.Add(mapper.Map<ShowBillboardDto>(billboard));
+            }
+
+            return Ok(listBillboardDto);
         }
 
         [HttpGet("{id}", Name = "GetBillboardById")]
-        public async Task<ActionResult<Model.Billboard>> GetBillboardByIdAsync(int id)
+        public async Task<IActionResult> GetBillboardByIdAsync(int id)
         {
             var billboard = await billboardService.GetBillboardByIdAsync(id);
             if (billboard == null)
                 return NotFound();
-
-            return Ok(billboard);
+            var BillboardToDto = mapper.Map<ShowBillboardDto>(billboard);
+            return Ok(BillboardToDto);
         }
 
         [HttpPost(Name = "CreateBillboard")]
@@ -36,39 +50,53 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateBillboardAsync(Model.Billboard billboard)
+        public async Task<IActionResult> CreateBillboardAsync([FromBody] CreateBillboardDto createBillboardDto)
         {
-            await billboardService.CreateBillboardAsync(billboard);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var billboard = mapper.Map<Billboard>(createBillboardDto);
+
+            var createdBillboard = await billboardService.CreateBillboardAsync(billboard);
+            return Ok();
         }
 
         [HttpPut("{id}", Name = "UpdateBillboard")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateBillboard(int id, [FromBody] Model.Billboard billboard)
+        public async Task<IActionResult> UpdateBillboard(int id, [FromBody] ShowBillboardDto showBillboardDto)
         {
-            if (id != billboard.IdBillboard)
+            if (id != showBillboardDto.IdBillboard)
                 return BadRequest();
 
-            await billboardService.UpdateBillboardAsync(billboard);
+            var billboard = mapper.Map<Billboard>(showBillboardDto);
 
-            return NoContent();
+            var updatedbillboard = await billboardService.UpdateBillboardAsync(billboard);
+
+            return Ok();
         }
 
         [HttpDelete("{id}", Name = "DeleteBillboard")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteBillboard(int id)
+        public async Task DeleteBillboard(int id)
         {
             // Obtener valla actual por Id
-            var existingBillboard = await GetBillboardByIdAsync(id);
-            if (existingBillboard == null)
-                return NotFound();
+            var existingBillboard = await billboardService.GetBillboardByIdAsync(id);
+            if (existingBillboard != null)
+            {
+                // Marcar el estado de eliminación
+                existingBillboard.StateDelete = true;
 
-            await billboardService.DeleteBillboardAsync(id);
-
-            return NoContent();
+                await billboardService.DeleteBillboardAsync(id);
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el usuario");
+            }
         }
     }
 }

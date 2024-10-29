@@ -1,7 +1,14 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.Company;
+using billboard.Model.Dtos.Person;
+using billboard.Model.Dtos.Rental;
 using billboard.services;
+using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Reflection.Metadata;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace billboard.Controllers
 {
@@ -10,26 +17,36 @@ namespace billboard.Controllers
     public class RentalController : ControllerBase
     {
         private readonly IRentalService rentalService;
+        private readonly IMapper mapper;
 
-        public RentalController(IRentalService _rentalService)
+        public RentalController(IRentalService _rentalService, IMapper _mapper)
         {
             rentalService = _rentalService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllRentals")]
-        public Task<IEnumerable<Model.Rental>> GetAllRentalsAsync()
+        public async Task<IActionResult> GetAllRentalsAsync()
         {
-            return rentalService.GetAllRentalsAsync();
+            var listRentals = await rentalService.GetAllRentalsAsync();
+            var listRentalsDto = new List<ShowRentalDto>();
+            foreach (var rental in listRentals)
+            {
+                listRentalsDto.Add(mapper.Map<ShowRentalDto>(rental));
+            }
+
+            return Ok(listRentalsDto);
         }
 
         [HttpGet("{id}", Name = "GetRentalById")]
-        public async Task<ActionResult<Model.Rental>> GetRentalByIdAsync(int id)
+        public async Task<IActionResult> GetRentalByIdAsync(int id)
         {
             var rental = await rentalService.GetRentalByIdAsync(id);
             if (rental == null)
                 return NotFound();
 
-            return Ok(rental);
+            var rentalToDto = mapper.Map<ShowRentalDto>(rental);
+            return Ok(rentalToDto);
         }
 
         [HttpPost(Name = "CreateRental")]
@@ -37,23 +54,32 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateRentalAsync(Model.Rental rental)
+        public async Task<IActionResult> CreateRentalAsync ([FromBody] CreateRentalDto createRentalDto)
         {
-            await rentalService.CreateRentalAsync(rental);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var rental = mapper.Map<Rental>(createRentalDto);
+
+            var createdrental = await rentalService.CreateRentalAsync(rental);
+
+            return Ok();
         }
 
         [HttpPut("{id}", Name = "UpdateRental")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateRental(int id, [FromBody] Model.Rental rental)
+        public async Task<IActionResult> UpdateRental(int id, [FromBody] ShowRentalDto showRentalDto)
         {
-            if (id != rental.IdRental)
+            if (id != showRentalDto.IdRental)
                 return BadRequest();
+            var rental = mapper.Map<Rental>(showRentalDto);
 
-            await rentalService.UpdateRentalAsync(rental);
+            var updatedRental = await rentalService.UpdateRentalAsync(rental);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}", Name = "DeleteRental")]

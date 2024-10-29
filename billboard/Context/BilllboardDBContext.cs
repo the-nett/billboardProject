@@ -21,15 +21,7 @@ namespace billboard.Context
             userTypePermisions.HasOne(Utp => Utp.Permission).WithMany(x => x.UserTypePermission).HasForeignKey(Utp => Utp.Id_permission);
             userTypePermisions.HasOne(Utp => Utp.UserType).WithMany(x => x.UserTypes).HasForeignKey(Utp => Utp.Id_Usertype);
 
-            //userTypePermisions.HasNoKey();
 
-            // OnmodelCreating Responsible
-            var responsible = modelBuilder.Entity<Responsible>();
-
-            responsible.HasKey(x => x.IdResponsible);
-
-            responsible.HasOne(x => x.Person).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.Id_People).OnDelete(DeleteBehavior.NoAction);
-            responsible.HasOne(x => x.Company).WithOne(x => x.Responsible).HasForeignKey<Responsible>(x => x.CompanyId).OnDelete(DeleteBehavior.NoAction);
 
             // OnmodelCreating User
             var user = modelBuilder.Entity<User>();
@@ -51,7 +43,6 @@ namespace billboard.Context
             compnay.HasKey(x => x.IdCompany);
             compnay.HasOne(x => x.Industry).WithMany(x => x.Companies).HasForeignKey(x => x.IdIndustry).OnDelete(DeleteBehavior.NoAction);
             compnay.HasOne(x => x.City).WithMany(x => x.CitiesCompany).HasForeignKey(x => x.IdCity).OnDelete(DeleteBehavior.NoAction);
-            compnay.HasOne(x => x.Responsible).WithOne(x => x.Company).HasForeignKey<Company>(x => x.IdResponsible).OnDelete(DeleteBehavior.NoAction);
             compnay.HasOne(x => x.UserType).WithMany(x => x.UserTypeCompany).HasForeignKey(x => x.Id_User_Type).OnDelete(DeleteBehavior.NoAction);
 
             // OnmodelCreating Rental
@@ -124,7 +115,6 @@ namespace billboard.Context
         public DbSet<City> Cities { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Industry> Industries { get; set; }
-        public DbSet<Responsible> Responsibles { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<PayMethods> PayMethods { get; set; }
         public DbSet<UserTypePermissions> UserTypePermissions { get; set; }

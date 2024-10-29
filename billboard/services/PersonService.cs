@@ -9,7 +9,7 @@ namespace billboard.services
     public interface IPersonService
     {
         Task<ICollection<Person>> GetAllPeopleAsync();
-        Task<Person> GetPersonByIdAsync(int id);
+        Task<Person> GetPersonByIdAsync (int id);
         Task<Person> CreatePersonAsync(Person person);
         Task<Person> UpdatePersonAsync(Person person);
         Task DeletePersonAsync(int id);
@@ -47,5 +47,4 @@ namespace billboard.services
             await _personRepository.DeletePersonAsync(id);
         }
     }
-
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace billboard.Model.Dtos
+namespace billboard.Model.Dtos.Company
 {
     public class LoginCompanyDto
     {

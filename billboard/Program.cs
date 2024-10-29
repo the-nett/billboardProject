@@ -11,8 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 var conString = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<BilllboardDBContext>(options => options.UseSqlServer(conString));
 
-
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,7 +32,6 @@ builder.Services.AddScoped<IBillboardStateRepository, BillboardStateRepository>(
 builder.Services.AddScoped<IBillboardTypeRepository, BillboardTypeRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<ILessorRepository, LessorRepository>();
-builder.Services.AddScoped<IResponsibleRepository, ResponsibleRepository>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 
 // Add Services 
@@ -53,7 +50,6 @@ builder.Services.AddScoped<IBillboardStateService, BillboardStateService>();
 builder.Services.AddScoped<IBillboardTypeService, BillboardTypeService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
-builder.Services.AddScoped<IResponsibleService, ResponsibleService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 
 // Add Mapper
@@ -61,7 +57,8 @@ builder.Services.AddAutoMapper(typeof(BillboardMaper));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

@@ -10,10 +10,10 @@ namespace billboard.Repositories
     // Interface for company methods
     public interface ICompanyRepository
     {
-        Task<IEnumerable<Company>> GetAllCompaniesAsync();
+        Task<ICollection<Company>> GetAllCompaniesAsync();
         Task<Company> GetCompanyByIdAsync(int id);
-        Task CreateCompanyAsync(Company company);
-        Task UpdateCompanyAsync(Company company);
+        Task<Company> CreateCompanyAsync(Company company);
+        Task<Company> UpdateCompanyAsync(Company company);
         Task DeleteCompanyAsync(int id);
     }
 
@@ -27,15 +27,19 @@ namespace billboard.Repositories
             _contextCompany = contextCompany;
         }
 
-        public async Task CreateCompanyAsync(Company company)
-        {   
+        public async Task<Company> CreateCompanyAsync (Company company)
+        {
+            company.Id_User_Type = 2;
+            company.Company_Salt = GenerateRandomSalt(10); // Generar una cadena aleatoria de 10 caracteres
             company.Date = DateTime.Now;
+            company.StateDelete = false;
             await _contextCompany.Companies.AddAsync(company);
             await _contextCompany.SaveChangesAsync();
+            return company;
         }
 
         // Get all companies from database
-        public async Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        public async Task<ICollection<Company>> GetAllCompaniesAsync()
         {
             return await _contextCompany.Companies.ToListAsync();
         }
@@ -45,7 +49,7 @@ namespace billboard.Repositories
         {
             return await _contextCompany.Companies.FindAsync(id);
         }
-        public async Task UpdateCompanyAsync(Company company)
+        public async Task<Company> UpdateCompanyAsync(Company company)
         {
             // Obtener la compañía actual por Id
             var existingCompany = await GetCompanyByIdAsync(company.IdCompany);
@@ -54,6 +58,15 @@ namespace billboard.Repositories
             {
                 // Actualizar la compañía actual
                 existingCompany.Company_Name = company.Company_Name;
+                existingCompany.IdIndustry = company.IdIndustry;
+                existingCompany.NIT = company.NIT;
+                existingCompany.Owner_Name = company.Owner_Name;
+                existingCompany.Company_Direction = company.Company_Direction;
+                existingCompany.IdCity = company.IdCity;
+                existingCompany.Phone_Number = company.Phone_Number;
+                existingCompany.Corporate_Email = company.Corporate_Email;
+                existingCompany.Password = company.Password;
+                existingCompany.Date = DateTime.Now;
                 existingCompany.StateDelete = company.StateDelete;
 
                 // Guardar los cambios
@@ -63,6 +76,7 @@ namespace billboard.Repositories
             {
                 throw new Exception("Compañía no encontrada");
             }
+            return company;
         }
 
         public async Task DeleteCompanyAsync(int id)
@@ -86,6 +100,14 @@ namespace billboard.Repositories
         public Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, string city, string phoneNumber, string corporateEmail, int responsible, string password, int userType)
         {
             throw new NotImplementedException();
+        }
+        // Método para generar una cadena aleatoria de salt
+        private static string GenerateRandomSalt(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                                        .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

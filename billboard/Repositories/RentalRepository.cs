@@ -7,10 +7,10 @@ namespace billboard.Repositories
 {
     public interface IRentalRepository
     {
-        Task<IEnumerable<Rental>> GetAllRentalsAsync();
+        Task<ICollection<Rental>> GetAllRentalsAsync();
         Task<Rental> GetRentalByIdAsync(int id);
-        Task CreateRentalAsync(Rental rental);
-        Task UpdateRentalAsync(Rental rental);
+        Task<Rental> CreateRentalAsync(Rental rental);
+        Task<Rental> UpdateRentalAsync(Rental rental);
         Task DeleteRentalAsync(int id);
     }
 
@@ -22,16 +22,18 @@ namespace billboard.Repositories
             _contextRental = contextRental;
         }
 
-        public async Task CreateRentalAsync(Rental rental)
+        public async Task<Rental> CreateRentalAsync(Rental rental)
         {
+            rental.StateDelete = false;
             // Agregar el nuevo rental a la base de datos
             await _contextRental.Rentals.AddAsync(rental);
 
             // Guardar los cambios
             await _contextRental.SaveChangesAsync();
+            return rental;
         }
 
-        public async Task<IEnumerable<Rental>> GetAllRentalsAsync()
+        public async Task<ICollection<Rental>> GetAllRentalsAsync()
         {
             return await _contextRental.Rentals.ToListAsync();
         }
@@ -41,7 +43,7 @@ namespace billboard.Repositories
             return await _contextRental.Rentals.FindAsync(id);
         }
 
-        public async Task UpdateRentalAsync(Rental rental)
+        public async Task<Rental> UpdateRentalAsync(Rental rental)
         {
             // Current rental by Id
             var existingRental = await GetRentalByIdAsync(rental.IdRental);
@@ -49,11 +51,17 @@ namespace billboard.Repositories
             if (existingRental != null)
             {
                 // Update current rental
-                existingRental.IdRental = rental.IdRental;
+                existingRental.IdBillboard = rental.IdBillboard;
+                existingRental.IdLessor = rental.IdLessor;
+                existingRental.IdTenant = rental.IdTenant;
+                existingRental.RentalStartDate = rental.RentalStartDate;
+                existingRental.RentalEndDate = rental.RentalEndDate;
+                existingRental.IdPayMethods = rental.IdPayMethods;
+                existingRental.AdContent = rental.AdContent;
+                existingRental.ContractClauses = rental.ContractClauses;
+                existingRental.Observations = rental.Observations;
                 existingRental.StateDelete = rental.StateDelete;
 
-                // Marcar el rental como modificado para que Entity Framework lo rastree
-                //_contextRental.Entry(existingRental).State = EntityState.Modified;
                 // Save rental
                 await _contextRental.SaveChangesAsync();
             }
@@ -61,6 +69,7 @@ namespace billboard.Repositories
             {
                 throw new Exception("Alquiler no encontrado");
             }
+            return rental;
         }
         public async Task DeleteRentalAsync(int id)
         {

@@ -33,7 +33,6 @@ namespace billboard.Model
         // Propiedad de navegación
         public  UserType UserType { get; set; }
         public  Document Document { get; set; }
-        public Responsible Responsible { get; set; }
         public User User { get; set; }
     }
 }

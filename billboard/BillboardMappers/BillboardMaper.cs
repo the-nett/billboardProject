@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using billboard.Model;
+using billboard.Model.Dtos.Billboard;
+using billboard.Model.Dtos.Company;
 using billboard.Model.Dtos.Lessor;
 using billboard.Model.Dtos.Permissions;
 using billboard.Model.Dtos.Person;
+using billboard.Model.Dtos.Rental;
 using billboard.Model.Dtos.Tenant;
 using billboard.Model.Dtos.User;
 using billboard.Model.Dtos.UserTypes;
@@ -28,6 +31,13 @@ namespace billboard.BillboardMappers
             CreateMap<Tenant, CreateTenantDto>().ReverseMap();
             CreateMap<Lessor, LessorDto>().ReverseMap();
             CreateMap<Lessor, CreateLessorDto>().ReverseMap();
+            CreateMap<Company, ShowCompanyDto>().ReverseMap();
+            CreateMap<Company, RegisterCompanyDto>().ReverseMap();
+            CreateMap<Company, UpdateCompany>().ReverseMap();
+            CreateMap<Billboard, ShowBillboardDto>().ReverseMap();
+            CreateMap<Billboard, CreateBillboardDto>().ReverseMap();
+            CreateMap<Rental, ShowRentalDto>().ReverseMap();
+            CreateMap<Rental, CreateRentalDto>().ReverseMap();
 
         }
     }

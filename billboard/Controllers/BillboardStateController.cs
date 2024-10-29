@@ -41,7 +41,7 @@ namespace billboard.Controllers
         public async Task<ActionResult> CreateBillboardStateAsync(BillboardState billboardState)
         {
             await _billboardStateService.CreateBillboardStateAsync(billboardState);
-            return CreatedAtAction(nameof(GetBillboardStateByIdAsync), new { id = billboardState.IdState}, billboardState);
+            return Ok();
         }
 
         [HttpPut("{id}", Name = "UpdateBillboardState")]

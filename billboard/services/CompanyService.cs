@@ -9,10 +9,10 @@ namespace billboard.Services
     // Definimos una interfaz para el servicio de la compañía
     public interface ICompanyService
     {
-        Task<IEnumerable<Company>> GetAllCompaniesAsync();
+        Task<ICollection<Company>> GetAllCompaniesAsync();
         Task<Company> GetCompanyByIdAsync(int id);
-        Task CreateCompanyAsync(Company company);
-        Task UpdateCompanyAsync(Company company);
+        Task<Company> CreateCompanyAsync(Company company);
+        Task<Company> UpdateCompanyAsync(Company company);
         Task DeleteCompanyAsync(int id);
     }
 
@@ -24,29 +24,28 @@ namespace billboard.Services
             _companyRepository = companyRepository;
         }
 
-        public Task CreateCompanyAsync(Company company)
+        public async Task<Company> CreateCompanyAsync(Company company)
         {
-            throw new NotImplementedException();
+            return await _companyRepository.CreateCompanyAsync(company);
         }
 
-        public Task DeleteCompanyAsync(int id)
+        public async Task DeleteCompanyAsync(int id)
         {
-            throw new NotImplementedException();
+            await _companyRepository.DeleteCompanyAsync(id);
         }
 
-        public Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        public Task<ICollection<Company>> GetAllCompaniesAsync()
         {
-            throw new NotImplementedException();
+            return _companyRepository.GetAllCompaniesAsync();
         }
 
         public Task<Company> GetCompanyByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _companyRepository.GetCompanyByIdAsync(id);
         }
-
-        public Task UpdateCompanyAsync(Company company)
+        public async Task<Company> UpdateCompanyAsync(Company company)
         {
-            throw new NotImplementedException();
+            return await _companyRepository.UpdateCompanyAsync(company);
         }
     }
 }
