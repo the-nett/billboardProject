@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using billboard.Model;
+using billboard.Model.Dtos.NaturalPerson;
 using billboard.Model.Dtos.User;
 using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Security;
 using System.Threading.Tasks;
 
@@ -98,5 +100,22 @@ namespace billboard.Controllers
 
             return NoContent();
         }
+        [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Login([FromBody] LogInNaturalPerson logInNaturalPerson)
+        {
+            var responseLogin = await userService.Login(logInNaturalPerson);
+
+            if (responseLogin.Email == null || string.IsNullOrEmpty(responseLogin.Token))
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+
     }
 }
