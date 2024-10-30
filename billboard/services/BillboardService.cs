@@ -6,10 +6,10 @@ namespace billboard.services
 {
     public interface IBillboardService
     {
-        Task<IEnumerable<Billboard>> GetAllBillboardsAsync();
+        Task<ICollection<Billboard>> GetAllBillboardsAsync();
         Task<Billboard> GetBillboardByIdAsync(int id);
-        Task CreateBillboardAsync(Billboard billboard);
-        Task UpdateBillboardAsync(Billboard billboard);
+        Task<Billboard> CreateBillboardAsync (Billboard billboard);
+        Task<Billboard> UpdateBillboardAsync(Billboard billboard);
         Task DeleteBillboardAsync(int id);
     }
 
@@ -21,12 +21,12 @@ namespace billboard.services
             _billboardRepository = billboardRepository;
         }
 
-        public async Task CreateBillboardAsync(Billboard billboard)
+        public async Task<Billboard> CreateBillboardAsync(Billboard billboard)
         {
-            await _billboardRepository.CreateBillboardAsync(billboard);
+           return await _billboardRepository.CreateBillboardAsync(billboard);
         }
 
-        public Task<IEnumerable<Billboard>> GetAllBillboardsAsync()
+        public Task<ICollection<Billboard>> GetAllBillboardsAsync()
         {
             return _billboardRepository.GetAllBillboardsAsync();
         }
@@ -36,9 +36,9 @@ namespace billboard.services
             return _billboardRepository.GetBillboardByIdAsync(id);
         }
 
-        public async Task UpdateBillboardAsync(Billboard billboard)
+        public async Task<Billboard> UpdateBillboardAsync (Billboard billboard)
         {
-            await _billboardRepository.UpdateBillboardAsync(billboard);
+            return await _billboardRepository.UpdateBillboardAsync(billboard);
         }
 
         public async Task DeleteBillboardAsync(int id)

@@ -1,7 +1,8 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.UserTypes;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
 
 namespace billboard.Controllers
 {
@@ -10,25 +11,36 @@ namespace billboard.Controllers
     public class UserTypeController : ControllerBase
     {
         private readonly IUserTypeService userTypeService;
-        public UserTypeController(IUserTypeService _userTypeService)
+        private readonly IMapper mapper;
+        public UserTypeController(IUserTypeService _userTypeService, IMapper _mapper)
         {
             userTypeService = _userTypeService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllUserTypes")]
-        public Task<IEnumerable<Model.UserType>> GetAllUserTypesAsync()
+        public async Task<IActionResult> GetUserTypeAsync()
         {
-            return userTypeService.GetAllUserTypesAsync();
+            var listUserTypes = await userTypeService.GetAllUserTypesAsync();
+            var listaPermissionsDto = new List<UserTypeDto>();
+
+            foreach (var usertype in listUserTypes)
+            {
+                listaPermissionsDto.Add(mapper.Map<UserTypeDto>(usertype));
+            }
+
+            return Ok(listaPermissionsDto);
         }
 
         [HttpGet("{id}", Name = "GetUserTypeById")]
-        public async Task<ActionResult<Model.UserType>> GetUserTypeByIdAsync(int id)
+        public async Task<IActionResult> GetUserTypeIdAsync(int id)
         {
             var usertype = await userTypeService.GetUserTypeByIdAsync(id);
             if (usertype == null)
                 return NotFound();
 
-            return Ok(usertype);
+            var user = mapper.Map<UserTypeDto>(usertype);
+            return Ok(user);
         }
 
         [HttpPost(Name = "CreateUserType")]
@@ -36,23 +48,33 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateUserTypeAsync(Model.UserType usertype)
+        public async Task<IActionResult> CreateUserType([FromBody] CreateUserTypeDto createUserTypeDto)
         {
-            await userTypeService.CreateUserTypeAsync(usertype);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user_type = mapper.Map<UserType>(createUserTypeDto);
+            var createdUsertype = await userTypeService.CreateUserTypeAsync(user_type);
+            return Ok(user_type);
         }
+
 
         [HttpPut("{id}", Name = "UpdateUserType")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateUserType(int id, [FromBody] Model.UserType usertype)
+        public async Task<IActionResult> UpdateUserType(int id, [FromBody] UserTypeDto userTypeDto)
         {
-            if (id != usertype.Id_Usertype)
+            if (id != userTypeDto.Id_Usertype)
                 return BadRequest();
 
-            await userTypeService.UpdateUserTypeAsync(usertype);
+            var usertype = mapper.Map<UserType>(userTypeDto);
 
-            return NoContent();
+            var updateusertype = await userTypeService.UpdateUserTypeAsync(usertype);
+
+            return Ok(usertype);
         }
 
         [HttpDelete("{id}", Name = "DeleteUserType")]
@@ -62,7 +84,7 @@ namespace billboard.Controllers
         public async Task<IActionResult> DeleteUserType(int id)
         {
             // Current UserType by Id
-            var existingUserType = await GetUserTypeByIdAsync(id);
+            var existingUserType = await GetUserTypeIdAsync(id);
             if (existingUserType == null)
                 return NotFound();
 

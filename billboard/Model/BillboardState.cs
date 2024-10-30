@@ -5,7 +5,7 @@ namespace billboard.Model
     public class BillboardState
     {
         [Key]
-        public int IdSate { get; set; }
+        public int IdState { get; set; }
         public  required string State { get; set; }
 
         public bool StateDelete { get; set; }

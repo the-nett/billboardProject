@@ -1,4 +1,6 @@
-﻿using billboard.Model;
+﻿using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.Permissions;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,26 +11,37 @@ namespace billboard.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionService permissionService;
+        private readonly IMapper mapper;
 
-        public PermissionController(IPermissionService _permissionService)
+        public PermissionController(IPermissionService _permissionService, IMapper _mapper)
         {
             permissionService = _permissionService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllPermissions")]
-        public Task<IEnumerable<Permission>> GetAllPermissionsAsync()
+        public async Task<IActionResult> GetPermissionsAsync()
         {
-            return permissionService.GetAllPermissionsAsync();
+            var listPermissions = await permissionService.GetAllPermissionsAsync();
+            var listaPermissionsDto = new List<PermissionDto>();
+
+            foreach (var permis in listPermissions)
+            {
+                listaPermissionsDto.Add(mapper.Map<PermissionDto>(permis));
+            }
+
+            return Ok(listaPermissionsDto);
         }
 
         [HttpGet("{id}", Name = "GetPermissionById")]
-        public async Task<ActionResult<Permission>> GetPermissionByIdAsync(int id)
+        public async Task<IActionResult> GetPermissionByIdAsync(int id)
         {
             var permission = await permissionService.GetPermissionByIdAsync(id);
             if (permission == null)
                 return NotFound();
 
-            return Ok(permission);
+            var permiddiondto = mapper.Map<PermissionDto>(permission);
+            return Ok(permiddiondto);
         }
 
         [HttpPost(Name = "CreatePermission")]
@@ -36,23 +49,33 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreatePermissionAsync(Permission permission)
+        public async Task<IActionResult> CreatePermissionAsync([FromBody] CreatePermissionDto createPermissionDto)
         {
-            await permissionService.CreatePermissionAsync(permission);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var permission = mapper.Map<Permission>(createPermissionDto);
+
+            var createdPermission = await permissionService.CreatePermissionAsync(permission);
+            return CreatedAtAction("GetPermissionById", new { id = permission.Id_Permission }, permission);
         }
 
         [HttpPut("{id}", Name = "UpdatePermission")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdatePermission(int id, [FromBody] Permission permission)
+        public async Task<IActionResult> UpdatePermission(int id, [FromBody] PermissionDto permissionDto)
         {
-            if (id != permission.Id_Permission)
+            if (id != permissionDto.Id_Permission)
                 return BadRequest();
 
-            await permissionService.UpdatePermissionAsync(permission);
+            var permission = mapper.Map<Permission>(permissionDto);
 
-            return NoContent();
+            Permission updatePermission = await permissionService.UpdatePermissionAsync(permission);
+
+            return CreatedAtAction("GetPermissionById", new { id = permission.Id_Permission }, permission);
         }
 
         [HttpDelete("{id}", Name = "DeletePermission")]

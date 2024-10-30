@@ -6,10 +6,10 @@ namespace billboard.services
 {
     public interface IRentalService
     {
-        Task<IEnumerable<Rental>> GetAllRentalsAsync();
+        Task<ICollection<Rental>> GetAllRentalsAsync();
         Task<Rental> GetRentalByIdAsync(int id);
-        Task CreateRentalAsync(Rental rental);
-        Task UpdateRentalAsync(Rental rental);
+        Task<Rental> CreateRentalAsync(Rental rental);
+        Task<Rental> UpdateRentalAsync(Rental rental);
         Task DeleteRentalAsync(int id);
     }
 
@@ -22,12 +22,12 @@ namespace billboard.services
             _rentalRepository = rentalRepository;
         }
 
-        public async Task CreateRentalAsync(Rental rental)
+        public async Task<Rental> CreateRentalAsync(Rental rental)
         {
-            await _rentalRepository.CreateRentalAsync(rental);
+           return await _rentalRepository.CreateRentalAsync(rental);
         }
 
-        public Task<IEnumerable<Rental>> GetAllRentalsAsync()
+        public Task<ICollection<Rental>> GetAllRentalsAsync()
         {
             return _rentalRepository.GetAllRentalsAsync();
         }
@@ -37,9 +37,9 @@ namespace billboard.services
             return _rentalRepository.GetRentalByIdAsync(id);
         }
 
-        public async Task UpdateRentalAsync(Rental rental)
+        public async Task<Rental> UpdateRentalAsync(Rental rental)
         {
-            await _rentalRepository.UpdateRentalAsync(rental);
+            return await _rentalRepository.UpdateRentalAsync(rental);
         }
 
         public async Task DeleteRentalAsync(int id)

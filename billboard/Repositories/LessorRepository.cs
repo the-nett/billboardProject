@@ -7,10 +7,10 @@ namespace billboard.Repositories
 {
     public interface ILessorRepository
     {
-        Task<IEnumerable<Lessor>> GetAllLessorsAsync();
-        Task<Lessor> GetLessorByIdAsync(int id);
-        Task CreateLessorAsync(Lessor lessor);
-        Task UpdateLessorAsync(Lessor lessor);
+        Task<ICollection<Lessor>> GetAllLessorsAsync();
+        Task<Lessor> GetLessorByIdAsync (int id);
+        Task<Lessor> CreateLessorAsync (Lessor lessor);
+        Task<Lessor> UpdateLessorAsync (Lessor lessor);
         Task DeleteLessorAsync(int id);
     }
 
@@ -22,16 +22,17 @@ namespace billboard.Repositories
             _contextLessor = contextLessor;
         }
 
-        public async Task CreateLessorAsync(Lessor lessor)
+        public async Task<Lessor> CreateLessorAsync (Lessor lessor)
         {
             // Agregar el nuevo lessor a la base de datos
             await _contextLessor.Lessors.AddAsync(lessor);
 
             // Guardar los cambios
             await _contextLessor.SaveChangesAsync();
+            return  lessor;
         }
 
-        public async Task<IEnumerable<Lessor>> GetAllLessorsAsync()
+        public async Task<ICollection<Lessor>> GetAllLessorsAsync()
         {
             return await _contextLessor.Lessors.ToListAsync();
         }
@@ -41,7 +42,7 @@ namespace billboard.Repositories
             return await _contextLessor.Lessors.FindAsync(id);
         }
 
-        public async Task UpdateLessorAsync(Lessor lessor)
+        public async Task<Lessor> UpdateLessorAsync (Lessor lessor)
         {
             // Current lessor by Id
             var existingLessor = await GetLessorByIdAsync(lessor.IdLessor);
@@ -49,7 +50,7 @@ namespace billboard.Repositories
             if (existingLessor != null)
             {
                 // Update current lessor
-                existingLessor.IdLessor = lessor.IdLessor;
+                existingLessor.IdUserType = lessor.IdUserType;
                 existingLessor.StateDelete = lessor.StateDelete;
 
                 // Marcar el lessor como modificado para que Entity Framework lo rastree
@@ -61,6 +62,7 @@ namespace billboard.Repositories
             {
                 throw new Exception("Arrendador no encontrado");
             }
+            return lessor;
         }
 
         public async Task DeleteLessorAsync(int id)

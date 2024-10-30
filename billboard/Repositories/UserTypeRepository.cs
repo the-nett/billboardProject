@@ -2,15 +2,16 @@
 using billboard.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security;
 
 namespace billboard.Repositories
 {
     public interface IUserTypeRepository
     {
-        Task<IEnumerable<UserType>> GetAllUserTypesAsync();
+        Task<ICollection<UserType>> GetAllUserTypesAsync();
         Task<UserType> GetUserTypeByIdAsync(int id);
-        Task CreateUserTypeAsync(UserType usertype);
-        Task UpdateUserTypeAsync(UserType usertype);
+        Task<UserType> CreateUserTypeAsync(UserType usertype);
+        Task<UserType> UpdateUserTypeAsync(UserType usertype);
         Task DeleteUserTypeAsync(int id);
     }
 
@@ -22,16 +23,14 @@ namespace billboard.Repositories
             _contextUserType = contextUserType;
         }
 
-        public async Task CreateUserTypeAsync(UserType usertype)
+        public async Task<UserType> CreateUserTypeAsync(UserType usertype)
         {
-            // Agregar el nuevo UserType a la base de datos
             await _contextUserType.UserTypes.AddAsync(usertype);
-
-            // Guardar los cambios
             await _contextUserType.SaveChangesAsync();
+            return usertype;
         }
 
-        public async Task<IEnumerable<UserType>> GetAllUserTypesAsync()
+        public async Task<ICollection<UserType>> GetAllUserTypesAsync()
         {
             return await _contextUserType.UserTypes.ToListAsync();
         }
@@ -41,26 +40,24 @@ namespace billboard.Repositories
             return await _contextUserType.UserTypes.FindAsync(id);
         }
 
-        public async Task UpdateUserTypeAsync(UserType usertype)
+        public async Task<UserType> UpdateUserTypeAsync(UserType usertype)
         {
-            // Current UserType by Id
-            var existingUserType = await GetUserTypeByIdAsync(usertype.Id_Usertype);
+            // Current utype by Id
+            var existingUsertype = await GetUserTypeByIdAsync(usertype.Id_Usertype);
 
-            if (existingUserType != null)
+            if (existingUsertype != null)
             {
-                // Update current UserType
-                existingUserType.Utype = usertype.Utype;
-                existingUserType.StateDelete = usertype.StateDelete;
+                // Update current utype
+                existingUsertype.Utype = usertype.Utype;
+                existingUsertype.StateDelete = usertype.StateDelete;
 
-                // Marcar el UserType como modificado para que Entity Framework lo rastree
-                //_contextUserType.Entry(existingUserType).State = EntityState.Modified;
-                // Save UserType
                 await _contextUserType.SaveChangesAsync();
             }
             else
             {
-                throw new Exception("Tipo de Usuario no encontrado");
+                throw new Exception("Tipo de usuario no encontrado");
             }
+            return usertype;
         }
 
         public async Task DeleteUserTypeAsync(int id)

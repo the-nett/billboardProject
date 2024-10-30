@@ -17,7 +17,7 @@ namespace billboard.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1")
+                .HasAnnotation("ProductVersion", "9.0.0-rc.2.24474.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -84,16 +84,16 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdLessor");
 
-                    b.ToTable("Billboards");
+                    b.ToTable("Billboards", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.BillboardState", b =>
                 {
-                    b.Property<int>("IdSate")
+                    b.Property<int>("IdState")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSate"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdState"));
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -102,9 +102,9 @@ namespace billboard.Migrations
                     b.Property<bool>("StateDelete")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdSate");
+                    b.HasKey("IdState");
 
-                    b.ToTable("BillboardStates");
+                    b.ToTable("BillboardStates", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.BillboardType", b =>
@@ -124,7 +124,7 @@ namespace billboard.Migrations
 
                     b.HasKey("BillboardTypeId");
 
-                    b.ToTable("BillboardTypes");
+                    b.ToTable("BillboardTypes", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.City", b =>
@@ -144,7 +144,7 @@ namespace billboard.Migrations
 
                     b.HasKey("CityId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Company", b =>
@@ -180,9 +180,6 @@ namespace billboard.Migrations
                     b.Property<int>("IdIndustry")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdResponsible")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_User_Type")
                         .HasColumnType("int");
 
@@ -211,12 +208,9 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdIndustry");
 
-                    b.HasIndex("IdResponsible")
-                        .IsUnique();
-
                     b.HasIndex("Id_User_Type");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Document", b =>
@@ -236,7 +230,7 @@ namespace billboard.Migrations
 
                     b.HasKey("DocumentId");
 
-                    b.ToTable("Documents");
+                    b.ToTable("Documents", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Industry", b =>
@@ -256,7 +250,7 @@ namespace billboard.Migrations
 
                     b.HasKey("IndustryId");
 
-                    b.ToTable("Industries");
+                    b.ToTable("Industries", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Lessor", b =>
@@ -280,7 +274,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("Lessors");
+                    b.ToTable("Lessors", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.PayMethods", b =>
@@ -300,7 +294,7 @@ namespace billboard.Migrations
 
                     b.HasKey("IdPayMethod");
 
-                    b.ToTable("PayMethods");
+                    b.ToTable("PayMethods", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Permission", b =>
@@ -320,7 +314,7 @@ namespace billboard.Migrations
 
                     b.HasKey("Id_Permission");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Person", b =>
@@ -367,13 +361,16 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdPeople");
 
                     b.HasIndex("IdDocumentType");
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Rental", b =>
@@ -426,9 +423,10 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdPayMethods");
 
-                    b.ToTable("Rentals");
+                    b.ToTable("Rentals", (string)null);
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("billboard.Model.Responsible", b =>
                 {
                     b.Property<int>("IdResponsible")
@@ -451,9 +449,11 @@ namespace billboard.Migrations
                     b.HasIndex("Id_People")
                         .IsUnique();
 
-                    b.ToTable("Responsibles");
+                    b.ToTable("Responsibles", (string)null);
                 });
 
+=======
+>>>>>>> origin/master
             modelBuilder.Entity("billboard.Model.Tenant", b =>
                 {
                     b.Property<int>("IdTenant")
@@ -475,7 +475,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("IdUserType");
 
-                    b.ToTable("Tenants");
+                    b.ToTable("Tenants", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.User", b =>
@@ -513,7 +513,7 @@ namespace billboard.Migrations
                     b.HasIndex("PeopleId")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.UserType", b =>
@@ -533,7 +533,7 @@ namespace billboard.Migrations
 
                     b.HasKey("Id_Usertype");
 
-                    b.ToTable("UserTypes");
+                    b.ToTable("UserTypes", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.UserTypePermissions", b =>
@@ -551,7 +551,7 @@ namespace billboard.Migrations
 
                     b.HasIndex("Id_Usertype");
 
-                    b.ToTable("UserTypePermissions");
+                    b.ToTable("UserTypePermissions", (string)null);
                 });
 
             modelBuilder.Entity("billboard.Model.Billboard", b =>
@@ -595,12 +595,6 @@ namespace billboard.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("billboard.Model.Responsible", "Responsible")
-                        .WithOne("Company")
-                        .HasForeignKey("billboard.Model.Company", "IdResponsible")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("billboard.Model.UserType", "UserType")
                         .WithMany("UserTypeCompany")
                         .HasForeignKey("Id_User_Type")
@@ -610,8 +604,6 @@ namespace billboard.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Industry");
-
-                    b.Navigation("Responsible");
 
                     b.Navigation("UserType");
                 });
@@ -679,17 +671,6 @@ namespace billboard.Migrations
                     b.Navigation("PayMethods");
 
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("billboard.Model.Responsible", b =>
-                {
-                    b.HasOne("billboard.Model.Person", "Person")
-                        .WithOne("Responsible")
-                        .HasForeignKey("billboard.Model.Responsible", "Id_People")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("billboard.Model.Tenant", b =>
@@ -791,16 +772,7 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Person", b =>
                 {
-                    b.Navigation("Responsible")
-                        .IsRequired();
-
                     b.Navigation("User")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("billboard.Model.Responsible", b =>
-                {
-                    b.Navigation("Company")
                         .IsRequired();
                 });
 
