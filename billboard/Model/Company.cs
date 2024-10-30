@@ -23,7 +23,6 @@ namespace billboard.Model
 
         public  required string Corporate_Email { get; set; }
 
-        public  int IdResponsible { get; set; }
         public  required string Password { get; set; }
 
         public  required string Company_Salt { get; set; }
@@ -36,8 +35,7 @@ namespace billboard.Model
 
         //Navigation
         public  Industry Industry { get; set; }
-        public  City City { get; set; }
-        public  Responsible Responsible { get; set; }   
+        public  City City { get; set; }   
         public  UserType UserType { get; set; }  
 
     }

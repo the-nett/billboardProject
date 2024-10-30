@@ -39,7 +39,6 @@ namespace billboard.Controllers
         {
             await documentService.CreateDocumentAsync(document);
         }
-
         [HttpPut("{id}", Name = "UpdateDocument")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

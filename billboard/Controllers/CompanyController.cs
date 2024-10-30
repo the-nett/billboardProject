@@ -1,6 +1,11 @@
-ï»¿using billboard.Model;
+using AutoMapper;
+using billboard.Model;
+using billboard.Model.Dtos.Company;
+using billboard.Model.Dtos.Person;
+using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace billboard.Controllers
 {
@@ -9,25 +14,35 @@ namespace billboard.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService companyService;
-        public CompanyController(ICompanyService _companyService)
+        private readonly IMapper mapper;
+        public CompanyController(ICompanyService _companyService, IMapper _mapper)
         {
             companyService = _companyService;
+            mapper = _mapper;
         }
 
         [HttpGet(Name = "GetAllCompanies")]
-        public Task<IEnumerable<Model.Company>> GetAllCompaniesAsync()
+        public async Task<IActionResult> GetAllCompaniesAsync()
         {
-            return companyService.GetAllCompaniesAsync();
+            var listCompanies = await companyService.GetAllCompaniesAsync();
+            var listCompaniesDto = new List<ShowCompanyDto>();
+            foreach (var company in listCompanies)
+            {
+                listCompaniesDto.Add(mapper.Map<ShowCompanyDto>(company));
+            }
+
+            return Ok(listCompaniesDto);
         }
 
         [HttpGet("{id}", Name = "GetCompanyById")]
-        public async Task<ActionResult<Model.Company>> GetCompanyByIdAsync(int id)
+        public async Task<IActionResult> GetCompanyByIdAsync(int id)
         {
             var company = await companyService.GetCompanyByIdAsync(id);
             if (company == null)
                 return NotFound();
 
-            return Ok(company);
+            var personToDto = mapper.Map<ShowCompanyDto>(company);
+            return Ok(personToDto);
         }
 
         [HttpPost(Name = "CreateCompany")]
@@ -35,39 +50,53 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task CreateCompanyAsync(Model.Company company)
+        public async Task<IActionResult> CreateCompanyAsync ([FromBody] RegisterCompanyDto registerCompanyDto)
         {
-            await companyService.CreateCompanyAsync(company);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var company = mapper.Map<Company>(registerCompanyDto);
+
+            var createdCompany = await companyService.CreateCompanyAsync(company);
+            return Ok();
         }
 
         [HttpPut("{id}", Name = "UpdateCompany")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateCompany(int id, [FromBody] Model.Company company)
+        public async Task<IActionResult> UpdateCompany(int id, [FromBody] UpdateCompany updateCompany)
         {
-            if (id != company.IdCompany)
+            if (id != updateCompany.IdCompany)
                 return BadRequest();
 
-            await companyService.UpdateCompanyAsync(company);
+            var company = mapper.Map<Company>(updateCompany);
 
-            return NoContent();
+            var updatedCompany = await companyService.UpdateCompanyAsync(company);
+
+            return Ok();
         }
 
         [HttpDelete("{id}", Name = "DeleteCompany")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteCompany(int id)
+        public async Task DeleteCompany(int id)
         {
             // Current company by Id
-            var existingCompany = await GetCompanyByIdAsync(id);
-            if (existingCompany == null)
-                return NotFound();
+            var existingCompany = await companyService.GetCompanyByIdAsync(id);
+            if (existingCompany != null)
+            {
+                // Marcar el estado de eliminación
+                existingCompany.StateDelete = true;
 
-            await companyService.DeleteCompanyAsync(id);
-
-            return NoContent();
+                await companyService.DeleteCompanyAsync(id);
+            }
+            else
+            {
+                throw new Exception("No se pudo eliminar el usuario");
+            }
         }
     }
 }

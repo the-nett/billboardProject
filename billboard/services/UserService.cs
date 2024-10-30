@@ -8,10 +8,10 @@ namespace billboard.Services
 {
     public interface IUserService
     {
-        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<ICollection<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task<User> CreateUserAsync(User user);
+        Task<User> UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
     }
 
@@ -24,14 +24,14 @@ namespace billboard.Services
             _userRepository = userRepository;
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            await _userRepository.CreateUserAsync(user);
+            return await _userRepository.CreateUserAsync(user);
         }
 
-        public Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<ICollection<User>> GetAllUsersAsync()
         {
-            return _userRepository.GetAllUsersAsync();
+            return await _userRepository.GetAllUsersAsync();
         }
 
         public Task<User> GetUserByIdAsync(int id)
@@ -39,9 +39,9 @@ namespace billboard.Services
             return _userRepository.GetUserByIdAsync(id);
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            await _userRepository.UpdateUserAsync(user);
+            return await _userRepository.UpdateUserAsync(user);
         }
 
         public async Task DeleteUserAsync(int id)

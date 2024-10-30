@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace billboard.Services
 {
+    // Definimos una interfaz para el servicio de la compañía
     public interface ICompanyService
     {
-        Task<IEnumerable<Company>> GetAllCompaniesAsync();
+        Task<ICollection<Company>> GetAllCompaniesAsync();
         Task<Company> GetCompanyByIdAsync(int id);
-        Task CreateCompanyAsync(Company company);
-        Task UpdateCompanyAsync(Company company);
+        Task<Company> CreateCompanyAsync(Company company);
+        Task<Company> UpdateCompanyAsync(Company company);
         Task DeleteCompanyAsync(int id);
     }
 
@@ -23,12 +24,17 @@ namespace billboard.Services
             _companyRepository = companyRepository;
         }
 
-        public async Task CreateCompanyAsync(Company company)
+        public async Task<Company> CreateCompanyAsync(Company company)
         {
-            await _companyRepository.CreateCompanyAsync(company);
+            return await _companyRepository.CreateCompanyAsync(company);
         }
 
-        public Task<IEnumerable<Company>> GetAllCompaniesAsync()
+        public async Task DeleteCompanyAsync(int id)
+        {
+            await _companyRepository.DeleteCompanyAsync(id);
+        }
+
+        public Task<ICollection<Company>> GetAllCompaniesAsync()
         {
             return _companyRepository.GetAllCompaniesAsync();
         }
@@ -37,15 +43,9 @@ namespace billboard.Services
         {
             return _companyRepository.GetCompanyByIdAsync(id);
         }
-
-        public async Task UpdateCompanyAsync(Company company)
+        public async Task<Company> UpdateCompanyAsync(Company company)
         {
-            await _companyRepository.UpdateCompanyAsync(company);
-        }
-
-        public async Task DeleteCompanyAsync(int id)
-        {
-            await _companyRepository.DeleteCompanyAsync(id);
+            return await _companyRepository.UpdateCompanyAsync(company);
         }
     }
 }

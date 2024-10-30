@@ -7,10 +7,10 @@ namespace billboard.Repositories
 {
     public interface IBillboardRepository
     {
-        Task<IEnumerable<Billboard>> GetAllBillboardsAsync();
+        Task<ICollection<Billboard>> GetAllBillboardsAsync();
         Task<Billboard> GetBillboardByIdAsync(int id);
-        Task CreateBillboardAsync(Billboard billboard);
-        Task UpdateBillboardAsync(Billboard billboard);
+        Task<Billboard> CreateBillboardAsync(Billboard billboard);
+        Task<Billboard> UpdateBillboardAsync(Billboard billboard);
         Task DeleteBillboardAsync(int id);
     }
 
@@ -22,16 +22,18 @@ namespace billboard.Repositories
             _contextBillboard = contextBillboard;
         }
 
-        public async Task CreateBillboardAsync(Billboard billboard)
+        public async Task<Billboard> CreateBillboardAsync(Billboard billboard)
         {
+            billboard.StateDelete = false;
             // Agregar la nueva valla publicitaria a la base de datos
             await _contextBillboard.Billboards.AddAsync(billboard);
 
             // Guardar los cambios
             await _contextBillboard.SaveChangesAsync();
+            return billboard;
         }
 
-        public async Task<IEnumerable<Billboard>> GetAllBillboardsAsync()
+        public async Task<ICollection<Billboard>> GetAllBillboardsAsync()
         {
             return await _contextBillboard.Billboards.ToListAsync();
         }
@@ -41,7 +43,7 @@ namespace billboard.Repositories
             return await _contextBillboard.Billboards.FindAsync(id);
         }
 
-        public async Task UpdateBillboardAsync(Billboard billboard)
+        public async Task<Billboard> UpdateBillboardAsync(Billboard billboard)
         {
             // Valla actual por Id
             var existingBillboard = await GetBillboardByIdAsync(billboard.IdBillboard);
@@ -49,7 +51,19 @@ namespace billboard.Repositories
             if (existingBillboard != null)
             {
                 // Actualizar la valla actual
-                existingBillboard.IdBillboard = billboard.IdBillboard;
+                existingBillboard.IdLessor = billboard.IdLessor;
+                existingBillboard.ImageUrl = billboard.ImageUrl;
+                existingBillboard.Fee = billboard.Fee;
+                existingBillboard.IdBillboardState = billboard.IdBillboardState;
+                existingBillboard.LatitudeAndLongitude = billboard.LatitudeAndLongitude;
+                existingBillboard.IdBillboardType = billboard.IdBillboardType;
+                existingBillboard.State = billboard.State;
+                existingBillboard.Measures = billboard.Measures;
+                existingBillboard.FloorDistance = billboard.FloorDistance;
+                existingBillboard.Illumination = billboard.Illumination;
+                existingBillboard.InstallationDate = billboard.InstallationDate;
+                existingBillboard.SimultaneousAds = billboard.SimultaneousAds;
+                existingBillboard.Observations = billboard.Observations;
                 existingBillboard.StateDelete = billboard.StateDelete;
 
                 // Guardar la valla actualizada
@@ -59,6 +73,7 @@ namespace billboard.Repositories
             {
                 throw new Exception("Valla publicitaria no encontrada");
             }
+            return billboard;
         }
         public async Task DeleteBillboardAsync(int id)
         {

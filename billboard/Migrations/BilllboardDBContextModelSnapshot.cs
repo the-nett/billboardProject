@@ -17,7 +17,7 @@ namespace billboard.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1")
+                .HasAnnotation("ProductVersion", "9.0.0-rc.2.24474.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -89,11 +89,11 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.BillboardState", b =>
                 {
-                    b.Property<int>("IdSate")
+                    b.Property<int>("IdState")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSate"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdState"));
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -102,7 +102,7 @@ namespace billboard.Migrations
                     b.Property<bool>("StateDelete")
                         .HasColumnType("bit");
 
-                    b.HasKey("IdSate");
+                    b.HasKey("IdState");
 
                     b.ToTable("BillboardStates", (string)null);
                 });
@@ -180,9 +180,6 @@ namespace billboard.Migrations
                     b.Property<int>("IdIndustry")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdResponsible")
-                        .HasColumnType("int");
-
                     b.Property<int>("Id_User_Type")
                         .HasColumnType("int");
 
@@ -210,9 +207,6 @@ namespace billboard.Migrations
                     b.HasIndex("IdCity");
 
                     b.HasIndex("IdIndustry");
-
-                    b.HasIndex("IdResponsible")
-                        .IsUnique();
 
                     b.HasIndex("Id_User_Type");
 
@@ -367,6 +361,9 @@ namespace billboard.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("StateDelete")
+                        .HasColumnType("bit");
+
                     b.HasKey("IdPeople");
 
                     b.HasIndex("IdDocumentType");
@@ -429,6 +426,7 @@ namespace billboard.Migrations
                     b.ToTable("Rentals", (string)null);
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("billboard.Model.Responsible", b =>
                 {
                     b.Property<int>("IdResponsible")
@@ -454,6 +452,8 @@ namespace billboard.Migrations
                     b.ToTable("Responsibles", (string)null);
                 });
 
+=======
+>>>>>>> origin/master
             modelBuilder.Entity("billboard.Model.Tenant", b =>
                 {
                     b.Property<int>("IdTenant")
@@ -595,12 +595,6 @@ namespace billboard.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("billboard.Model.Responsible", "Responsible")
-                        .WithOne("Company")
-                        .HasForeignKey("billboard.Model.Company", "IdResponsible")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("billboard.Model.UserType", "UserType")
                         .WithMany("UserTypeCompany")
                         .HasForeignKey("Id_User_Type")
@@ -610,8 +604,6 @@ namespace billboard.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Industry");
-
-                    b.Navigation("Responsible");
 
                     b.Navigation("UserType");
                 });
@@ -679,17 +671,6 @@ namespace billboard.Migrations
                     b.Navigation("PayMethods");
 
                     b.Navigation("Tenant");
-                });
-
-            modelBuilder.Entity("billboard.Model.Responsible", b =>
-                {
-                    b.HasOne("billboard.Model.Person", "Person")
-                        .WithOne("Responsible")
-                        .HasForeignKey("billboard.Model.Responsible", "Id_People")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("billboard.Model.Tenant", b =>
@@ -791,16 +772,7 @@ namespace billboard.Migrations
 
             modelBuilder.Entity("billboard.Model.Person", b =>
                 {
-                    b.Navigation("Responsible")
-                        .IsRequired();
-
                     b.Navigation("User")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("billboard.Model.Responsible", b =>
-                {
-                    b.Navigation("Company")
                         .IsRequired();
                 });
 
