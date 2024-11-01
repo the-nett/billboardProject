@@ -106,9 +106,10 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] LogInNaturalPerson logInNaturalPerson)
         {
+            
             var responseLogin = await userService.Login(logInNaturalPerson);
 
-            if (responseLogin.Email == null || string.IsNullOrEmpty(responseLogin.Token))
+            if (responseLogin.Usser.Email == null || string.IsNullOrEmpty(responseLogin.Token))
             {
                 return BadRequest();
             }
