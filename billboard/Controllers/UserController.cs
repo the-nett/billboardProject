@@ -109,9 +109,9 @@ namespace billboard.Controllers
             
             var responseLogin = await userService.Login(logInNaturalPerson);
 
-            if (responseLogin.Usser.Email == null || string.IsNullOrEmpty(responseLogin.Token))
+            if (responseLogin == null || responseLogin.Usser == null || string.IsNullOrEmpty(responseLogin.Token))
             {
-                return BadRequest();
+                return BadRequest("Invalid login credentials.");
             }
 
             return Ok(new
