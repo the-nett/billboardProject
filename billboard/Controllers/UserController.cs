@@ -114,7 +114,11 @@ namespace billboard.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return Ok(new
+            {
+                User = responseLogin.Usser,
+                Token = responseLogin.Token
+            });
         }
 
 
