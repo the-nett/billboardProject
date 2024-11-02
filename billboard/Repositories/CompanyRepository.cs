@@ -1,8 +1,15 @@
 ﻿using billboard.Context;
 using billboard.Model;
+using billboard.Model.Dtos.Company;
+using billboard.Model.Dtos.NaturalPerson;
+using billboard.Model.Dtos.UserNaturalPerson;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace billboard.Repositories
@@ -15,6 +22,7 @@ namespace billboard.Repositories
         Task<Company> CreateCompanyAsync(Company company);
         Task<Company> UpdateCompanyAsync(Company company);
         Task DeleteCompanyAsync(int id);
+        Task<AnswerLoginCompany> LoginCompany(LoginCompanyDto loginCompanyDto);
     }
 
     // Class for company operations
@@ -22,9 +30,11 @@ namespace billboard.Repositories
     {
 
         private readonly BilllboardDBContext _contextCompany;
-        public CompanyRepository(BilllboardDBContext contextCompany)
+        private string secretKey;
+        public CompanyRepository(BilllboardDBContext contextCompany, IConfiguration config)
         {
             _contextCompany = contextCompany;
+            secretKey = config.GetValue<string>("ApiSettings:Key");
         }
 
         public async Task<Company> CreateCompanyAsync (Company company)
@@ -97,10 +107,59 @@ namespace billboard.Repositories
             }
         }
 
-        public Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, string city, string phoneNumber, string corporateEmail, int responsible, string password, int userType)
+        public async Task<AnswerLoginCompany> LoginCompany(LoginCompanyDto loginCompanyDto)
         {
-            throw new NotImplementedException();
+            // var emailPerson = _contextPerson.People.FirstOrDefault(e => e.Email.ToLower() == logInNaturalPerson.Email.ToLower());
+            // var passwordUser = _contextUser.Users.FirstOrDefault(p => p.PeoplePassword == logInNaturalPerson.PeoplePassword);
+
+            var company = _contextCompany.Companies.FirstOrDefault(c => c.Corporate_Email.ToLower() == loginCompanyDto.Corporate_Email.ToLower() &&
+                c.Password == loginCompanyDto.Password);
+
+            //No hay coincidencia
+            if (company == null)
+            {
+                return new AnswerLoginCompany()
+                {
+                    Token = "",
+                    company = null
+                };
+            }
+
+            // Si hay coincidencia
+            var manageToken = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretKey);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, company.Corporate_Email.ToString()),
+
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            // Crear una instancia de UserLoginDto y asignar los valores necesarios
+            var answerCompanyLoginDto = new AnswerCompanyLoginDto
+            {
+                IdCompany = company.IdCompany, // Asumiendo que la clase Person tiene PeopleId
+                Company_Name = company.Company_Name, // Asumiendo que la clase Person tiene Name
+                Corporate_Email = company.Corporate_Email, // Correo electrónico del usuario
+            };
+            var token = manageToken.CreateToken(tokenDescriptor);
+            // Crear y retornar el objeto AnswerLogInNaturalPerson
+            var answer = new AnswerLoginCompany
+            {
+                Token = manageToken.WriteToken(token), // Asumiendo que ya tienes un token generado
+                company = answerCompanyLoginDto // Asignar la instancia de UserLoginDto
+
+            };
+
+            return answer;
+
         }
+
         // Método para generar una cadena aleatoria de salt
         private static string GenerateRandomSalt(int length)
         {

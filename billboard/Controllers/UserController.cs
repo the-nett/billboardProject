@@ -2,13 +2,9 @@
 using billboard.Model;
 using billboard.Model.Dtos.NaturalPerson;
 using billboard.Model.Dtos.User;
-using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Net;
-using System.Security;
-using System.Threading.Tasks;
+
 
 namespace billboard.Controllers
 {

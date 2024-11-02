@@ -42,7 +42,7 @@ namespace billboard.BillboardMappers
             CreateMap<(User user, Person person), LogInNaturalPerson>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.person.Email))
                 .ForMember(dest => dest.PeoplePassword, opt => opt.MapFrom(src => src.user.PeoplePassword));
-
+            CreateMap<Company, LoginCompanyDto>().ReverseMap();
         }
     }
     

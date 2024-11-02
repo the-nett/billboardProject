@@ -1,11 +1,9 @@
 using AutoMapper;
 using billboard.Model;
 using billboard.Model.Dtos.Company;
-using billboard.Model.Dtos.Person;
-using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
+
 
 namespace billboard.Controllers
 {
@@ -50,7 +48,7 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateCompanyAsync ([FromBody] RegisterCompanyDto registerCompanyDto)
+        public async Task<IActionResult> CreateCompanyAsync([FromBody] RegisterCompanyDto registerCompanyDto)
         {
             if (!ModelState.IsValid)
             {
@@ -97,6 +95,26 @@ namespace billboard.Controllers
             {
                 throw new Exception("No se pudo eliminar el usuario");
             }
+        }
+        [HttpPost("loginCompany")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> LoginCompany([FromBody] LoginCompanyDto loginCompanyDto)
+        {
+
+            var responseLoginCompany = await companyService.LoginCompany(loginCompanyDto);
+
+            if (responseLoginCompany == null || responseLoginCompany.company == null || string.IsNullOrEmpty(responseLoginCompany.Token))
+            {
+                return BadRequest("Invalid login credentials.");
+            }
+
+            return Ok(new
+            {
+                company = responseLoginCompany.company,
+                Token = responseLoginCompany.Token
+            });
         }
     }
 }
