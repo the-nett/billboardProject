@@ -2,7 +2,6 @@
 using billboard.Model;
 using billboard.Model.Dtos.NaturalPerson;
 using billboard.Model.Dtos.User;
-using billboard.services;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -100,7 +99,7 @@ namespace billboard.Controllers
 
             return NoContent();
         }
-        [HttpPost("login")]
+        [HttpPost(Name = "login")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -120,7 +119,5 @@ namespace billboard.Controllers
                 Token = responseLogin.Token
             });
         }
-
-
     }
 }

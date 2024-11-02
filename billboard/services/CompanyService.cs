@@ -1,4 +1,5 @@
 ﻿using billboard.Model;
+using billboard.Model.Dtos.Company;
 using billboard.Repositories;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace billboard.Services
         Task<Company> CreateCompanyAsync(Company company);
         Task<Company> UpdateCompanyAsync(Company company);
         Task DeleteCompanyAsync(int id);
+        Task<AnswerLoginCompany> LoginCompany(LoginCompanyDto loginCompanyDto);
     }
 
     public class CompanyService : ICompanyService
@@ -43,6 +45,12 @@ namespace billboard.Services
         {
             return _companyRepository.GetCompanyByIdAsync(id);
         }
+
+        public async Task<AnswerLoginCompany> LoginCompany(LoginCompanyDto loginCompanyDto)
+        {
+            return await _companyRepository.LoginCompany(loginCompanyDto);
+        }
+
         public async Task<Company> UpdateCompanyAsync(Company company)
         {
             return await _companyRepository.UpdateCompanyAsync(company);
