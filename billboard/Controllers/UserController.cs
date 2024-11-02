@@ -55,7 +55,7 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateUserAsync ([FromBody] CreateUserDto createUserDto)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto createUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -106,14 +106,19 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] LogInNaturalPerson logInNaturalPerson)
         {
+
             var responseLogin = await userService.Login(logInNaturalPerson);
 
-            if (responseLogin.Email == null || string.IsNullOrEmpty(responseLogin.Token))
+            if (responseLogin == null || responseLogin.Usser == null || string.IsNullOrEmpty(responseLogin.Token))
             {
-                return BadRequest();
+                return BadRequest("Invalid login credentials.");
             }
 
-            return Ok();
+            return Ok(new
+            {
+                User = responseLogin.Usser,
+                Token = responseLogin.Token
+            });
         }
 
 

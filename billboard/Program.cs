@@ -52,10 +52,20 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+    builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
 // Add Mapper
 builder.Services.AddAutoMapper(typeof(BillboardMaper));  
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();

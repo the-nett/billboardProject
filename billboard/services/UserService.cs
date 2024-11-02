@@ -1,4 +1,5 @@
 ﻿using billboard.Model;
+using billboard.Model.Dtos.NaturalPerson;
 using billboard.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace billboard.Services
         Task<User> CreateUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
+        Task<AnswerLogInNaturalPerson> Login(LogInNaturalPerson logInNaturalPerson);
     }
 
     public class UserService : IUserService
@@ -47,6 +49,10 @@ namespace billboard.Services
         public async Task DeleteUserAsync(int id)
         {
             await _userRepository.DeleteUserAsync(id);
+        }
+        public async Task<AnswerLogInNaturalPerson> Login(LogInNaturalPerson logInNaturalPerson)
+        {
+            return await _userRepository.Login(logInNaturalPerson);
         }
     }
 

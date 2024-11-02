@@ -21,7 +21,7 @@ namespace billboard.Repositories
         Task<User> CreateUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
-        Task<AnswerLogInNaturalPerson> Login (LogInNaturalPerson logInNaturalPerson);
+        Task<AnswerLogInNaturalPerson> Login(LogInNaturalPerson logInNaturalPerson);
     }
 
     public class UserRepository : IUserRepository
@@ -127,7 +127,7 @@ namespace billboard.Repositories
                 {
                     Token = "",
                     Usser = null
-                }; 
+                };
             }
 
             // Si hay coincidencia
@@ -139,7 +139,7 @@ namespace billboard.Repositories
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Person.Email.ToString()),
-                    
+
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -160,7 +160,7 @@ namespace billboard.Repositories
             {
                 Token = manageToken.WriteToken(token), // Asumiendo que ya tienes un token generado
                 Usser = userLoginDto // Asignar la instancia de UserLoginDto
-                
+
             };
 
             return answer;
