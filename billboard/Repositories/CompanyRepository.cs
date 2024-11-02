@@ -107,11 +107,6 @@ namespace billboard.Repositories
             }
         }
 
-        public Task CreateCompany(string companyName, int industry, string nit, string ownerName, string companyDirection, string city, string phoneNumber, string corporateEmail, int responsible, string password, int userType)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<AnswerLoginCompany> LoginCompany(LoginCompanyDto loginCompanyDto)
         {
             // var emailPerson = _contextPerson.People.FirstOrDefault(e => e.Email.ToLower() == logInNaturalPerson.Email.ToLower());

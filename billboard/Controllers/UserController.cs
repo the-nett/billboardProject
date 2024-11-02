@@ -4,10 +4,7 @@ using billboard.Model.Dtos.NaturalPerson;
 using billboard.Model.Dtos.User;
 using billboard.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Net;
-using System.Security;
-using System.Threading.Tasks;
+
 
 namespace billboard.Controllers
 {
@@ -54,7 +51,7 @@ namespace billboard.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateUserAsync ([FromBody] CreateUserDto createUserDto)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDto createUserDto)
         {
             if (!ModelState.IsValid)
             {
@@ -99,13 +96,13 @@ namespace billboard.Controllers
 
             return NoContent();
         }
-        [HttpPost(Name = "login")]
+        [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] LogInNaturalPerson logInNaturalPerson)
         {
-            
+
             var responseLogin = await userService.Login(logInNaturalPerson);
 
             if (responseLogin == null || responseLogin.Usser == null || string.IsNullOrEmpty(responseLogin.Token))
@@ -119,5 +116,7 @@ namespace billboard.Controllers
                 Token = responseLogin.Token
             });
         }
+
+
     }
 }
