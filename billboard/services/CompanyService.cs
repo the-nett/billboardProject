@@ -1,9 +1,6 @@
 ﻿using billboard.Model;
 using billboard.Model.Dtos.Company;
 using billboard.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace billboard.Services
 {
