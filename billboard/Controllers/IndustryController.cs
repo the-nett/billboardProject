@@ -39,7 +39,7 @@ namespace billboard.Controllers
         public async Task<IActionResult> CreateIndustryAsync(Model.Industry industry)
         {
             await industryService.CreateIndustryAsync(industry);
-            return CreatedAtAction(nameof(GetIndustryByIdAsync), new { id = industry.IndustryId }, industry);
+            return Ok(industry);
         }
 
         [HttpPut("{id}", Name = "UpdateIndustry")]

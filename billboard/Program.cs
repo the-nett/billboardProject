@@ -52,25 +52,29 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 
+// CORS Configuration
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-    builder => builder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 // Add Mapper
-builder.Services.AddAutoMapper(typeof(BillboardMaper));  
+builder.Services.AddAutoMapper(typeof(BillboardMaper));
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+
 // Configure the HTTP request pipeline.
+app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
