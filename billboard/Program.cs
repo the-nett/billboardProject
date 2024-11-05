@@ -33,6 +33,7 @@ builder.Services.AddScoped<IBillboardTypeRepository, BillboardTypeRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<ILessorRepository, LessorRepository>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 // Add Services 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -51,6 +52,7 @@ builder.Services.AddScoped<IBillboardTypeService, BillboardTypeService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
+builder.Services.AddScoped<IGameService, GameService>();
 
 // CORS Configuration
 builder.Services.AddCors(options =>

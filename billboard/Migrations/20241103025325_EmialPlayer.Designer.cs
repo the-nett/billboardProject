@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using billboard.Context;
 
@@ -11,9 +12,11 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    partial class BilllboardDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241103025325_EmialPlayer")]
+    partial class EmialPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,14 +250,14 @@ namespace billboard.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("LevelTime")
+                        .HasColumnType("time");
+
                     b.Property<string>("PlayerEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdGame");
-
-                    b.HasIndex("IdUser")
-                        .IsUnique();
 
                     b.ToTable("Games");
                 });
@@ -606,17 +609,6 @@ namespace billboard.Migrations
                     b.Navigation("UserType");
                 });
 
-            modelBuilder.Entity("billboard.Model.Game", b =>
-                {
-                    b.HasOne("billboard.Model.User", "User")
-                        .WithOne("Game")
-                        .HasForeignKey("billboard.Model.Game", "IdUser")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("billboard.Model.Lessor", b =>
                 {
                     b.HasOne("billboard.Model.UserType", "UserType")
@@ -788,12 +780,6 @@ namespace billboard.Migrations
             modelBuilder.Entity("billboard.Model.Tenant", b =>
                 {
                     b.Navigation("Tenant_Rental");
-                });
-
-            modelBuilder.Entity("billboard.Model.User", b =>
-                {
-                    b.Navigation("Game")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("billboard.Model.UserType", b =>

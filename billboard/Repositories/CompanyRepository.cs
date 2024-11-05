@@ -1,16 +1,11 @@
 ﻿using billboard.Context;
 using billboard.Model;
 using billboard.Model.Dtos.Company;
-using billboard.Model.Dtos.NaturalPerson;
-using billboard.Model.Dtos.UserNaturalPerson;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace billboard.Repositories
 {

@@ -2,6 +2,7 @@
 using billboard.Model;
 using billboard.Model.Dtos.Billboard;
 using billboard.Model.Dtos.Company;
+using billboard.Model.Dtos.Game;
 using billboard.Model.Dtos.Lessor;
 using billboard.Model.Dtos.NaturalPerson;
 using billboard.Model.Dtos.Permissions;
@@ -43,6 +44,8 @@ namespace billboard.BillboardMappers
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.person.Email))
                 .ForMember(dest => dest.PeoplePassword, opt => opt.MapFrom(src => src.user.PeoplePassword));
             CreateMap<Company, LoginCompanyDto>().ReverseMap();
+            CreateMap<Game, ShowGameDto>().ReverseMap();
+            CreateMap<Game, GameDto>().ReverseMap();
         }
     }
     

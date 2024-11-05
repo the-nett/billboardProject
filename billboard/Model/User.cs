@@ -21,5 +21,6 @@ namespace billboard.Model
         //Navigation
         public  Person Person { get; set; }
         public  UserType UserType { get; set; }
+        public Game Game { get; set; }
     }
 }
