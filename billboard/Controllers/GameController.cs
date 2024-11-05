@@ -25,10 +25,10 @@ namespace billboard.Controllers
         public async Task<IActionResult> GetAllGamesAsync()
         {
             var listGames = await gameService.GetAllGameAsync();
-            var listGamesDto = new List<ShowGameDto>();
+            var listGamesDto = new List<GameDto>();
             foreach (var game in listGames)
             {
-                listGamesDto.Add(mapper.Map<ShowGameDto>(game));
+                listGamesDto.Add(mapper.Map<GameDto>(game));
             }
 
             return Ok(listGamesDto);
@@ -41,6 +41,17 @@ namespace billboard.Controllers
                 return NotFound();
 
             var gameToDto = mapper.Map<ShowGameDto>(game);
+            return Ok(gameToDto);
+        }
+
+        [HttpGet("GetGameByIdUser/{idUser}")]
+        public async Task<IActionResult> GetGameByIdUserAsync(int idUser)
+        {
+            var game = await gameService.GetGameByIdUser(idUser);
+            if (game == null)
+                return NotFound();
+
+            var gameToDto = mapper.Map<GameDto>(game);
             return Ok(gameToDto);
         }
 
@@ -90,6 +101,7 @@ namespace billboard.Controllers
             // Retorna el objeto actualizado directamente
             return Ok(updatedGame);
         }
+        
     }
     
 }

@@ -17,6 +17,6 @@
         public required string Email { get; set; }
 
         public string PhoneNumber { get; set; }
-        public virtual ICollection<UserType> UserTypes { get; set; }
+        public int IdUserType { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace billboard.Model
 		public int IdGame { get; set; }
 		public required int IdUser { get; set; }
 		public required string PlayerEmail { get; set; }
-		public required TimeSpan LevelTime { get; set; }  // Almacena el tiempo transcurrido en el nivel
 		public required int Level { get; set; }
+
+		public User User { get; set; }
 	}
 }

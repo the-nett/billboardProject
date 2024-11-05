@@ -107,7 +107,7 @@ namespace billboard.Context
             // OnmodelCreating Game
             var game = modelBuilder.Entity<Game>();
             game.HasKey(x => x.IdGame);
-
+            game.HasOne(x => x.User).WithOne( x => x.Game).HasForeignKey<Game>(x => x.IdUser).OnDelete(DeleteBehavior.NoAction);
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Person> People { get; set; }

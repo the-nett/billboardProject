@@ -9,6 +9,7 @@ namespace billboard.services
     {
         Task<ICollection<Game>> GetAllGameAsync();
         Task<Game> GetGameByIdAsync(int id);
+        Task<Game> GetGameByIdUser(int id);
         Task<Game> CreateGameAsync(Game game);
         Task<Game> UpdateGameAsync(Game game);
     }
@@ -33,6 +34,11 @@ namespace billboard.services
         public Task<Game> GetGameByIdAsync(int id)
         {
             return _gameRepository.GetGameByIdAsync(id);
+        }
+
+        public Task<Game> GetGameByIdUser(int id)
+        {
+            return _gameRepository.GetGameByIdUser(id);
         }
 
         public async Task<Game> UpdateGameAsync(Game game)

@@ -12,6 +12,7 @@ namespace billboard.Repositories
     {
         Task<ICollection<Game>> GetAllGameAsync();
         Task<Game> GetGameByIdAsync(int id);
+        Task<Game> GetGameByIdUser(int id);
         Task<Game> CreateGameAsync(Game game);
         Task<Game> UpdateGameAsync(Game game);
     }
@@ -42,6 +43,12 @@ namespace billboard.Repositories
             return await _contextGame.Games.FindAsync(id);
         }
 
+        public async Task<Game> GetGameByIdUser(int id)
+        {
+            var games = await _contextGame.Games.Where(g => g.IdUser == id).SingleOrDefaultAsync();
+            return games;
+        }
+
         public async Task<Game> UpdateGameAsync(Game game)
         {
             // Obtener la partida actual por Id
@@ -50,7 +57,6 @@ namespace billboard.Repositories
             if (existingGame != null)
             {
                 // Actualizar la compañía actual
-                existingGame.LevelTime = game.LevelTime;
                 existingGame.Level = game.Level;
 
                 // Guardar los cambios
