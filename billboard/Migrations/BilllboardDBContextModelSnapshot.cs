@@ -531,6 +531,9 @@ namespace billboard.Migrations
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ModifyByPerson")
+                        .HasColumnType("int");
+
                     b.Property<int>("PeopleId")
                         .HasColumnType("int");
 

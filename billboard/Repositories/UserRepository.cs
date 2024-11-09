@@ -25,6 +25,7 @@ namespace billboard.Repositories
         private readonly BilllboardDBContext _contextUser;
         private readonly BilllboardDBContext _contextPerson;
         private string secretKey;
+        public static int idPeopleLogIn;
 
         public UserRepository(BilllboardDBContext contextUser, BilllboardDBContext contextPerson, IConfiguration config)
         {
@@ -158,6 +159,7 @@ namespace billboard.Repositories
                 Usser = userLoginDto // Asignar la instancia de UserLoginDto
                 
             };
+            idPeopleLogIn = user.Person.IdPeople;
 
             return answer;
 

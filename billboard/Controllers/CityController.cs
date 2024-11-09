@@ -1,8 +1,7 @@
 ﻿using billboard.Model;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace billboard.Controllers
 {

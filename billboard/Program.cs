@@ -34,6 +34,7 @@ builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<ILessorRepository, LessorRepository>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<IUserHistoriesRepository, UserHistoriesRepository>();
 
 // Add Services 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -53,6 +54,7 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<IRentalService, RentalService>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IUserHistoriesService, UserHistoriesService>();
 
 // Add Mapper
 builder.Services.AddAutoMapper(typeof(BillboardMaper));  

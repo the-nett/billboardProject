@@ -12,8 +12,8 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    [Migration("20241109062631_TriggerUserHistories")]
-    partial class TriggerUserHistories
+    [Migration("20241109070835_AddModify")]
+    partial class AddModify
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -533,6 +533,9 @@ namespace billboard.Migrations
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ModifyByPerson")
+                        .HasColumnType("int");
 
                     b.Property<int>("PeopleId")
                         .HasColumnType("int");

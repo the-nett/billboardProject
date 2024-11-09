@@ -18,6 +18,7 @@ namespace billboard.Model
         public required int IdUserType { get; set; }
 
         public bool StateDelete { get; set; }
+        public int ModifyByPerson { get; set; }
 
     }
 }
