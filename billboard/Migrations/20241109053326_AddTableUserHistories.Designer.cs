@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using billboard.Context;
 
@@ -11,9 +12,11 @@ using billboard.Context;
 namespace billboard.Migrations
 {
     [DbContext(typeof(BilllboardDBContext))]
-    partial class BilllboardDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241109053326_AddTableUserHistories")]
+    partial class AddTableUserHistories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -522,14 +525,14 @@ namespace billboard.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUserHistory"));
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdUser")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUserType")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("PeopleId")
                         .HasColumnType("int");

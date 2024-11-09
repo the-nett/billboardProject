@@ -108,6 +108,11 @@ namespace billboard.Context
             var game = modelBuilder.Entity<Game>();
             game.HasKey(x => x.IdGame);
             game.HasOne(x => x.User).WithOne( x => x.Game).HasForeignKey<Game>(x => x.IdUser).OnDelete(DeleteBehavior.NoAction);
+
+            // OnmodelCreating UserHistory
+            var userHistory = modelBuilder.Entity<UserHistory>();
+            userHistory.HasKey(x => x.IdUserHistory);
+
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Person> People { get; set; }
@@ -126,6 +131,7 @@ namespace billboard.Context
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<Lessor> Lessors { get; set; }
         public DbSet<Game> Games { get; set; }
+        public DbSet<UserHistory> UserHistories { get; set; }
     }
 }
 
