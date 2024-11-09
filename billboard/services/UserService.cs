@@ -56,7 +56,8 @@ namespace billboard.Services
                     PeopleSalt = existingUser.PeopleSalt,
                     IdUserType = existingUser.IdUserType,
                     StateDelete = existingUser.StateDelete,
-                    ModifyByPerson = idPeopleLogIn // Aquí asignas el ID de la persona que realizó la modificación
+                    ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
+                    Modified = DateTime.Now
                 };
 
                 // Llamar al repositorio para crear el historial de usuario
@@ -82,7 +83,8 @@ namespace billboard.Services
                 PeopleSalt = currentUser.PeopleSalt,
                 IdUserType = currentUser.IdUserType,
                 StateDelete = currentUser.StateDelete,
-                ModifyByPerson = idPeopleLogIn // Aquí asignas el ID de la persona que realizó la modificación
+                ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
+                Modified = DateTime.Now
             };
 
             // Llamar al repositorio para crear el historial de usuario
