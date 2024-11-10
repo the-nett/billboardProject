@@ -3,9 +3,6 @@ using billboard.Model;
 using billboard.Model.Dtos.Person;
 using billboard.services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Security;
-using System.Threading.Tasks;
 
 namespace billboard.Controllers
 {
@@ -59,7 +56,7 @@ namespace billboard.Controllers
             var person = mapper.Map<Person>(createPersonDto);
 
             var createdPeson = await personService.CreatePersonAsync(person);
-            return Ok();
+            return Ok(createdPeson.IdPeople);
         }
 
         [HttpPut("{id}", Name = "UpdatePerson")]

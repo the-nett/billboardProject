@@ -43,54 +43,70 @@ namespace billboard.Services
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            // Seteamos para llenar la tabla de auditoría
-            var existingUser = await GetUserByIdAsync(user.IdUser);
-            if (existingUser != null)
+            if (idPeopleLogIn > 0)
             {
-                // Crear el objeto UserHistory
-                var userHistory = new UserHistory
+                // Seteamos para llenar la tabla de auditoría
+                var existingUser = await GetUserByIdAsync(user.IdUser);
+                if (existingUser != null)
                 {
-                    IdUser = existingUser.IdUser,
-                    PeopleId = existingUser.PeopleId,
-                    PeoplePassword = existingUser.PeoplePassword,
-                    PeopleSalt = existingUser.PeopleSalt,
-                    IdUserType = existingUser.IdUserType,
-                    StateDelete = existingUser.StateDelete,
-                    ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
-                    Modified = DateTime.Now
-                };
+                    // Crear el objeto UserHistory
+                    var userHistory = new UserHistory
+                    {
+                        IdUser = existingUser.IdUser,
+                        PeopleId = existingUser.PeopleId,
+                        PeoplePassword = existingUser.PeoplePassword,
+                        PeopleSalt = existingUser.PeopleSalt,
+                        IdUserType = existingUser.IdUserType,
+                        StateDelete = existingUser.StateDelete,
+                        ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
+                        Modified = DateTime.Now,
+                        Action = "Update"
+                    };
 
-                // Llamar al repositorio para crear el historial de usuario
-                await _UserHistoriesRepository.CreateUserHistorAsync(userHistory);
+                    // Llamar al repositorio para crear el historial de usuario
+                    await _UserHistoriesRepository.CreateUserHistorAsync(userHistory);
+                }
+                else
+                {
+                    throw new Exception("Usuario no encontrado");
+                }
+                return await _userRepository.UpdateUserAsync(user);
             }
             else
             {
-                throw new Exception("Usuario no encontrado");
-            }
-
-            return await _userRepository.UpdateUserAsync(user);
+                throw new ArgumentException("El ID de la persona que realizó la modificación no es válido.");
+            }    
         }
 
         public async Task DeleteUserAsync(int id)
         {
-            var currentUser = await _userRepository.GetUserByIdAsync(id);
-            // Crear el objeto UserHistory
-            var userHistory = new UserHistory
+            if (idPeopleLogIn > 0)
             {
-                IdUser = currentUser.IdUser,
-                PeopleId = currentUser.PeopleId,
-                PeoplePassword = currentUser.PeoplePassword,
-                PeopleSalt = currentUser.PeopleSalt,
-                IdUserType = currentUser.IdUserType,
-                StateDelete = currentUser.StateDelete,
-                ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
-                Modified = DateTime.Now
-            };
+                var currentUser = await _userRepository.GetUserByIdAsync(id);
+                // Crear el objeto UserHistory
+                var userHistory = new UserHistory
+                {
+                    IdUser = currentUser.IdUser,
+                    PeopleId = currentUser.PeopleId,
+                    PeoplePassword = currentUser.PeoplePassword,
+                    PeopleSalt = currentUser.PeopleSalt,
+                    IdUserType = currentUser.IdUserType,
+                    StateDelete = currentUser.StateDelete,
+                    ModifyByPerson = idPeopleLogIn, // Aquí asignas el ID de la persona que realizó la modificación
+                    Modified = DateTime.Now,
+                    Action = "Delete"
+                };
 
-            // Llamar al repositorio para crear el historial de usuario
-            await _UserHistoriesRepository.CreateUserHistorAsync(userHistory);
-            await _userRepository.DeleteUserAsync(id);
+                // Llamar al repositorio para crear el historial de usuario
+                await _UserHistoriesRepository.CreateUserHistorAsync(userHistory);
+                await _userRepository.DeleteUserAsync(id);
+            }
+            else
+            {
+                throw new ArgumentException("El ID de la persona que realizó la modificación no es válido.");
+            }
         }
+            
         public async Task<AnswerLogInNaturalPerson> Login(LogInNaturalPerson logInNaturalPerson)
         {
             return await _userRepository.Login(logInNaturalPerson);

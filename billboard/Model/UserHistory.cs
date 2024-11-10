@@ -19,6 +19,7 @@ namespace billboard.Model
 
         public bool StateDelete { get; set; }
         public int ModifyByPerson { get; set; }
+        public string Action {  get; set; }
 
     }
 }
