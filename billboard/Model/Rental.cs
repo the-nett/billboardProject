@@ -28,6 +28,7 @@ namespace billboard.Model
         public bool StateDelete { get; set; }
 
         //Navigation
+        
         public  Billboard Billboard { get; set; }
         public  Lessor Lessor { get; set; }
         public  Tenant Tenant { get; set; } 

@@ -49,9 +49,9 @@ namespace billboard.Context
             var rental = modelBuilder.Entity<Rental>();
             rental.HasKey(x => x.IdRental);
 
-            rental.HasOne(x => x.Billboard).WithOne(x => x.Rental).HasForeignKey<Rental>(x => x.IdBillboard).OnDelete(DeleteBehavior.NoAction);
+            rental.HasOne(x => x.Billboard).WithMany(x => x.Billboard_Rental).HasForeignKey(x => x.IdBillboard).OnDelete(DeleteBehavior.NoAction);
             rental.HasOne(x => x.Lessor).WithMany(x => x.Lessor_Rental).HasForeignKey(x => x.IdLessor).OnDelete(DeleteBehavior.NoAction);
-            rental.HasOne(x => x.Tenant).WithMany(x => x.Tenant_Rental).HasForeignKey(x => x.IdLessor).OnDelete(DeleteBehavior.NoAction);
+            rental.HasOne(x => x.Tenant).WithMany(x => x.Tenant_Rental).HasForeignKey(x => x.IdTenant).OnDelete(DeleteBehavior.NoAction);
             rental.HasOne(x => x.PayMethods).WithMany(x => x.PayMethodsRental).HasForeignKey(x => x.IdPayMethods).OnDelete(DeleteBehavior.NoAction);
 
             // OnmodelCreating Billboard

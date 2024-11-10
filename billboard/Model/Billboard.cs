@@ -38,7 +38,7 @@ namespace billboard.Model
         //Navigation
         public BillboardState BillboardState { get; set; } 
         public BillboardType BillboardType { get; set; }
-        public Rental Rental { get; set; }
+        public ICollection<Rental> Billboard_Rental { get; } = new List<Rental>();
         public Lessor Lessor { get; set; }
 
     }
