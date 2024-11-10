@@ -56,15 +56,29 @@ builder.Services.AddScoped<IRentalService, RentalService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserHistoriesService, UserHistoriesService>();
 
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Add Mapper
-builder.Services.AddAutoMapper(typeof(BillboardMaper));  
+builder.Services.AddAutoMapper(typeof(BillboardMaper));
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
+app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
